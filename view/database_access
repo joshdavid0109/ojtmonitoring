@@ -1,0 +1,18 @@
+const express = require('express');
+const bodyParse = require('body-parser');
+const fileUpload = require('express-fileupload');
+const mysql = require('mysql');
+
+const app = express();
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'ojt'
+})
+
+connection.connect((err) => {
+    if (err) throw err;
+    console.log('Connected');
+})
