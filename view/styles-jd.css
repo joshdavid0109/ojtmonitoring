@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300&display=swap');
+
+html, body {
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: rgb(228, 228, 228);
+
+}
+
+header {
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0D0464; /* Dark purple color */
+    color: #E1AD0F;
+    padding: 10px 20px;
+}
+
+.left-nav {
+    border: 1px solid #0D0464;
+    width: 15%;
+    height: 200vw;
+}
+
+.nav-name {
+    margin-left: auto;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #777673; /* Yellow color for the circle */
+    border-radius: 50%;
+    margin-right: 40px;
+    width: 30px; /* Adjust as necessary */
+    height: 30px; /* Adjust as necessary */
+}
+
+.profile-image {
+    width: 50%;
+    height: auto;
+    border-radius: 50%; /* Makes the image round */
+}
+main {
+}
+aside {
+    position:fixed;
+    width: 100%;
+    background-color: white;
+}
+
+ol {
+    width: 100%;
+    display:inline;
+    font-weight: bold;
+    font-size: 14px;
+    list-style: none;
+    text-align: justify;
+}
+
+li {
+    margin-left: 40px;
+    margin-right: auto;
+    display: block;
+}
+
+a:link {
+    color: black;
+    text-decoration: none;
+}
+
+li:not(:last-child) {
+    margin-bottom: 20px;
+}
