@@ -3,8 +3,6 @@ const bodyParse = require('body-parser');
 const fileUpload = require('express-fileupload');
 const mysql = require('mysql');
 
-const app = express();
-
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -13,7 +11,7 @@ const connection = mysql.createConnection({
 })
 
 connection.connect((err) => {
-    if (err) 
+    if (err)
         throw err;
     console.log('Connected');
 })
