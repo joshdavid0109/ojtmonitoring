@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="ojt-monitoring-box">
+        <!-- Header -->
+        <header>
+            <div>
+                <h1>Saint Louis University</h1>
+            </div>
+            <div class="user-box">
+                <h1>
+                    <!-- TO BE REPLACED: Code to retrieve current adviser name -->
+                    Albert Jannsen Ramos
+                </h1>
+                <div class="user-profile-box">
+                    <img src="../../ojt-images/user-profile.png">
+                </div>
+            </div>
+        </header>
+        <div class="nav-dash-notice-box">
+            <!-- Navigation Bar -->
+            <nav>
+                <div class="nav-links">
+                    <a href="#">Dashboard</a>
+                    <a href="#">Pending</a>
+                    <a href="#">About us</a>
+                </div>
+                <div class="exit-box">
+                    <img src="../../ojt-images/exit.png" href="#">
+                </div>
+            </nav>
+
+            <!-- Dashboard -->
+            <div class="dashboard-box">
+                <div class="info-notice-box">
+                    <!-- Dashboard Information -->
+                    <h1 class="dashboard-title">Dashboard</h1>
+                    <div class="dashboard-info-box">
+                        <div class="image-box">
+                            <img src="#">
+                        </div>
+                        <div class="adviser-name">
+                            <!-- TO BE REPLACED: Code to retrieve current adviser name-->
+                            Albert Jannsen Ramos
+                        </div>
+                        <div class="logo-time-date-box">
+                            <div class="slu-logo-box"></div>
+                            <div class="line-time-date-box">
+                                <hr>
+                                <div class="time-date-box">
+                                    <div class="time-box">
+                                        <h4>Time</h4>
+                                        <div id="current-time"></div>
+                                    </div>
+                                    <div class="date-box">
+                                        <h4>Date</h4>
+                                        <div id="current-date"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="total=box">
+                            <div class="total-pending-box">
+                                <div class="number"></div>
+                                <h4>Total Pending Students</h4>
+                            </div>
+                            <div class="total-interns-box">
+                                <div class="number"></div>
+                                <h4>Total Interns</h4>
+                            </div>
+                            <div class="total-finished-box">
+                                <div class="number"></div>
+                                <h4>Total Finished Interns</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="view-box">
+                     <div class="view-dropdown-box">
+                        <label for="view-dropdown">View by</label>
+                        <select id="dropdown">
+                            <option value="name">Name</option>
+                            <option value="company">Company</option>
+                            <option value="hours">Total Hours</option>
+                            <option value="status">Status</option>
+                        </select>
+                     </div>
+                     <div class="search-field-box">
+                     </div>
+                </div>
+                <div class="dashboard-interns">
+                    <div class="title-filter-box">
+                        <h1>Interns</h1>
+                        <div class="filter-box">
+                            <div class="filter-dropdown-box">
+                                <label for="filter-dropdown">Filter</label>
+                                <select id="dropdown">
+                                    <option value="name">Name</option>
+                                    <option value="company">Company</option>
+                                    <option value="hours">Total Hours</option>
+                                    <option value="status">Status</option>
+                                </select>
+                             </div>
+                        </div>
+                        <div class="table-box">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Company</th>
+                                    <th>Address</th>
+                                    <th>Total Hours</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>ABC Corporation</td>
+                                    <td>123 Main Street</td>
+                                    <td>40</td>
+                                    <td>Active</td>
+                                </tr>
+                                <!-- TO BE ADDED: AUTOMATICALLY ADD ROWS BASED ON DATABASE -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notice-box">
+                <div class="notice-dropdown-box">
+                    <h1>Announcement</h1>
+                    <label for="notice-label">Send to: </label>
+                    <select id="notice-dropdown">
+                        <option value="everyone">All</option>
+                        <!-- TO BE MODIFED: when clicked, opens another pop up -->
+                        <option value="specific">Specific Intern</option>
+                    </select>
+                 </div>
+            </div>
+        </div>
+        <footer>
+            <h4>Design by Branch @2023</h4>
+        </footer>
+    </div>
+    <script>
+        // displays the current time from device
+        function updateCurrentTime() {
+          var now = new Date();
+          var hours = now.getUTCHours() + 8;
+          var minutes = now.getUTCMinutes();
+          var seconds = now.getUTCSeconds();
+      
+          minutes = minutes < 10 ? '0' + minutes : minutes;
+          seconds = seconds < 10 ? '0' + seconds : seconds;
+      
+          var currentTimeString = hours + ':' + minutes + ':' + seconds + ' UTC+8';
+          document.getElementById('current-time').textContent = currentTimeString;
+        }
+      
+        setInterval(updateCurrentTime, 1000);
+        updateCurrentTime();
+
+        // displays current date from device
+        function updateCurrentDate() {
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            var currentDate = new Date().toLocaleDateString('en-US', options);
+            document.getElementById('current-date').textContent = currentDate;
+        }
+
+        updateCurrentDate();
+      </script>
+</body>
+</html>
