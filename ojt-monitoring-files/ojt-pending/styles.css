@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;600;800&family=PT+Sans&display=swap');
+
+html, body {
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: rgb(228, 228, 228);
+}
+
+/* HEADER*/
+header {
+    font-size: 12px;
+    font-weight: bold;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0D0464; 
+    color: #E1AD0F;
+    padding: 10px 20px;
+}
+
+.nav-name {
+    margin-left: auto;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #777673; 
+    border-radius: 50%;
+    margin-right: 40px;
+    width: 30px; 
+    height: 30px; 
+}
+
+.profile-image {
+    width: 50%;
+    height: auto;
+    border-radius: 50%; 
+}
+
+.container {
+    display: flex;
+    flex-direction: row; 
+}
+
+section {
+    flex: 2.5; 
+}
+
+/*Navigation Bar*/
+.left-nav {
+    width: 15%;
+    height: 45.5vw;
+    background-color: white;
+}
+
+.container ol {
+    width: 100%;
+    font-weight: 600;
+    font-size: 14px;
+    list-style: none;
+    text-align: justify;
+    margin-top: 50px;
+}
+
+.container li {
+    margin-left: -10px;
+    margin-right: auto;
+    display: block;
+}
+
+.left-nav a:link {
+    color: black;
+    text-decoration: none;
+}
+
+li:not(:last-child) {
+    margin-bottom: 25px;
+}
+
+/* PENDING STUDENTS SECTION */
+section{
+    border: 2px solid red;
+
+    padding-top: 30px;
+    width: 100%;
+    
+}
+
+section .section-holder{
+    border: 2px solid green;
+
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: auto;
+    width: 80%;
+}
+
+section .pending-title {
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+section .pending-students-box{
+    border: 2px solid blue;
+    
+    width: 90%;
+    height: 500px;
+    border-radius: 50px;
+    padding: 1% 5% 0;
+    
+}
+
+section .pending-students-box .scrollable{
+    border: 2px solid orange;
+    overflow-y: auto;
+    height: 90%;
+    padding: 0 0 1%;
+}
+
+section .pending-students-box .title-filter-box{
+    border: 2px solid red;
+
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+}
+
+section .pending-students-box .title-filter-box h4{
+    font-weight: 600;
+}
+
+section .pending-students-box .title-filter-box .view-box{
+    border: 2px solid green;
+
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    width: 50%;
+}
+
+section .pending-students-box .students-table{
+    border: 2px solid green;
+
+    padding: 20px;
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+}
+
+.students-table .table-data td{
+    border: 1px solid violet;
+
+    padding: 20px;
+    height: 20px;
+}
+
+.status-box{
+    border: 2px solid blue;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* NOTE */
+
+section .section-holder .note{
+    margin-top: 3.5%;
+    display: flex;
+  
+    justify-content: center;
+}
+
+
+
+
