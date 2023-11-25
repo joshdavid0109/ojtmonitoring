@@ -1,7 +1,7 @@
 console.log('hello baby')
 
 
-document.getElementById('loginForm').addEventListener('click', (event) => {
+document.getElementById('loginForm').addEventListener('submit', (event) => {
     event.preventDefault(); // pribent default form submision
 
     // tetrieve values from the input fields
@@ -12,7 +12,6 @@ document.getElementById('loginForm').addEventListener('click', (event) => {
     fetch('http://ojtmonitoring:3000/login?studentid=' + studentid + '&password=' + password) // it works pero may error sa console x_x will fix tomrrow
         .then(response => {
             if (response.ok) {
-
                 return response.text();
             } else {
 

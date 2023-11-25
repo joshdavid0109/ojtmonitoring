@@ -7,7 +7,6 @@ app.get('/login', (req, res) => {
     const studentid = req.query.studentid;
     const password = req.query.password;
 
-
     const query = 'SELECT * FROM interns WHERE studentid = ? AND password = ?';
     dbConnection.query(query, [studentid, password], (err, results) => {
         if (err) {
@@ -20,6 +19,8 @@ app.get('/login', (req, res) => {
             console.log('SERVER: yey');
             res.send(message);
         } else {
+            // it goes here for some reason, mali lang ata pag host ko
+            // pero if correct credentials are inputted, nag rereturn siya ng ok
             console.log('SERVER: u are not a student of the best university in the universe')
             res.status(401).send('Unauthorized');
         }
