@@ -7,8 +7,6 @@ const dbConnection = mysql.createConnection({
     database: 'ojt'
 })
 
-
-
 dbConnection.connect((err) => {
     if (err) {
         console.error('Error connecting to database:', err);

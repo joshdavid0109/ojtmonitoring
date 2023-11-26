@@ -1,32 +1,30 @@
-console.log('hello baby')
+document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // prevent default form submissive ay submission
 
-
-document.getElementById('loginForm').addEventListener('click', (event) => {
-    event.preventDefault(); // pribent default form submision
-
-    // tetrieve values from the input fields
+    // retrieve values from the input fields (html)
     const studentid = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // send the studentid and password to the server for authentication using GET method
-    fetch('http://ojtmonitoring:3000/login?studentid=' + studentid + '&password=' + password) // it works pero may error sa console x_x will fix tomrrow
-        .then(response => {
-            if (response.ok) {
-
-                return response.text();
-            } else {
-
-                throw new Error('Authentication failed');
-            }
-        })
-        .then(data => {
-            console.log('Login successful:', data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    // send studentid and password to boss man server baby
+    try {
+        const response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `studentid=${studentid}&password=${password}`,
         });
-});
 
+        if (response.ok) {
+            const data = await response.text();
+            console.log('Login successful:', data);
+        } else {
+            throw new Error('Authentication failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
 
 // show password function
 function showPasswordToggle() {

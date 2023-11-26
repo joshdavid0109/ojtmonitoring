@@ -1,26 +1,38 @@
 const express = require('express');
-const dbConnection = require('../ojt-monitoring-files/database-access.js');
+const bodyParser = require('body-parser');
+const dbConnection = require('./database-access.js');
+const cors = require('cors');
+
 const app = express();
 const port = 3000;
 
-app.get('/login', (req, res) => {
-    const studentid = req.query.studentid;
-    const password = req.query.password;
+app.use(cors()); // enable cors for all routes (added this not sure how it works ;)
 
+app.use(bodyParser.urlencoded({ extended: true }));
 
-    const query = 'SELECT * FROM interns WHERE studentid = ? AND password = ?';
-    dbConnection.query(query, [studentid, password], (err, results) => {
+app.post('/login', (req, res) => {
+    const { studentid, password } = req.body;
+    const query = 'SELECT password FROM interns WHERE studentid = ? LIMIT 1';
+    dbConnection.query(query, [studentid], (err, results) => {
         if (err) {
             console.error('Error:', err);
             res.status(500).send('Internal Server Error');
             return;
         }
-        if (results.length > 0) {
-            const message = 'Login successful';
-            console.log('SERVER: yey');
-            res.send(message);
+
+        if (results.length === 1) {
+            const storedPassword = results[0].password;
+
+            if (password === storedPassword) {
+                const message = 'Login successful';
+                console.log('SERVER: yey');
+                res.send(message);
+            } else {
+                // wrong pass
+                res.status(401).send('Unauthorized');
+            }
         } else {
-            console.log('SERVER: u are not a student of the best university in the universe')
+            console.log('SERVER: Student not found');
             res.status(401).send('Unauthorized');
         }
     });
