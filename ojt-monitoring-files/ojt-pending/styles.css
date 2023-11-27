@@ -8,6 +8,10 @@ html, body {
     background-color: rgb(228, 228, 228);
 }
 
+body{
+    height: 46vw;
+}
+
 /* HEADER*/
 header {
     font-size: 12px;
@@ -48,6 +52,8 @@ header {
 .container {
     display: flex;
     flex-direction: row; 
+    height: 100%;
+    width: 100%;
 }
 
 section {
@@ -57,7 +63,7 @@ section {
 /*Navigation Bar*/
 .left-nav {
     width: 15%;
-    height: 45.5vw;
+    height: 100%;
     background-color: white;
 }
 
@@ -87,21 +93,17 @@ li:not(:last-child) {
 
 /* PENDING STUDENTS SECTION */
 section{
-    border: 2px solid red;
-
     padding-top: 30px;
-    width: 100%;
-    
+    width: 100%;   
 }
 
 section .section-holder{
-    border: 2px solid green;
-
     margin-left: auto;
     margin-right: auto;
     display: block;
     height: auto;
     width: 80%;
+    height: 100%;
 }
 
 section .pending-title {
@@ -111,25 +113,20 @@ section .pending-title {
 }
 
 section .pending-students-box{
-    border: 2px solid blue;
-    
+    background-color: #FFFFFF;
     width: 90%;
-    height: 500px;
+    height: 80%;
     border-radius: 50px;
     padding: 1% 5% 0;
-    
 }
 
 section .pending-students-box .scrollable{
-    border: 2px solid orange;
     overflow-y: auto;
-    height: 90%;
+    height: 80%;
     padding: 0 0 1%;
 }
 
 section .pending-students-box .title-filter-box{
-    border: 2px solid red;
-
     display: flex;
     justify-content: space-between;
     text-transform: uppercase;
@@ -137,43 +134,222 @@ section .pending-students-box .title-filter-box{
 
 section .pending-students-box .title-filter-box h4{
     font-weight: 600;
+    font-size: 1vw;
+}
+
+section .pending-students-box .title-filter-box .view-box .view-dropdown-box,
+section .pending-students-box .title-filter-box .view-box .search-field-box {
+   width: 50%;
+}
+
+section .pending-students-box .title-filter-box .view-box .view-dropdown-box label{
+    margin-right: 3%;
+    font-size: .7vw;
 }
 
 section .pending-students-box .title-filter-box .view-box{
-    border: 2px solid green;
-
     display: flex;
     align-self: center;
     justify-content: space-between;
-    width: 50%;
+    width: 45%;
 }
 
 section .pending-students-box .students-table{
-    border: 2px solid green;
-
     padding: 20px;
     width: 100%;
     height: 200px;
-    overflow-y: auto;
+    border-collapse: collapse;
 }
 
-.students-table .table-data td{
-    border: 1px solid violet;
-
+.students-table .table-header th{
+    background-color: #F1F1F1;
     padding: 20px;
     height: 20px;
+    text-align: left;
+    color: #0D0464;
+    font-size: 1vw;
+    font-weight: 600;
+}
+
+.students-table .table-header, .students-table .table-data td{
+    padding: 20px;
+    height: 20px;
+    width: 28%;
+}
+
+.students-table .table-data td:first-child{
+    cursor: pointer;
+}
+
+.students-table .table-data{
+    border-bottom: 1px solid black;
 }
 
 .status-box{
-    border: 2px solid blue;
-
     display: flex;
     align-items: center;
+    justify-content: start;
+    gap: 8%;
+}
+
+.status-box img{
+    width:20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* POPUP CONTAINER */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F1F1F1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    width: 70%;
+    height: 80%;
+    border-radius: 50px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 90px;
+    cursor: pointer;
+    font-size: 80px;
+    color: #D6D6D6;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9000;
+}
+
+.requirements-box{
+    margin: 8% 0 0;
+    background-color: #FFFFFF;
+    width: 94%;
+    height: 70%;
+    padding: 1.5% 3% 0;
+}
+
+.requirements-box h2{
+    color: #0D0464;
+}
+
+.requirements-box table {
+    width: 100%;
+    height: 80%;
+    text-transform: uppercase;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.popup-scrollable {
+    height: 80%; 
+    overflow-y: auto; 
+}
+
+.requirements-box table th,
+.requirements-box table td {
+    text-align: center;
+    font-size: .9vw;
+}
+
+.requirements-box table th:nth-child(2), 
+.requirements-box table td:nth-child(2),
+.requirements-box table th:last-child, 
+.requirements-box table td:last-child {
+    white-space: nowrap; 
+}
+
+.requirements-box table th:nth-child(1),
+.requirements-box table td:nth-child(1) {
+    width: 30%;
+}
+
+.requirements-box table th:nth-child(2),
+.requirements-box table td:nth-child(2) {
+    width: 15%;
+}
+
+.requirements-box table th:nth-child(3),
+.requirements-box table td:nth-child(3) {
+    width: 45%;
+}
+
+.requirements-box table th:last-child,
+.requirements-box table td:last-child {
+    width: 10%;
+}
+
+.requirements-box table th{
+    padding: 20px 5px 20px;
+    height: 5%;
+    width: auto;
+}
+
+.requirements-box table td{
     justify-content: center;
+    align-items: center;
+}
+
+.requirements-box table td:nth-child(1) h4 {
+    font-weight: 100;
+}
+
+
+.check-name-box{
+    display: flex;
+    flex-direction: row;
+    gap: 5%
+}
+
+/* POPUP CONTAINER BUTTONS */
+.button-box{
+    display: flex;
+    justify-content: end;
+    margin-top: 1.5%;
+}
+
+.button-box .button-holder{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 7%;
+    width: 40%
+}
+
+.button-box .button-holder .cancel-btn,
+.button-box .button-holder .save-btn{
+    padding: 2.5% 15% 2.5%;
+    font-size: 1vw;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    border: none;
+}
+
+
+.button-box .button-holder .cancel-btn{
+    background-color: #D6D6D6;
+    color: black
+}
+
+.button-box .button-holder .save-btn{
+    background-color: #024708;
+    color:white;
 }
 
 /* NOTE */
-
 section .section-holder .note{
     margin-top: 3.5%;
     display: flex;
