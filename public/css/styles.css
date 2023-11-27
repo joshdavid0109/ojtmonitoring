@@ -270,7 +270,7 @@ li:not(:last-child) {
 .input-box {
     position: relative;
     height: 30px;
-    max-width: 200px;
+    max-width: 300px;
     width: 100%;
     background: #fff;
     margin: 0 20px;
@@ -284,7 +284,7 @@ top: 50%;
 transform: translateY(-50%);
 }
 .input-box i {
-left: 160px;
+left: 0px;
 font-size: 20px;
 color: #707070;
 }
@@ -547,6 +547,17 @@ background-color: #024708;
 .content_info_holder .header {
     font-weight: bold;
     color:#0D0464;
+    display: flex;
+}
+
+.content_info_holder .header .material-symbols-outlined {
+    color: black;
+}
+
+.content_info_holder .header .text {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .content_info_holder .title {
@@ -560,8 +571,38 @@ background-color: #024708;
     background-color: rgb(228, 228, 228);
 }
 
+.content .intern-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    
+}
+
+.content .intern-row img {
+    height: 40px;
+    width: 70px;
+}
+
+.content .intern-row .intern-details {
+    margin-left: 20px;
+}
+
+.intern-details .intern-name {
+    color:#0D0464;
+    font-weight: bold;
+}
+.flex-container {
+    display: flex;
+    align-items: center; /* This will vertically center the items */
+  }
+  
+.cancel-button a{
+    text-decoration: none;
+    color: black;
+}
+
 .modal_header {
-    font-family: "Kanit", sans-serif;
     font-size: 42px;
     text-align: center;
     margin-top: 100px;
@@ -620,9 +661,7 @@ background-color: #024708;
     margin: 20px 0px 24px 0px;
 }
 
-.modal .filter .intern-filter option {
 
-}
 
 .content_info_holder  {
     width: 100;
@@ -636,4 +675,20 @@ background-color: #024708;
     background-color:rgb(228, 228, 228);
 }
 
+.content .filter .rec-option-anchor {
+    text-decoration: none;
+    color: black;
+}
+
 /*ANNOUNCEMENT POP UP*/
+
+
+
+/*ICON */
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
