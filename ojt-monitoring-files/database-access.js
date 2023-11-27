@@ -4,7 +4,7 @@ const dbConnection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'ojt'
+    database: 'ojt_with-data'
 })
 
 dbConnection.connect((err) => {
