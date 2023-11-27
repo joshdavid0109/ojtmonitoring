@@ -151,7 +151,7 @@ section .pending-students-box .title-filter-box .view-box{
     display: flex;
     align-self: center;
     justify-content: space-between;
-    width: 40%;
+    width: 45%;
 }
 
 section .pending-students-box .students-table{
