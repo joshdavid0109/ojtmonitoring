@@ -1,11 +1,10 @@
 
-import mysql from 'mysql2';
-import dotenv from 'dotenv';
+const mysql = require('mysql2');
+const dotenv = require('dotenv');
 
 dotenv.config()
-const port = process.env.PORT;
 
-// Uses pool instead of connection, instead of creating a brand new connection for each query,
+// uses pool instead of connection, instead of creating a brand new connection for each query,
 // there will be a pool of connections that can be reused
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
@@ -14,32 +13,36 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE,
 }).promise();
 
-// Fetching all details of students table
-export async function fetchStudents() {
-  try {
-    const [rows] = await pool.query("SELECT * FROM students");
-    console.log([rows]); 
-    return rows;
-  } catch (error) {
-    console.error('Error executing query:', error.message);
-  } finally {
-    pool.end();
-  }
-}
+console.log('Database connection successful');
 
-export async function fetchStudent(studentID) {
+// fetches all details of students table
+async function fetchStudents() {
     try {
-        const [rows] = await pool.query(`
-     SELECT *
-     FROM students
-     WHERE studentID = ?
-     `, [studentID]);
-        console.log(rows);
-        return rows[0];
+        const [rows] = await pool.query("SELECT * FROM students");
+        console.log('Fetch Students Query Result:', rows);
+        return rows;
     } catch (error) {
         console.error('Error executing query:', error.message);
-        throw error;
+        throw error; 
     }
 }
 
-fetchStudents()
+async function fetchStudent(studentID) {
+    try {
+      const [rows] = await pool.query("SELECT * FROM students WHERE studentID = ?", [studentID]);
+      return rows[0];
+    } catch (error) {
+      console.error('Error executing query:', error.message);
+      throw error;
+    }
+}
+
+async function closeDatabase() {
+    await pool.end();
+}
+
+module.exports = {
+    fetchStudents,
+    fetchStudent,
+    closeDatabase,
+};

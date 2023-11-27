@@ -1,0 +1,186 @@
+meta(charset="UTF-8")
+meta(name="viewport", content="width=device-width,initial-scale=1")
+title Admin
+link(rel="stylesheet", href="styles.css")
+link(rel="stylesheet", href="https://unicons.iconscout.com/release/v4.0.0/css/line.css")
+header
+  nav.navbar
+    .nav-logo SAINT LOUIS UNIVERSITY
+    .nav-name FIRSTNAME MIDDLENAME LASTNAME
+    .nav-item
+      img.profile-image(src="path_to_your_image_placeholder", alt="Profile")
+main.container
+  aside.left-nav
+    ol
+      li
+        a(href="../../view/index.html") DASHBOARD
+      li
+        a(href="../ojt-pending/index.html") PENDING
+      li
+        a(href="#") ABOUT US
+    img(src="../", alt)
+  section
+    .section-holder
+      .pending-title Pending Students
+      .pending-students-box
+        .title-filter-box
+          h4 Students
+          .view-box
+            .view-dropdown-box
+              label(for="view-dropdown") View by
+              select#dropdown
+                option(value="name") Name
+                option(value="company") Company
+                option(value="hours") Total Hours
+                option(value="status") Status
+            .search-field-box
+              input(type="text", placeholder="Search here...")
+              i.uil.uil-search#search-icon
+        .overlay#overlay
+        .scrollable
+          table.students-table
+            tbody
+              tr.table-header
+                th NAME
+                th COMPANY
+                th ADDRESS
+                th STATUS
+            each student in students
+              tr.table-data     
+                td= student.studentName 
+                td= student.course 
+                td= student.year
+                td
+                  .status-box
+                    img(src='../../ojt-images/check-mark.png')
+                    img(src='../../ojt-images/x-mark.png')
+
+        //  pop-up container for student requirements 
+        .popup-container#popupContainer
+          span.close-btn(onclick="closePopup()") ×
+          .requirements-box
+            h2#studentName
+            .popup-scrollable
+              table
+                tbody
+                  tr
+                    th Requirements
+                    th Date Submitted
+                    th Remarks
+                    th Status
+                  tr
+                    td
+                      .check-name-box
+                        input(type="checkbox")
+                        h4 Application Letter
+                    td 23/11/2023
+                    td.editable(contenteditable="true") Add Remarks
+                    td
+                      .status-box
+                        img(src="../../ojt-images/check-mark.png")
+                        img(src="../../ojt-images/x-mark.png")
+                  tr
+                    td
+                      .check-name-box
+                        input(type="checkbox")
+                        h4 Memorandum of Agreement
+                    td 23/11/2023
+                    td.editable(contenteditable="true") Add Remarks
+                    td
+                      .status-box
+                        img(src="../../ojt-images/check-mark.png")
+                        img(src="../../ojt-images/x-mark.png")
+                  tr
+                    td
+                      .check-name-box
+                        input(type="checkbox")
+                        h4 Curriculum Vitae
+                    td 23/11/2023
+                    td.editable(contenteditable="true") Add Remarks
+                    td
+                      .status-box
+                        img(src="../../ojt-images/check-mark.png")
+                        img(src="../../ojt-images/x-mark.png")
+                  tr
+                    td
+                      .check-name-box
+                        input(type="checkbox")
+                        h4 Recommendation Letter
+                    td 23/11/2023
+                    td.editable(contenteditable="true") Add Remarks
+                    td
+                      .status-box
+                        img(src="../../ojt-images/check-mark.png")
+                        img(src="../../ojt-images/x-mark.png")
+                  tr
+                    td
+                      .check-name-box
+                        input(type="checkbox")
+                        h4 Medical Certificate
+                    td 23/11/2023
+                    td.editable(contenteditable="true") Add Remarks
+                    td
+                      .status-box
+                        img(src="../../ojt-images/check-mark.png")
+                        img(src="../../ojt-images/x-mark.png")
+                  tr
+                    td
+                      .check-name-box
+                        input(type="checkbox")
+                        h4 Dental Certificate
+                    td 23/11/2023
+                    td.editable(contenteditable="true") Add Remarks
+                    td
+                      .status-box
+                        img(src="../../ojt-images/check-mark.png")
+                        img(src="../../ojt-images/x-mark.png")
+          .button-box
+            .button-holder
+              button.cancel-btn Cancel
+              button.save-btn Save
+      .note NOTE: CLICK ON THE NAME OF THE SELECTED INTERN TO VIEW INTERN REQUIREMENTS
+footer
+script(src="./script.js")
+script.
+  
+  // opens the popup container and populates the student details
+          function openPopup(studentName) {
+              document.getElementById('studentName').innerHTML = studentName;
+              document.getElementById('popupContainer').style.display = 'block';
+              document.getElementById('overlay').style.display = 'block';
+          }
+  
+          // closes the popup container
+          function closePopup() {
+              document.getElementById('popupContainer').style.display = 'none';
+              document.getElementById('overlay').style.display = 'none';
+          }
+  
+          // adds click event listeners to the first <td> element within each row and calls the openPopup function
+          var rows = document.querySelectorAll('.table-data');
+          rows.forEach(function(row) {
+              var firstTd = row.querySelector('td:first-child');
+              if (firstTd) {
+                  firstTd.addEventListener('click', function() {
+                      var studentName = firstTd.textContent;
+                      openPopup(studentName);
+                  });
+              }
+          });
+  
+          document.addEventListener('DOMContentLoaded', function () {
+          var editableCells = document.querySelectorAll('.editable');
+  
+          editableCells.forEach(function (cell) {
+              cell.addEventListener('focus', function () {
+                  cell.dataset.originalContent = cell.textContent;
+              });
+  
+              cell.addEventListener('blur', function () {
+                  if (cell.dataset.originalContent !== cell.textContent) {
+                      console.log('Content changed:', cell.textContent);
+                  }
+              });
+          });
+      });
+  
