@@ -1,0 +1,30 @@
+meta(charset="UTF-8")
+meta(name="viewport", content="width=device-width,initial-scale=1")
+title Login Page
+link(rel="stylesheet" type="text/css" href="/ojt-login-page/styles.css")
+.login-box
+  .blue-box
+    .login-details-box
+      h1 Log in
+      hr
+      h3 Adviser
+      p Shaping skills and fostering growth.
+  .white-box
+    .slu-logo-box
+      img.slu-logo(src="/ojt-images/slu-logo.png")
+    form.login-fields-box#loginForm(method="POST")
+      label(for="email") Email Address
+      input#email(type="text", name="email")
+      label(for="password") Password
+      input#password(type="password", name="password")
+      label.checkbox-container
+        | Show Password
+
+        input#showPasswordCheckbox(type="checkbox")
+        span.checkmark
+      button.login-button#loginButton(type="submit") Log in
+    form#forgotPasswordForm
+      label(for="email") Enter your email:
+      input#forgotEmail(type="email", required)
+      button(type="submit") Reset Password
+script(src="/ojt-login-page/advisor-login.js")

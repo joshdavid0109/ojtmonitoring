@@ -1,7 +1,7 @@
 
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
-
+const bcrypt = require('bcrypt'); // bcrypt library for password hashing
 dotenv.config()
 
 // uses pool instead of connection, instead of creating a brand new connection for each query,
@@ -23,19 +23,43 @@ async function fetchStudents() {
         return rows;
     } catch (error) {
         console.error('Error executing query:', error.message);
-        throw error; 
+        throw error;
     }
 }
 
 async function fetchStudent(studentID) {
     try {
-      const [rows] = await pool.query("SELECT * FROM students WHERE studentID = ?", [studentID]);
-      return rows[0];
+        const [rows] = await pool.query("SELECT * FROM students WHERE studentID = ?", [studentID]);
+        return rows[0];
     } catch (error) {
-      console.error('Error executing query:', error.message);
-      throw error;
+        console.error('Error executing query:', error.message);
+        throw error;
     }
 }
+
+async function authenticateIntern(studentID, password) {
+    try {
+        const [rows] = await pool.query("SELECT studentid, password FROM interns WHERE studentid = ? LIMIT 1", [studentID]);
+
+        if (rows.length === 1) {
+            const intern = rows[0];
+            const hashedPasswordFromDatabase = intern.password;
+
+            // ccompare the provided password with the hashed password from the database
+            const passwordMatch = await bcrypt.compare(password, hashedPasswordFromDatabase);
+
+            if (passwordMatch) {
+
+                return intern;
+            }
+        }
+        return null;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
 
 async function closeDatabase() {
     await pool.end();
@@ -44,5 +68,6 @@ async function closeDatabase() {
 module.exports = {
     fetchStudents,
     fetchStudent,
+    authenticateIntern,
     closeDatabase,
 };

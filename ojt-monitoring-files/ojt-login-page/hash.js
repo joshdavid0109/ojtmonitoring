@@ -1,6 +1,5 @@
 // THIS IS FOR MANUALLY HASHING STRING INPUTSS (to run just node hash.js IN CMD)
-
-
+// $2b$10$nD88njI.gqDm3qLFoI3fZeLDP5zZH9GU7rVeguEqYb4WQpdjZIQ/2 (sample hashed password) == intern1pass
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // usual salt rounds used in the algorithm is 10
@@ -16,7 +15,6 @@ function hashPassword(passwordNiMartel) {
         });
     });
 }
-
 
 const passwordNiMartel = 'intern2pass'; // change password here
 

@@ -7,7 +7,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
 
     // send studentid and password to boss man server baby
     try {
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch('http://localhost:8080/ojt-login-page', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -37,3 +37,5 @@ function showPasswordToggle() {
 }
 
 showPasswordToggle();
+
+
