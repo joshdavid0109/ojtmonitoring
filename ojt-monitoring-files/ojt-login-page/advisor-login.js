@@ -1,18 +1,19 @@
+
+// Eventlistner for the login button
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault(); // prevent default form submissive ay submission
-
     // retrieve values from the input fields (html)
-    const studentid = document.getElementById('email').value;
+    const adviserEmail = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // send studentid and password to boss man server baby
+    // send adviserEmail and password to boss man server baby
     try {
         const response = await fetch('http://localhost:8080/ojt-login-page', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `studentid=${studentid}&password=${password}`,
+            body: `adviserEmail=${adviserEmail}&password=${password}`,
         });
 
         if (response.ok) {

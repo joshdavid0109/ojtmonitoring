@@ -16,7 +16,7 @@ function hashPassword(passwordNiMartel) {
     });
 }
 
-const passwordNiMartel = 'intern2pass'; // change password here
+const passwordNiMartel = 'intern2pass';
 
 hashPassword(passwordNiMartel)
     .then((hashedPassword) => {

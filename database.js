@@ -37,20 +37,19 @@ async function fetchStudent(studentID) {
     }
 }
 
-async function authenticateIntern(studentID, password) {
+async function authenticateAdviser(adviserEmail, password) {
     try {
-        const [rows] = await pool.query("SELECT studentid, password FROM interns WHERE studentid = ? LIMIT 1", [studentID]);
+        const [rows] = await pool.query("SELECT adviserEmail, password FROM advisers WHERE adviserEmail = ? LIMIT 1", [adviserEmail]);
 
         if (rows.length === 1) {
-            const intern = rows[0];
-            const hashedPasswordFromDatabase = intern.password;
+            const adviser = rows[0];
+            const hashedPasswordFromDatabase = adviser.password;
 
             // ccompare the provided password with the hashed password from the database
             const passwordMatch = await bcrypt.compare(password, hashedPasswordFromDatabase);
 
             if (passwordMatch) {
-
-                return intern;
+                return adviser;
             }
         }
         return null;
@@ -60,14 +59,45 @@ async function authenticateIntern(studentID, password) {
     }
 }
 
+async function hashAdviserPasswords() {
+    try {
+
+        const [rows] = await pool.query("SELECT adviserID, password FROM advisers");
+        console.log('\nSERVER: Checking all paswords if hashed..');
+        for (const adviser of rows) {
+            const plaintextPasswordFromDatabase = adviser.password;
+
+            // check if pass is hashed
+            if (plaintextPasswordFromDatabase.startsWith("$2")) {
+                console.log(`Skipping adviser with ID ${adviser.adviserID}: Password is already hashed.`);
+                continue; //repeat the for loop
+            }
+
+            //hash the password
+            const hashedPassword = await bcrypt.hash(plaintextPasswordFromDatabase, 10);
+
+            // Update the hashed password in the database
+            await pool.query("UPDATE advisers SET password = ? WHERE adviserID = ?", [hashedPassword, adviser.adviserID]);
+            console.log(`Password for adviser ${adviser.adviserID} has been hashed.`);
+        }
+
+        console.log('\nSERVER: Password checking finished');
+    } catch (error) {
+        console.error('Error hashing adviser passwords:', error.message);
+        throw error;
+    }
+}
 
 async function closeDatabase() {
     await pool.end();
 }
 
+
+
 module.exports = {
     fetchStudents,
     fetchStudent,
-    authenticateIntern,
+    authenticateAdviser,
+    hashAdviserPasswords,
     closeDatabase,
 };
