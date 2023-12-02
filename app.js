@@ -12,13 +12,41 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/ojt-images', express.static(path.join(__dirname, 'ojt-images')));
 app.use('/ojt-login-page', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-login-page')));
 app.use('/ojt-pending', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-pending')));
+app.use('/ojt-dashboard', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-dashboard')))
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
 // Import the fetchStudents function from database.js
 const { fetchStudent, authenticateIntern } = require('./database.js');
+const { fetchAdviser, fetchInterns, insertAnnouncement} = require('./database.js');
 
+
+app.get("/ojt-dashboard", async(req, res) => {
+    try {
+        const adviser = await fetchAdviser();
+        // console.log(adviser)
+        const interns = await fetchInterns();
+        let pendingcount = 0, total = interns.length, finished = 0;
+
+        for (let i = 0; i < interns.length; i++) {
+            let intern = interns[i];
+            switch(intern.status) {
+                case 'ON GOING':
+                    pendingcount++;
+                    break;
+                case 'FINISHED':
+                    finished++;
+                    break;
+            }
+        }
+
+        res.render('ojt-dashboard/index', {adviser, interns, pendingcount: pendingcount, finished: finished, total: total});
+    } catch (error) {
+        console.error('Error', error);
+        res.status(500).send("Warning: Internal Server Error")
+    }
+})
 
 // run node app.js then access http://localhost:8080/ojt-login-page/
 app.get("/ojt-login-page", async (req, res) => {
@@ -61,6 +89,20 @@ app.post("/ojt-login-page", async (req, res) => {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
     }
+});
+
+app.post('/ojt-dashboard/postannouncement', (req, res) => {
+    const sender = req.body['sender'];
+    const recipient = req.body['recipient']
+    const subject = req.body['subject-text'];
+    const description = req.body['description-text'];
+    console.log(sender);
+    console.log(recipient)
+    console.log(subject);
+
+    // Handle your data here (e.g., save to database, process, etc.)
+    insertAnnouncement(sender, recipient, subject, description);
+    res.redirect('/ojt-pending');
 });
 
 

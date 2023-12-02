@@ -30,6 +30,7 @@ header {
     font-size: 12px;
 }
 .nav-item {
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,8 +126,9 @@ li:not(:last-child) {
 .main-dashboard .intern-details {
     width: 100%;
     background: white;
-    height: 100%;   
+    height: 40%;   
     border-radius: 40px;
+    margin-bottom: 20;
 
 }
 
@@ -160,7 +162,7 @@ li:not(:last-child) {
     justify-content: space-around;
     margin-top: -25px;
     margin-left: 90px;
-    height: 100%
+    height: 20%
 }
 
 .details .db-time-and-date .dashboard-slu-logo {
@@ -217,7 +219,7 @@ li:not(:last-child) {
 }
 
 .intern-details .details {
-    margin-bottom: 20px;
+    margin-bottom:10%;
 }
 
 /* INTERN COUNT*/
@@ -225,7 +227,7 @@ li:not(:last-child) {
 .intern-details .intern-count-box {
     display: flex;
     justify-content: space-around;
-    margin: 0 5% 10% 5%;
+    margin: 0 5% 50% 5%;
     padding-bottom: 40px;
 }
 
@@ -295,6 +297,7 @@ outline: none;
 font-size: 18px;
 font-weight: 400;
 border: none;
+left: 10px  ;
 padding: 0 155px 0 10px;
 background-color: transparent;
 }
@@ -340,6 +343,11 @@ table {
     border-collapse: collapse;
     border-spacing: 2; 
     width: 100%;
+}
+
+
+.tothours {
+    text-align: center;
 }
 
 th, td {
@@ -523,8 +531,8 @@ background-color: #024708;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.25);
-    width: 30vw;
-    height: 90vh;
+    width: 40%;
+    padding-bottom: 25px;
     background-color: #fff;
     background-size: cover;
     box-shadow: 10px 10px 30px black;
@@ -538,6 +546,7 @@ background-color: #024708;
 
 .content_info_holder {
     background-color: white;
+
     margin-top: 50px;
     height: auto;
     padding-left: 50px;
@@ -545,6 +554,7 @@ background-color: #024708;
 }
 
 .content_info_holder .header {
+    margin-bottom: 10px;
     font-weight: bold;
     color:#0D0464;
     display: flex;
@@ -586,6 +596,7 @@ background-color: #024708;
 
 .content .intern-row .intern-details {
     margin-left: 20px;
+    margin-bottom: 20;
 }
 
 .intern-details .intern-name {
@@ -654,6 +665,8 @@ background-color: #024708;
     color: red;
 }
 
+
+
 .content .horizontal-gray-ruler {
     height: 1px;
     width: 100%;
@@ -662,20 +675,27 @@ background-color: #024708;
 }
 
 
-
-.content_info_holder  {
-    width: 100;
+.pop-up-subject {
+    width: 100%;
 }
 
-.content .content-holder {
-    height: 100%;
+
+.content .content-holder-subject {
     width: 100%;
     margin-top: 10px;
-
     background-color:rgb(228, 228, 228);
+    resize:none
+}
+
+.content .content-holder-description {
+    width: 100%;
+    margin-top: 10px;
+    background-color:rgb(228, 228, 228);
+    resize: none;
 }
 
 .content .filter .rec-option-anchor {
+
     text-decoration: none;
     color: black;
 }
