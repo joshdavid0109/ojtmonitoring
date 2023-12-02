@@ -60,6 +60,54 @@ async function authenticateIntern(studentID, password) {
     }
 }
 
+async function fetchAdviser() {
+    try {
+        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=? and password=?", ["jonathan.carter@example.com", "jon123"]);
+        
+        if (rows.length == 1){
+            const adviser = rows[0]
+            console.log(adviser)
+            return adviser
+        }
+        return null
+    } catch (error) {
+        console.error('Error executing qeury:', error.message);
+        throw error;
+    }
+}
+
+async function fetchInterns() {
+    try {
+        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid) AS subquery")
+        console.log('Fetch Interns Query Result:', rows);
+        return rows;
+    } catch (error) {
+        console.error('Error executing qeury:', error.message);
+        throw error;
+    }
+}
+
+
+async function insertAnnouncement(sender, recipient, subject, announcement) {
+    
+
+    try {
+        if (!recipient.split(',')){
+            await pool.query("INSERT INTO announcements(senderid, recipientid, subject, message) values (?,?,?,?)", [sender, recipient[0], subject, announcement]);
+        } else {
+            recipient = recipient.split(',')
+            for (let i = 0; i < recipient.length; i++) {
+                await pool.query("INSERT INTO announcements(senderid, recipientid, subject, message) values (?,?,?,?)", [sender, recipient[i], subject, announcement]);
+            }
+        }
+    } catch (error) {
+        console.error('Error executing qeury:', error.message);
+        throw error;
+    }
+}
+
+
+
 
 async function closeDatabase() {
     await pool.end();
@@ -69,5 +117,9 @@ module.exports = {
     fetchStudents,
     fetchStudent,
     authenticateIntern,
+    fetchInterns,
+    fetchAdviser,
+    insertAnnouncement,
     closeDatabase,
+
 };

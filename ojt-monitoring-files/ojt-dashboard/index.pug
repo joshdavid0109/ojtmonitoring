@@ -1,17 +1,16 @@
-doctype html
-head
-  meta(charset='UTF-8')
-  meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  title Admin
-  link(rel='stylesheet' href='/css/styles.css')
-  link(rel='stylesheet' href='https://unicons.iconscout.com/release/v4.0.0/css/line.css')
-  link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
+meta(charset='UTF-8')
+meta(name='viewport' content='width=device-width, initial-scale=1.0')
+title Admin
+link(rel='stylesheet' type='text/css' href='/ojt-dashboard/styles.css')
+link(rel='stylesheet' href='https://unicons.iconscout.com/release/v4.0.0/css/line.css')
+link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
 header
   nav.navbar
     .nav-logo SAINT LOUIS UNIVERSITY
-    .nav-name  ALBERT JANNSEN RAMOS
+    .nav-name  
+      p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
     .nav-item
-      img.profile-image(src='../images/jannsen.png' alt='Profile')
+        img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
 main.container
   aside.left-nav
     ol
@@ -29,9 +28,11 @@ main.container
         .intern-details
           .bg-image
             .blue-shade
-              img(src='../images/maryheights.jpg' alt='maryheights')
+              img(src='../ojt-images/maryheights.jpg' alt='maryheights')
           .details
-            .adviser-name ALBERT JANNSEN RAMOS
+            .adviser-name 
+              if adviser
+                p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '')}
             .yellow-horizontal.bar
             .db-time-and-date
               .dashboard-slu-logo
@@ -44,16 +45,19 @@ main.container
                 #current-date MONDAY, 20 NOVEMBER 2023
           .intern-count-box
             .pending-students
-              .count
-                | 03
+              .count 
+                if (pendingcount)
+                  text #{pendingcount}
               .text TOTAL PENDING STUDENTS
             .total-interns
               .count
-                | 03
+                 if(total)
+                  text #{total}
               .text TOTAL INTERNS
             .finished-interns
               .count
-                | 03
+                 if (finished)
+                   text #{finished}
               .text TOTAL FINISHED INTERNS
     .filtering
       .filtering-fields
@@ -72,41 +76,25 @@ main.container
             option(value='')
       .intern-table
         table.intern-table-holder
-          tr.table-header
-            th
-              | NAME
-            th
-              | COMPANY
-            th
-              | ADDRESS
-            th
-              | TOTAL HOURS
-            th
-              | STATUS
-          tr.table-data
-            td MAERVIN VILLALOBOS
-            td GOOGLE
-            td ADDRESS
-            td 12 HOURS
-            td FINISHED
-          tr.table-data
-            td JOSHUA DANIEL DAVID
-            td SPACE X
-            td ADDRESS
-            td 8 HOURS
-            td ON GOING
-          tr.table-data
-            td ARIEL TARLIT JR.
-            td HABIBI
-            td ADDRESS
-            td 12 HOURS
-            td FINISHED
-          tr.table-data
-            td JONISON MARTEL MOLINTAS
-            td SOY
-            td ADDRESS
-            td 8 HOURS
-            td ON GOING
+          tbody
+            tr.table-header
+              th
+                | NAME
+              th
+                | COMPANY
+              th
+                | ADDRESS
+              th
+                | TOTAL HOURS
+              th
+                | STATUS
+            each intern in interns
+              tr.table-data
+                td= intern.studentname
+                td= intern.companyname
+                td= intern.companyaddress
+                td.tothours= intern.totalhours
+                td= intern.status
   section.third-column
     .announcement-column
       .announcement-title
@@ -187,94 +175,112 @@ main.container
             .gray-horizontal-divider
         button.create-post-button(type='button')
           a(href='#announcement-pop-up') CREATE POST
-form(action='postannouncement' method='POST' target='_blank')
+form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
   #announcement-pop-up.modal(action='submit')
     .content
       a.close(href='#main') &Cross;
-      .content_info_holder
-        .header ANNOUNCEMENT
-        .filter
-          button.recipient-option(type='button')
-            .rec-option-text
-              a.rec-option-anchor(href='#announcement-pop-up1') TO ALL
-          //
-            <select id="recipient-filter">
-            <option value="ALL">TO ALL</option>
-            <option value=""></option>
-            <option value=""></option>
-            <option value=""></option>
-            </select>
-        .horizontal-gray-ruler
-        .pop-up-subject
-          .title SUBJECT
-          // populate with subject txt
-          textarea#description-text-area.content-holder(name='subject-text' cols='30' rows='3')
+      .form(action="postannouncement" method="POST" target="_blank" )
+        .content_info_holder
+          .header ANNOUNCEMENT
+          .filter
+              .rec-option-text
+                a(href='#announcement-pop-up1')
+                  input#message-recipient.rec-option-anchor(type="button" value="TO ALL")
+                  
           .horizontal-gray-ruler
-          .title DESCRIPTION
-          textarea#description-text-area.content-holder(name='description-text' cols='30' rows='10')
-        button.create-post-button(type='button')
-          a(href='#main') POST
+          .pop-up-subject
+            .title SUBJECT
+            // populate with subject txt
+            textarea#description-text-area.content-holder-subject(name='subject-text' cols='30' rows='3')
+            .horizontal-gray-ruler
+            .title DESCRIPTION
+            textarea#description-text-area.content-holder-description(name='description-text' cols='30' rows='10')
+            input(type="hidden" name="sender", value=adviser.adviserID)
+            
+            input(type="hidden" name="recipient", value="1,2,3")
+            input.create-post-button(type="submit" value="SUBMIT")
   | &gt;
-#announcement-pop-up1.modal(action='submit')
-  .content
-    a.close(href='#main') &Cross;
-    .content_info_holder
-      .header
+  form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
+  #announcement-pop-up1.modal(action='submit')
+    .content
+      a.close(href='#main') &Cross;
+      .content_info_holder
+        .header
+          div
+            a(href='#announcement-pop-up')
+              span.material-symbols-outlined
+                | keyboard_return
+          .text SPECIFIC INTERNS
         div
-          a(href='#')
-            span.material-symbols-outlined
-              | keyboard_return
-        .text SPECIFIC INTERNS
-      div
-      .horizontal-gray-ruler
-      .input-box
-        input(type='text' placeholder='Search here...')
-        i#search-icon.uil.uil-search
-      .intern-row
-        .flex-container
-          .img-holder
-            img.profile-image(src='../images/jannsen.png' alt='Profile')
-          .intern-details
-            .intern-name JANNSEN RAMOS
-            div asd
-            div asd
-        div
-          input(type='checkbox')
-      .button-holder
-        button.create-post-button(type='button')
-          a(href='#main') POST
-        button.cancel-button(type='button')
-          a(href='#') CANCEL
+        .horizontal-gray-ruler
+        .input-box
+          input(type='text' placeholder='Search here...')
+          i#search-icon.uil.uil-search
+        .intern-row
+          .flex-container
+            .img-holder
+              img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+            .intern-details
+              .intern-name JANNSEN RAMOS
+              div asd
+              div asd
+          div
+            input(type='checkbox')
+        .intern-row
+          .flex-container
+            .img-holder
+              img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+            .intern-details
+              .intern-name JANNSEN RAMOS
+              div asd
+              div asd
+          div
+            input(type='checkbox')
+        .button-holder
+          button.create-post-button(type='button')
+            a(href='#main') SUBMIT
 script.
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
-  var now = new Date();
-  var hours = now.getUTCHours() + 8;
-  var minutes = now.getUTCMinutes();
-  var seconds = now.getUTCSeconds();
-  // Adjust hours to wrap around 24
-  hours = hours % 24;
-  // Format minutes and seconds to always be two digits
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  var currentTimeString = hours + ':' + minutes + ':' + seconds + ' UTC+8';
-  document.getElementById('current-time').textContent = currentTimeString;
+      var now = new Date();
+      var hours = now.getUTCHours() + 8;
+      var minutes = now.getUTCMinutes();
+      var seconds = now.getUTCSeconds();
+      // Adjust hours to wrap around 24
+      hours = hours % 24;
+      // Format minutes and seconds to always be two digits
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      var currentTimeString = hours + ':' + minutes + ':' + seconds + ' UTC+8';
+      document.getElementById('current-time').textContent = currentTimeString;
   }
-  setInterval(updateCurrentTime, 1000);
-  updateCurrentTime();
-  // Displays current date from device
+
+    setInterval(updateCurrentTime, 1000);
+    updateCurrentTime();
+    // Displays current date from device
   function updateCurrentDate() {
-  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  var currentDate = new Date().toLocaleDateString('en-US', options);
-  document.getElementById('current-date').textContent = currentDate;
+      var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      var currentDate = new Date().toLocaleDateString('en-US', options);
+      document.getElementById('current-date').textContent = currentDate;
   }
-  updateCurrentDate();
-  var dropdown = document.querySelector("#recipient-filter");
-  dropdown.addEventListener("change", changeDropdown)
+      updateCurrentDate();
+      var dropdown = document.querySelector("#recipient-filter");
+      dropdown.addEventListener("change", changeDropdown)
   function changeDropdown() {
-  out = dropdown.options[dropdown.selectedIndex].value;
-  console.log(out)
-  if (out == "ALL") {
-  console.log("Naur");
+      out = dropdown.options[dropdown.selectedIndex].value;
+      console.log(out)
+      if (out == "ALL") {
+        console.log("Naur");
+      }
   }
-  }
+
+// Example array of integers
+let arrayOfIntegers = [1, 2, 3];
+
+// Serialize the array. Here, we're using the join method.
+let serializedArray = arrayOfIntegers.join(',');
+
+// Set the value of the hidden input field
+document.getElementById('recipientInput').value = serializedArray;
+
+  

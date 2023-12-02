@@ -6,9 +6,12 @@ const pug = require('pug');
 const app = express();
 
 app.set('view engine', 'pug')
-app.use(express.static('public'))
+app.use(express.static(__dirname + '/public'));
+app.set('views', './views')
 
-app.get('/', (req, res) => {
+
+
+app.get('/dashboard', (req, res) => {
 
     res.render(
         'indexpug',
