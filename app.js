@@ -18,8 +18,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
 // Import the fetchStudents function from database.js
-const { fetchStudent, authenticateIntern } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement} = require('./database.js');
+const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./database.js');
 
 
 app.get("/ojt-dashboard", async(req, res) => {
@@ -70,18 +69,21 @@ app.get("/ojt-pending", async (req, res) => {
     }
 });
 
-// handling of the post requst (authenticating intern in login)
+// handling of the post requst (authenticating advisor in login)
 app.post("/ojt-login-page", async (req, res) => {
-    const { studentid, password } = req.body;
+    const { adviserEmail, password } = req.body;
 
     try {
-        const intern = await authenticateIntern(studentid, password);
+        const adviser = await authenticateAdviser(adviserEmail, password);
 
-        if (intern) {
-            console.log('SERVER: Intern authenticated');
+        // if itern is authenticated
+        if (adviser) {
+            console.log('\nSERVER: adviser authenticated');
+            console.log('SERVER: ' + adviserEmail + ' ' + password + ' has logged in');
             //res.redirect('/ojt-pending');
         } else {
-            console.log('SERVER: NOT AN INTERN CALL POLICE');
+            console.log('\nSERVER: Login attempt with email = ' + adviserEmail + ' password = ' + password + ' has failed');
+            console.log('SERVER: NOT AN ADVISER CALL POLICE');
             res.status(401).send('Authentication failed');
         }
 
@@ -106,6 +108,8 @@ app.post('/ojt-dashboard/postannouncement', (req, res) => {
 });
 
 
-app.listen(8080, () => {
-    console.log(`Server is running at port ${port}`);
+hashAdviserPasswords().then(() => {
+    app.listen(8080, () => {
+        console.log(`Server is running at port ${port}`);
+    });
 });
