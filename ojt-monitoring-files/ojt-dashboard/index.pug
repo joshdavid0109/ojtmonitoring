@@ -138,42 +138,40 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
             textarea#description-text-area.content-holder-description(name='description-text' cols='30' rows='10')
             input(type="hidden" name="sender", value=adviser.adviserID)
             input(type="hidden" name="recipient", value="0")
-            input.create-post-button(type="submit" value="SUBMIT") 
+            input.create-post-button(id="submitbutton" type="submit" value="SUBMIT") 
   | &gt;
-  form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
-    #announcement-pop-up1.modal(action='submit')
-      .content
-        a.close(href='#main') &Cross;
-        .content_info_holder
-          .header
-            div
-              a(href='#announcement-pop-up')
-                span.material-symbols-outlined
-                  | keyboard_return
-            .text SPECIFIC INTERNS
+  #announcement-pop-up1.modal(action='submit')
+    .content
+      a.close(href='#main') &Cross;
+      .content_info_holder
+        .header
           div
-          .horizontal-gray-ruler
-          .input-box
-            input(type='text' placeholder='Search here...')
-            i#search-icon.uil.uil-search
+            a(href='#announcement-pop-up')
+              span.material-symbols-outlined
+                | keyboard_return
+          .text SPECIFIC INTERNS
+        div
+        .horizontal-gray-ruler
+        .input-box
+          input(type='text' placeholder='Search here...')
+          i#search-icon.uil.uil-search
 
-          .interns-placeholder
-            each intern in interns
-              .intern-row
-                .flex-container
-                  .img-holder
-                    img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
-                  .intern-details
-                    .intern-name 
-                      text #{intern.studentname}
-                    div.companyname
-                      text #{intern.companyname}
-                    div.companyaddress 
-                      text #{intern.companyaddress}
-                div
-                  input(type='checkbox' value=intern.studentname);
+        .interns-placeholder
+          each intern in interns
+            .intern-row
+              .flex-container
+                .img-holder
+                  img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+                .intern-details
+                  .intern-name 
+                    text #{intern.studentname}
+                  div.companyname
+                    text #{intern.companyname}
+                  div.companyaddress 
+                    text #{intern.companyaddress}
+              input(type='checkbox' name="recipient" value=intern.studentname)
 
-          input.create-post-button(type='button' value="SUBMIT")
+        input.create-post-button(type='submit' value="SUBMIT")
 script.
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
@@ -208,3 +206,15 @@ script.
         console.log("Naur");
       }
   }
+
+  document.getElementById("submitbutton").addEventListener('on click', function () {
+    const form = document.getElementById('recipient-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      const checkedValues = Array.from(checkedCheckboxes).map((checkbox) => checkbox.value);
+
+      alert('Checked values: ' + checkedValues.join(', '));
+    });
+  });
+
