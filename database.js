@@ -77,15 +77,25 @@ async function fetchAdviser() {
 
 
 async function insertAnnouncement(sender, recipient, subject, announcement) {
-    
+
+
+   // Get the current date
+   const now = new Date();
+
+   // Format the date as YYYY-MM-DD
+   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+
 
     try {
-        if (!recipient.split(',')){
-            await pool.query("INSERT INTO announcements(senderid, recipientid, subject, message) values (?,?,?,?)", [sender, recipient[0], subject, announcement]);
+        if (recipient.length == 1){
+            await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, recipient[0], subject, announcement]);
         } else {
-            recipient = recipient.split(',')
             for (let i = 0; i < recipient.length; i++) {
-                await pool.query("INSERT INTO announcements(senderid, recipientid, subject, message) values (?,?,?,?)", [sender, recipient[i], subject, announcement]);
+                if (recipient[i] == 0)
+                    continue;
+                const [rs] = await pool.query("select internid from interns i inner join students s on i.studentid = s.studentID where s.studentName = ?", [recipient[i]]);
+                await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, rs[0].internid, subject, announcement]);
             }
         }
     } catch (error) {
@@ -124,26 +134,6 @@ async function fetchInterns() {
 }
 
 
-async function insertAnnouncement(sender, recipient, subject, announcement) {
-    try {
-       // Get the current date
-       const now = new Date();
-
-       // Format the date as YYYY-MM-DD
-       const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-        if (!recipient.split(',')){
-            await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, recipient[0], subject, announcement]);
-        } else {
-            recipient = recipient.split(',')
-            for (let i = 0; i < recipient.length; i++) {
-                await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, recipient[i], subject, announcement]);
-            }
-        }
-    } catch (error) {
-        console.error('Error executing qeury:', error.message);
-        throw error;
-    }
-}
 
 async function fetchAnnouncements(senderid) {
     try {

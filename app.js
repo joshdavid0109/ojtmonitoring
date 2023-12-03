@@ -100,6 +100,19 @@ app.post("/ojt-login-page", async (req, res) => {
 });
 
 
+app.post('/ojt-dashboard/postannouncement', (req, res) => {
+    const sender = req.body['sender'];
+    const recipient = req.body.recipient;
+    const subject = req.body['subject-text'];
+    const description = req.body['description-text'];
+    console.log(sender);
+    console.log(recipient)
+    console.log(subject);
+
+    // Handle your data here (e.g., save to database, process, etc.)
+    insertAnnouncement(sender, recipient, subject, description);
+    res.redirect('/ojt-dashboard');
+});
 
 hashAdviserPasswords().then(() => {
     app.listen(8080, () => {
