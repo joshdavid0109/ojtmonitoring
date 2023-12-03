@@ -15,9 +15,9 @@ main.container
   aside.left-nav
     ol
       li
-        a(href='./index.html') DASHBOARD
+        a(href='localhost:8080/ojt-dashboard') DASHBOARD
       li
-        a(href='../ojt-monitoring-files/ojt-pending/index.html') PENDING
+        a(href='localhost:8080/ojt-pending') PENDING
       li
         a(href='#') ABOUT US
     img(src='../' alt='')
@@ -101,78 +101,19 @@ main.container
         | ANNOUNCEMENTS
       .announcement-container
         .scroll-container
-          .announcement-box
-            .announcement-box-title
-              | SUBJECT
-            .announcement-box-date
-              | 11 / 20 / 23
-            .announcement-box-content
-              | Lorem ipsum dolor sit amet, consectetur
-              | adipisci elit, sed eiusmod tempor incidunt
-              | ut labore et dolore magna aliqua. Ut enim
-              | ad minim veniam, quis nostrum exercitationem
-              | ullam corporis suscipit laboriosam, nisi ut
-              | aliquid ex ea commodi consequatur. Quis aute
-              | iure reprehenderit in voluptate velit esse
-              | cillum dolore eu fugiat nulla pariatur.
-              | Excepteur sint obcaecat cupiditat non proident,
-              | sunt in culpa qui officia deserunt mollit anim
-              | id est laborum.
-            .gray-horizontal-divider
-          .announcement-box
-            .announcement-box-title
-              | SUBJECT
-            .announcement-box-date
-              | 11 / 20 / 23
-            .announcement-box-content
-              | Lorem ipsum dolor sit amet, consectetur
-              | adipisci elit, sed eiusmod tempor incidunt
-              | ut labore et dolore magna aliqua. Ut enim
-              | ad minim veniam, quis nostrum exercitationem
-              | ullam corporis suscipit laboriosam, nisi ut
-              | aliquid ex ea commodi consequatur. Quis aute
-              | iure reprehenderit in voluptate velit esse
-              | cillum dolore eu fugiat nulla pariatur.
-              | Excepteur sint obcaecat cupiditat non proident,
-              | sunt in culpa qui officia deserunt mollit anim
-              | id est laborum.
-            .gray-horizontal-divider
-          .announcement-box
-            .announcement-box-title
-              | SUBJECT
-            .announcement-box-date
-              | 11 / 20 / 23
-            .announcement-box-content
-              | Lorem ipsum dolor sit amet, consectetur
-              | adipisci elit, sed eiusmod tempor incidunt
-              | ut labore et dolore magna aliqua. Ut enim
-              | ad minim veniam, quis nostrum exercitationem
-              | ullam corporis suscipit laboriosam, nisi ut
-              | aliquid ex ea commodi consequatur. Quis aute
-              | iure reprehenderit in voluptate velit esse
-              | cillum dolore eu fugiat nulla pariatur.
-              | Excepteur sint obcaecat cupiditat non proident,
-              | sunt in culpa qui officia deserunt mollit anim
-              | id est laborum.
-            .gray-horizontal-divider
-          .announcement-box
-            .announcement-box-title
-              | SUBJECT
-            .announcement-box-date
-              | 11 / 20 / 23
-            .announcement-box-content
-              | Lorem ipsum dolor sit amet, consectetur
-              | adipisci elit, sed eiusmod tempor incidunt
-              | ut labore et dolore magna aliqua. Ut enim
-              | ad minim veniam, quis nostrum exercitationem
-              | ullam corporis suscipit laboriosam, nisi ut
-              | aliquid ex ea commodi consequatur. Quis aute
-              | iure reprehenderit in voluptate velit esse
-              | cillum dolore eu fugiat nulla pariatur.
-              | Excepteur sint obcaecat cupiditat non proident,
-              | sunt in culpa qui officia deserunt mollit anim
-              | id est laborum.
-            .gray-horizontal-divider
+          each announcement in announcements
+            .announcement-box
+              .announcement-box-title
+                text #{announcement.subject}
+              .announcement-box-date
+                text #{announcement.date}
+              .announcement-box-recipient TO: 
+                text #{announcement.studentName} 
+              .announcement-box-content
+                text #{announcement.message}
+              .gray-horizontal-divider
+
+            
         button.create-post-button(type='button')
           a(href='#announcement-pop-up') CREATE POST
 form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
@@ -196,49 +137,43 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
             .title DESCRIPTION
             textarea#description-text-area.content-holder-description(name='description-text' cols='30' rows='10')
             input(type="hidden" name="sender", value=adviser.adviserID)
-            
-            input(type="hidden" name="recipient", value="1,2,3")
-            input.create-post-button(type="submit" value="SUBMIT")
+            input(type="hidden" name="recipient", value="0")
+            input.create-post-button(type="submit" value="SUBMIT") 
   | &gt;
   form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
-  #announcement-pop-up1.modal(action='submit')
-    .content
-      a.close(href='#main') &Cross;
-      .content_info_holder
-        .header
+    #announcement-pop-up1.modal(action='submit')
+      .content
+        a.close(href='#main') &Cross;
+        .content_info_holder
+          .header
+            div
+              a(href='#announcement-pop-up')
+                span.material-symbols-outlined
+                  | keyboard_return
+            .text SPECIFIC INTERNS
           div
-            a(href='#announcement-pop-up')
-              span.material-symbols-outlined
-                | keyboard_return
-          .text SPECIFIC INTERNS
-        div
-        .horizontal-gray-ruler
-        .input-box
-          input(type='text' placeholder='Search here...')
-          i#search-icon.uil.uil-search
-        .intern-row
-          .flex-container
-            .img-holder
-              img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
-            .intern-details
-              .intern-name JANNSEN RAMOS
-              div asd
-              div asd
-          div
-            input(type='checkbox')
-        .intern-row
-          .flex-container
-            .img-holder
-              img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
-            .intern-details
-              .intern-name JANNSEN RAMOS
-              div asd
-              div asd
-          div
-            input(type='checkbox')
-        .button-holder
-          button.create-post-button(type='button')
-            a(href='#main') SUBMIT
+          .horizontal-gray-ruler
+          .input-box
+            input(type='text' placeholder='Search here...')
+            i#search-icon.uil.uil-search
+
+          .interns-placeholder
+            each intern in interns
+              .intern-row
+                .flex-container
+                  .img-holder
+                    img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+                  .intern-details
+                    .intern-name 
+                      text #{intern.studentname}
+                    div.companyname
+                      text #{intern.companyname}
+                    div.companyaddress 
+                      text #{intern.companyaddress}
+                div
+                  input(type='checkbox' value=intern.studentname);
+
+          input.create-post-button(type='button' value="SUBMIT")
 script.
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
@@ -273,14 +208,3 @@ script.
         console.log("Naur");
       }
   }
-
-// Example array of integers
-let arrayOfIntegers = [1, 2, 3];
-
-// Serialize the array. Here, we're using the join method.
-let serializedArray = arrayOfIntegers.join(',');
-
-// Set the value of the hidden input field
-document.getElementById('recipientInput').value = serializedArray;
-
-  
