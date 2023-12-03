@@ -75,17 +75,6 @@ async function fetchAdviser() {
     }
 }
 
-async function fetchInterns() {
-    try {
-        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid) AS subquery")
-        console.log('Fetch Interns Query Result:', rows);
-        return rows;
-    } catch (error) {
-        console.error('Error executing qeury:', error.message);
-        throw error;
-    }
-}
-
 
 async function insertAnnouncement(sender, recipient, subject, announcement) {
     
@@ -109,7 +98,7 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
 
 async function fetchAdviser() {
     try {
-        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=? and password=?", ["jonathan.carter@example.com", "jon123"]);
+        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=?", ["jonathan.carter@example.com"]);
         
         if (rows.length == 1){
             const adviser = rows[0]
@@ -136,17 +125,44 @@ async function fetchInterns() {
 
 
 async function insertAnnouncement(sender, recipient, subject, announcement) {
-    
-
     try {
+       // Get the current date
+       const now = new Date();
+
+       // Format the date as YYYY-MM-DD
+       const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         if (!recipient.split(',')){
-            await pool.query("INSERT INTO announcements(senderid, recipientid, subject, message) values (?,?,?,?)", [sender, recipient[0], subject, announcement]);
+            await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, recipient[0], subject, announcement]);
         } else {
             recipient = recipient.split(',')
             for (let i = 0; i < recipient.length; i++) {
-                await pool.query("INSERT INTO announcements(senderid, recipientid, subject, message) values (?,?,?,?)", [sender, recipient[i], subject, announcement]);
+                await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, recipient[i], subject, announcement]);
             }
         }
+    } catch (error) {
+        console.error('Error executing qeury:', error.message);
+        throw error;
+    }
+}
+
+async function fetchAnnouncements(senderid) {
+    try {
+
+
+
+        const [rows] = await pool.query("SELECT a.date, s.studentName, a.subject, a.message from announcements a inner join interns i on a.recipientid = i.internid inner join students s on i.studentid = s.studentID where a.senderid = ?", [senderid]);
+    
+        // Reformat the date for each row
+        const formattedRows = rows.map(row => {
+            // Assuming row.date is a JavaScript Date object
+            const formattedDate = `${String(row.date.getDate()).padStart(2, '0')}/${String(row.date.getMonth() + 1).padStart(2, '0')}/${row.date.getFullYear()}`;
+            return {
+                ...row,
+                date: formattedDate
+            };
+        });
+
+        return formattedRows;
     } catch (error) {
         console.error('Error executing qeury:', error.message);
         throw error;
@@ -195,6 +211,7 @@ module.exports = {
     fetchStudent,
     authenticateIntern,
     fetchInterns,
+    fetchAnnouncements,
     fetchAdviser,
     insertAnnouncement,
     authenticateAdviser,

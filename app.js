@@ -4,6 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 
+
 const app = express();
 const port = 8080;
 
@@ -19,10 +20,12 @@ app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
 // Import the fetchStudents function from database.js
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./database.js');
+const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements} = require('./database.js');
 
 
 app.get("/ojt-dashboard", async(req, res) => {
     try {
+
         const adviser = await fetchAdviser();
         // console.log(adviser)
         const interns = await fetchInterns();
@@ -40,7 +43,10 @@ app.get("/ojt-dashboard", async(req, res) => {
             }
         }
 
-        res.render('ojt-dashboard/index', {adviser, interns, pendingcount: pendingcount, finished: finished, total: total});
+        const announcements = await fetchAnnouncements(adviser.adviserID);
+        console.log(announcements)
+
+        res.render('ojt-dashboard/index', {adviser, interns, announcements, pendingcount: pendingcount, finished: finished, total: total});
     } catch (error) {
         console.error('Error', error);
         res.status(500).send("Warning: Internal Server Error")
@@ -93,19 +99,6 @@ app.post("/ojt-login-page", async (req, res) => {
     }
 });
 
-app.post('/ojt-dashboard/postannouncement', (req, res) => {
-    const sender = req.body['sender'];
-    const recipient = req.body['recipient']
-    const subject = req.body['subject-text'];
-    const description = req.body['description-text'];
-    console.log(sender);
-    console.log(recipient)
-    console.log(subject);
-
-    // Handle your data here (e.g., save to database, process, etc.)
-    insertAnnouncement(sender, recipient, subject, description);
-    res.redirect('/ojt-pending');
-});
 
 
 hashAdviserPasswords().then(() => {

@@ -418,6 +418,12 @@ th, td {
     padding: 30px;
 }
 
+.announcement-box-recipient {
+    margin-bottom: 20px;
+    font-style: italic;
+
+}
+
 .announcement-container .scroll-container {
     overflow-y: scroll;
     height: 52vw;
@@ -452,7 +458,7 @@ th, td {
 background-color: #024708;
   border-radius: 80px;
   box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-  color: rgb(17, 78, 17);
+  color: rgb(255, 255, 255);
   cursor: pointer;
   display: block;
   margin-left: auto;
@@ -492,7 +498,7 @@ background-color: #024708;
     background-color: #024708;
       border-radius: 80px;
       box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-      color: rgb(17, 78, 17);
+      color: rgb(255, 255, 255);
       cursor: pointer;
       display: block;
       margin-left: auto;
@@ -532,7 +538,8 @@ background-color: #024708;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.25);
     width: 40%;
-    padding-bottom: 25px;
+    height: 85%;
+    padding-bottom: 40px;
     background-color: #fff;
     background-size: cover;
     box-shadow: 10px 10px 30px black;
@@ -548,7 +555,7 @@ background-color: #024708;
     background-color: white;
 
     margin-top: 50px;
-    height: auto;
+    height: 80%;
     padding-left: 50px;
     padding-right: 50px;
 }
@@ -581,6 +588,12 @@ background-color: #024708;
     background-color: rgb(228, 228, 228);
 }
 
+.content .interns-placeholder {
+    margin-top: 20px;
+    height: 80%;
+    overflow-y: scroll;
+}
+
 .content .intern-row {
     display: flex;
     align-items: center;
@@ -603,6 +616,19 @@ background-color: #024708;
     color:#0D0464;
     font-weight: bold;
 }
+
+.intern-details .companyaddress {
+    font-weight: 600;
+    font-style: italic;
+    font-size: 12px;
+}
+
+.intern-details .companyname {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .flex-container {
     display: flex;
     align-items: center; /* This will vertically center the items */
