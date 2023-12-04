@@ -41,7 +41,8 @@ header {
     height: 30px; /* Adjust as necessary */
 }
 
-.profile-image {
+#profile-image {
+    cursor: pointer;
     width: 50%;
     height: auto;
     border-radius: 50%; /* Makes the image round */

@@ -138,9 +138,7 @@ async function fetchInterns() {
 async function fetchAnnouncements(senderid) {
     try {
 
-
-
-        const [rows] = await pool.query("SELECT a.date, s.studentName, a.subject, a.message from announcements a inner join interns i on a.recipientid = i.internid inner join students s on i.studentid = s.studentID where a.senderid = ?", [senderid]);
+        const [rows] = await pool.query("SELECT a.date, a.recipientid, a.subject, a.message, CASE WHEN a.recipientid = 0 THEN 'All Students' ELSE s.studentName END AS studentName FROM announcements a LEFT JOIN interns i ON a.recipientid = i.internid LEFT JOIN students s ON i.studentID = s.studentid WHERE a.senderid = ?", [senderid]);
     
         // Reformat the date for each row
         const formattedRows = rows.map(row => {
