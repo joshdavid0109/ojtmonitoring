@@ -9,8 +9,10 @@ header
     .nav-logo SAINT LOUIS UNIVERSITY
     .nav-name  
       p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
-    .nav-item
-        img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+    form(action='/ojt-dashboard/uploadpp' method='POST' target='_blank')
+      .nav-item
+          img#profile-image(src='../uploads/jannsen.png' alt='Profile')
+          input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
 main.container
   aside.left-nav
     ol
@@ -108,7 +110,7 @@ main.container
               .announcement-box-date
                 text #{announcement.date}
               .announcement-box-recipient TO: 
-                text #{announcement.studentName} 
+                  text #{announcement.studentName}
               .announcement-box-content
                 text #{announcement.message}
               .gray-horizontal-divider
@@ -197,15 +199,22 @@ script.
       document.getElementById('current-date').textContent = currentDate;
   }
       updateCurrentDate();
-      var dropdown = document.querySelector("#recipient-filter");
-      dropdown.addEventListener("change", changeDropdown)
-  function changeDropdown() {
-      out = dropdown.options[dropdown.selectedIndex].value;
-      console.log(out)
-      if (out == "ALL") {
-        console.log("Naur");
-      }
-  }
+  
+
+  document.getElementById('profile-image').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+  })
+
+  document.getElementById('fileInput').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profile-image').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+  })
 
   document.getElementById("submitbutton").addEventListener('on click', function () {
     const form = document.getElementById('recipient-form');
@@ -215,6 +224,6 @@ script.
       const checkedValues = Array.from(checkedCheckboxes).map((checkbox) => checkbox.value);
 
       alert('Checked values: ' + checkedValues.join(', '));
-    });
-  });
+    })
+  })
 
