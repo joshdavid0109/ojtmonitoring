@@ -11,7 +11,7 @@ header
       p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
     form(action='/ojt-dashboard/uploadpp' method='POST' target='_blank')
       .nav-item
-          img#profile-image(src='../uploads/jannsen.png' alt='Profile')
+          img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
           input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
 main.container
   aside.left-nav
