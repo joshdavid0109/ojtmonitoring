@@ -86,7 +86,7 @@ app.post("/ojt-login-page", async (req, res) => {
         if (adviser) {
             console.log('\nSERVER: adviser authenticated');
             console.log('SERVER: ' + adviserEmail + ' ' + password + ' has logged in');
-            //res.redirect('/ojt-pending');
+            res.redirect('/ojt-dashboard');
         } else {
             console.log('\nSERVER: Login attempt with email = ' + adviserEmail + ' password = ' + password + ' has failed');
             console.log('SERVER: NOT AN ADVISER CALL POLICE');
