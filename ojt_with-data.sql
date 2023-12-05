@@ -58,7 +58,7 @@ CREATE TABLE `announcements` (
   `message` varchar(45) NOT NULL,
   PRIMARY KEY (`announcementid`),
   UNIQUE KEY `announcementid_UNIQUE` (`announcementid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +242,7 @@ CREATE TABLE `pendingstudents` (
   `companyid` int NOT NULL,
   `status` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`studentid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
