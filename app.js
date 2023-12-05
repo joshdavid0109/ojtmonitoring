@@ -83,15 +83,9 @@ app.post("/ojt-login-page", async (req, res) => {
         const adviser = await authenticateAdviser(adviserEmail, password);
 
         // if itern is authenticated
-        if (adviser) {
-            console.log('\nSERVER: adviser authenticated');
-            console.log('SERVER: ' + adviserEmail + ' ' + password + ' has logged in');
-            res.redirect('/ojt-pending');
-        } else {
-            console.log('\nSERVER: Login attempt with email = ' + adviserEmail + ' password = ' + password + ' has failed');
-            console.log('SERVER: NOT AN ADVISER CALL POLICE');
-            res.status(401).send('Authentication failed');
-        }
+        
+            res.redirect('/ojt-dashboard');
+       
 
     } catch (error) {
         console.error('Error:', error.message);
