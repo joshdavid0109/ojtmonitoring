@@ -160,7 +160,7 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
 
         .interns-placeholder
           each intern in interns
-            .intern-row
+            .intern-row-checkbox
               .flex-container
                 .img-holder
                   img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
@@ -172,8 +172,6 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
                   div.companyaddress 
                     text #{intern.companyaddress}
               input(type='checkbox' name="recipient" value=intern.studentname)
-
-        input.create-post-button(type='submit' value="SUBMIT")
 script.
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
@@ -225,6 +223,10 @@ script.
 
       alert('Checked values: ' + checkedValues.join(', '));
     })
+  })
+   
+  document.addEventListener("On Click", () => {
+
   })
     // Function to show popup
   function showInternPopup(internId) {

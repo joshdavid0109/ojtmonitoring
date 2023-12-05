@@ -595,7 +595,8 @@ background-color: #024708;
     overflow-y: scroll;
 }
 
-.content .intern-row {
+.content .intern-row,
+.content .intern-row-checkbox {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -603,12 +604,14 @@ background-color: #024708;
     
 }
 
-.content .intern-row img {
+.content .intern-row,
+.content .intern-row-checkbox img {
     height: 40px;
     width: 70px;
 }
 
-.content .intern-row .intern-details {
+.content .intern-row,
+.content .intern-row-checkbox .intern-details {
     margin-left: 20px;
     margin-bottom: 20;
 }

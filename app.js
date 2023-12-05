@@ -86,7 +86,7 @@ app.post("/ojt-login-page", async (req, res) => {
         if (adviser) {
             console.log('\nSERVER: adviser authenticated');
             console.log('SERVER: ' + adviserEmail + ' ' + password + ' has logged in');
-            res.redirect('/ojt-dashboard');
+            res.redirect('/ojt-pending');
         } else {
             console.log('\nSERVER: Login attempt with email = ' + adviserEmail + ' password = ' + password + ' has failed');
             console.log('SERVER: NOT AN ADVISER CALL POLICE');
@@ -100,7 +100,7 @@ app.post("/ojt-login-page", async (req, res) => {
 });
 
 
-app.post('/ojt-dashboard/postannouncement', (req, res) => {
+app.post('/ojt-dashboard/postannouncement', async (req, res) => {
     const sender = req.body['sender'];
     const recipient = req.body.recipient;
     const subject = req.body['subject-text'];
