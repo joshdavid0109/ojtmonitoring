@@ -38,7 +38,7 @@ CREATE TABLE `advisers` (
 
 LOCK TABLES `advisers` WRITE;
 /*!40000 ALTER TABLE `advisers` DISABLE KEYS */;
-INSERT INTO `advisers` VALUES (1,'Stevens, Amelia','amelia.stevens@example.com','amelia123'),(2,'Hayes, Benjamin','benjamin.hayes@example.com','benj123'),(3,'Rodriguez, Michelle','michelle.rodriguez@example.com','mich123'),(4,'Carter, Jonathan','jonathan.carter@example.com','jon123'),(5,'Foster, Emily','emily.foster@example.com','emi123'),(6,'Anderson, Samuel','samuel.anderson@example.com','samuel123'),(7,'Taylor, Victoria','victoria.taylor@example.com','victoria123'),(8,'Parker, Ben','richard.parker@example.com','ben123'),(9,'Collins, Thompson','thompson.collins.example.com','collin123'),(10,'David, Allison','allison.david@example.com','allison123');
+INSERT INTO `advisers` VALUES (1,'Stevens, Amelia','amelia.stevens@example.com','$2b$10$78LKeo0LmG..I3zOKczr2uZ6RHoh4iKZc.vuHdqr1PEv.HWgdSQaS'),(2,'Hayes, Benjamin','benjamin.hayes@example.com','$2b$10$1oBGejEJUYWQZTZ7V0xxuuZxYjduOiFMagjgxkCjiopy22A5uI0qm'),(3,'Rodriguez, Michelle','michelle.rodriguez@example.com','$2b$10$d2eujojFxw0DeNFttys0JOj937fQK.tBY2VAiNL4kAQiRrx2aEt3W'),(4,'Carter, Jonathan','jonathan.carter@example.com','$2b$10$D3KQLZvEP4N/.iynp2Ky5OFEPQvANl9Y/kdAj7.7gqycoafrOjCem'),(5,'Foster, Emily','emily.foster@example.com','$2b$10$aM.1NkZJPr4yYwg4g.IIu.R8o3yG/hZ0zyBKN27Et/C51/38xs5fu'),(6,'Anderson, Samuel','samuel.anderson@example.com','$2b$10$uqgZwaAeA09LFoVJjczX.uofGft2PmqQGV.G23Pkn9YT92YXcWx3a'),(7,'Taylor, Victoria','victoria.taylor@example.com','$2b$10$vNNVoLCUZrcEFuLnTvo3.OnebIWLG7T1RETaxoAxk/S583F2VsA3q'),(8,'Parker, Ben','richard.parker@example.com','$2b$10$06gRV7gaFRUNwcLp1f/Dqu.qhRDGgzbJy/.kxWeLR7mYcEpcaFq1u'),(9,'Collins, Thompson','thompson.collins.example.com','$2b$10$MqKbILt8Dl32Z6/h2Q5pkOtZ4SXohLmjSYkkWBVFSerxPuC89fxNu'),(10,'David, Allison','allison.david@example.com','$2b$10$2uDOiFER7SfkDau/YX8cmOubQA/HaYn1R6GKRRnV3MOgnwJdyJ5pu');
 /*!40000 ALTER TABLE `advisers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -51,13 +51,14 @@ DROP TABLE IF EXISTS `announcements`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `announcements` (
   `announcementid` int NOT NULL AUTO_INCREMENT,
+  `date` date NOT NULL,
   `senderid` varchar(45) NOT NULL,
   `recipientid` int NOT NULL,
   `subject` varchar(45) NOT NULL,
   `message` varchar(45) NOT NULL,
   PRIMARY KEY (`announcementid`),
   UNIQUE KEY `announcementid_UNIQUE` (`announcementid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,6 +67,7 @@ CREATE TABLE `announcements` (
 
 LOCK TABLES `announcements` WRITE;
 /*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
+INSERT INTO `announcements` VALUES (1,'2023-12-03','4',1,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(2,'2023-12-03','4',2,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(3,'2023-12-03','4',3,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(4,'2023-12-03','4',0,'',''),(5,'2023-12-03','4',0,'asdvvv','vvvv'),(6,'2023-12-03','4',0,'sadvcqwvr','vasdc'),(7,'2023-12-03','4',1,'abcde','abcdefghijk'),(8,'2023-12-03','4',4,'abcde','abcdefghijk'),(9,'2023-12-03','4',5,'abcde','abcdefghijk'),(10,'2023-12-03','4',1,'12casdcas','cascsa'),(11,'2023-12-03','4',6,'12casdcas','cascsa'),(12,'2023-12-03','4',2,'12casdcas','cascsa'),(13,'2023-12-03','4',1,'sadvqw','sdvsacwq'),(14,'2023-12-03','4',6,'sadvqw','sdvsacwq'),(15,'2023-12-03','4',2,'sadvqw','sdvsacwq');
 /*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,4 +319,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-02 17:36:36
+-- Dump completed on 2023-12-05 10:44:03
