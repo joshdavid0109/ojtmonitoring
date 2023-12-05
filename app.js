@@ -81,7 +81,13 @@ app.post("/ojt-login-page", async (req, res) => {
 
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
-        res.redirect('/ojt-dashboard');
+        if (adviser) {
+            console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
+            res.redirect('/ojt-dashboard');
+        } else {
+            console.log('SERVER: NOT AN AVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
+        }
+
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
