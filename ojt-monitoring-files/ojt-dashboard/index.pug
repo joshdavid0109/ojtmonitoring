@@ -70,13 +70,13 @@ main.container
       .table-label-filter
         .title INTERNS
         .report-links
-        ol 
-          li 
-           a(href='localhost:8080/ojt-dashboard') Daily Report
-          li 
-           a(href='localhost:8080/ojt-dashboard') Weekly Report
-          li 
-           a(href='localhost:8080/ojt-dashboard') DASHBOARD
+          ol 
+            li 
+            a(href='localhost:8080/ojt-dashboard') Daily Report
+            li 
+            a(href='localhost:8080/ojt-dashboard') Weekly Report
+            li 
+            a(href='localhost:8080/ojt-dashboard') Requirements
         .filter
           label.view-by(for='view-by')  FILTER 
           select#intern-filter
@@ -106,28 +106,27 @@ main.container
                 td.tothours= intern.totalhours
                 td= intern.status
   .popup-container#popupContainer
-      span.close-btn(onclick="closePopup()") ×
-      .requirements-box
-        h2#studentName #{studentName} 
-        .popup-scrollable
-          table
-            tbody
-              tr
-                th Date
-                th Time in
-                th Time out
-                th Supervisor
-                th Description 
-                th Hours
-                th Supporting Documents 
-                th Remarks 
-                th Status
-      .button-box
-        .button-holder
-          button.cancel-btn(onclick="closePopup()") Cancel
-          button.save-btn Save
+        span.close-btn(onclick="closePopup()") ×
+        .requirements-box
+          h2#studentName #{studentName} 
+          .popup-scrollable
+            table
+              tbody
+                tr
+                  th Date
+                  th Time in
+                  th Time out
+                  th Supervisor
+                  th Description 
+                  th Hours
+                  th Supporting Documents 
+                  th Remarks 
+                  th Status
+        .button-box
+            .button-holder
+              button.cancel-btn(onclick="closePopup()") Cancel
+              button.save-btn Save    
       
-
   section.third-column
     .announcement-column
       .announcement-title
@@ -263,11 +262,13 @@ script.
           function openPopup(studentName) {
               document.getElementById('studentName').innerHTML = studentName;
               document.querySelector('.popup-container').style.display = 'block';
+              console.log('open')
           }
   
           // closes the popup container
           function closePopup() {
                document.querySelector('.popup-container').style.display = 'none';
+               console.log('close')
          
           }
   
@@ -276,12 +277,15 @@ script.
          var rows = document.querySelectorAll('.table-data');
          rows.forEach(function(row) {
           row.addEventListener('click', function() {
-              var internID = row.dataset.internId;
-              fetch(`/ojt-dashboard/daily-reports/${internID}`)
+              var internName = row.dataset.internId;
+           
+              var studentName = row.textContent; // Ensure you get the studentName correctly
+              fetch(`/ojt-dashboard/daily-reports/${internName}`)
                   .then(response => response.text())
                   .then(html => {
-                      document.querySelector('.popup-scrollable table tbody tr').innerHTML = html;
                       document.querySelector('.popup-container').style.display = 'block';
+                      document.querySelector('.popup-scrollable table tbody tr').innerHTML = html;
+                     
                   })
                   .catch(error => console.error('Error:', error));
           });
