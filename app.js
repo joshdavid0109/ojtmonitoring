@@ -1,8 +1,6 @@
 const express = require('express');
-const { fetchStudents } = require('./database.js');
 const path = require('path');
 const bodyParser = require('body-parser');
-
 
 
 const app = express();
@@ -18,9 +16,10 @@ app.use('/ojt-dashboard', express.static(path.join(__dirname, 'ojt-monitoring-fi
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
-// Import the fetchStudents function from database.js
+// Import functions from database.js
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./database.js');
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements} = require('./database.js');
+const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database.js');
 
 
 app.get("/ojt-dashboard", async(req, res) => {
@@ -68,12 +67,29 @@ app.get("/ojt-login-page", async (req, res) => {
 app.get("/ojt-pending", async (req, res) => {
     try {
         const students = await fetchStudents();
-        res.render('ojt-pending/index', { students })
+        const pendingStudents = await fetchPendingStudents();
+        res.render('ojt-pending/index', { students, pendingStudents })
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
     }
 });
+
+// Update the '/update-status' route in ojt-pending-page
+app.post('/update-status', async (req, res) => {
+    const { studentId, newStatus } = req.body;
+  
+    console.log('Received Update Request - Student ID:', studentId, 'New Status:', newStatus);
+  
+    try {
+      await updateStatus(studentId, newStatus);
+      res.send('Status updated successfully');
+    } catch (error) {
+      console.error('Error updating status:', error.message);
+      res.status(500).send('Warning: Internal Server Error');
+    }
+  });
+  
 
 // handling of the post requst (authenticating advisor in login)
 app.post("/ojt-login-page", async (req, res) => {
