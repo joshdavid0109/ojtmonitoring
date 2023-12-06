@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ojt_with-data
 -- ------------------------------------------------------
@@ -174,8 +174,8 @@ CREATE TABLE `interns` (
   `password` varchar(60) NOT NULL,
   `adviserid` int(11) NOT NULL,
   `studentid` int(11) NOT NULL,
-  `companyid` int(11) DEFAULT '0',
-  `supervisorid` int(11) NOT NULL,
+  `companyid` int(11) DEFAULT NULL,
+  `supervisorid` int(11) DEFAULT NULL,
   `totalhours` int(11) DEFAULT NULL,
   `worktype` varchar(45) DEFAULT NULL,
   `image` blob,
@@ -199,7 +199,7 @@ CREATE TABLE `interns` (
 
 LOCK TABLES `interns` WRITE;
 /*!40000 ALTER TABLE `interns` DISABLE KEYS */;
-INSERT INTO `interns` VALUES (1,'1234',1,2221023,1,110,NULL,'WFH',NULL,NULL),(2,'1234',2,2213241,2,120,180,'ON-SITE',NULL,NULL),(3,'1234',3,2211353,3,130,NULL,'WFH',NULL,NULL),(4,'1234',4,2211261,3,140,NULL,'ON-SITE',NULL,NULL),(5,'1234',5,2224514,4,150,240,'ON-SITE',NULL,NULL),(6,'1234',4,2225134,5,120,NULL,'WFH',NULL,NULL),(7,'1234',4,2225415,6,110,NULL,'ON-SITE',NULL,NULL),(8,'1234',5,2225134,1,110,240,'WFH',NULL,NULL);
+INSERT INTO `interns` VALUES (1,'1234',1,2221023,1,110,NULL,'WFH',NULL,'ACCEPTED'),(2,'1234',2,2213241,2,120,180,'ON-SITE',NULL,'ACCEPTED'),(3,'1234',3,2211353,3,130,NULL,'WFH',NULL,'ACCEPTED'),(4,'1234',4,2211261,3,140,NULL,'ON-SITE',NULL,'ACCEPTED'),(5,'1234',5,2224514,4,150,240,'ON-SITE',NULL,'ACCEPTED'),(6,'1234',4,2225134,5,120,NULL,'WFH',NULL,'ACCEPTED'),(7,'1234',4,2225415,6,110,NULL,'ON-SITE',NULL,'ACCEPTED'),(8,'1234',5,2225134,1,110,240,'WFH',NULL,'ACCEPTED'),(9,'1234',5,2211010,3,NULL,NULL,NULL,NULL,'REJECTED'),(10,'1234',2,2223142,1,NULL,NULL,NULL,NULL,'ACCEPTED'),(11,'1234',4,2212312,3,NULL,NULL,NULL,NULL,'PENDING'),(12,'1234',2,2132132,NULL,NULL,NULL,NULL,NULL,'PENDING');
 /*!40000 ALTER TABLE `interns` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,7 +226,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (2211261,'Martel Molintas','BSCS','3'),(2211353,'Bads Villalobos','BSCS','3'),(2213241,'Shane Saguid','BSCS','3'),(2221023,'AJ Ramos','BSCS','3'),(2222551,'Daniel David','BSCS','3'),(2224514,'Ariel Tarlit','BSCS','3'),(2225134,'Claire Tumaliuan','BSCS','3'),(2225415,'Kiko Abella','BSCS','3');
+INSERT INTO `students` VALUES (2132132,'Test','BSCS','3'),(2211010,'Peterjan Antonio','BSCS','3'),(2211261,'Martel Molintas','BSCS','3'),(2211353,'Bads Villalobos','BSCS','3'),(2212312,'Kaizer Gura','BSCS','3'),(2213241,'Shane Saguid','BSCS','3'),(2221023,'AJ Ramos','BSCS','3'),(2222551,'Daniel David','BSCS','3'),(2223142,'Kaizer Oman','BSCS','3'),(2224514,'Ariel Tarlit','BSCS','3'),(2225134,'Claire Tumaliuan','BSCS','3'),(2225415,'Kiko Abella','BSCS','3');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,4 +268,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 14:44:04
+-- Dump completed on 2023-12-06 14:08:39
