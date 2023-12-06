@@ -15,7 +15,7 @@ const pool = mysql.createPool({
 
 console.log('Database connection successful');
 
-// fetches all details of students table
+// fetches all details of students from student table
 async function fetchStudents() {
     try {
         const [rows] = await pool.query("SELECT * FROM students");
@@ -27,6 +27,25 @@ async function fetchStudents() {
     }
 }
 
+//  fetches all details of pending students from interns table
+async function fetchPendingStudents() {
+    try {
+        const [rows] = await pool.query(`
+            SELECT s.studentid, s.studentName, s.course, c.companyname, c.companyaddress
+            FROM interns i
+            JOIN students s ON i.studentid = s.studentid
+            JOIN company c ON i.companyid = c.companyid
+            WHERE i.status = 'PENDING'
+        `);
+        console.log('Fetch Pending Students Query Result:', rows);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+// fetches a student's information from student table
 async function fetchStudent(studentID) {
     try {
         const [rows] = await pool.query("SELECT * FROM students WHERE studentID = ?", [studentID]);
@@ -36,6 +55,18 @@ async function fetchStudent(studentID) {
         throw error;
     }
 }
+
+// updates the status in the interns table
+async function updateStatus(studentID, newStatus) {
+    try {
+      const result = await pool.query('UPDATE interns SET status = ? WHERE studentid = ?', [newStatus, studentID]);
+      console.log('Update Result:', result);
+      return result;
+    } catch (error) {
+      console.error('Error executing query:', error.message);
+      throw error;
+    }
+  }
 
 async function authenticateAdviser(adviserEmail, password) {
     try {
@@ -233,6 +264,10 @@ module.exports = {
     fetchStudents,
     fetchStudent,
     authenticateIntern,
+    fetchPendingStudents,
+    updateStatus,
+    authenticateAdviser,
+    hashAdviserPasswords,
     fetchInterns,
     fetchAnnouncements,
     fetchAdviser,
