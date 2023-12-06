@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;600;800&family=PT+Sans&display=swap');
 
-html, body {
+html,
+body {
     font-family: 'Noto Sans', sans-serif;
     margin: 0;
     padding: 0;
@@ -14,11 +15,13 @@ header {
     font-size: 12px;
     font-weight: bold;
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0D0464; /* Dark purple color */
+    background-color: #0D0464;
+    /* Dark purple color */
     color: #E1AD0F;
     padding: 10px 20px;
 }
@@ -29,23 +32,28 @@ header {
     font-weight: bold;
     font-size: 12px;
 }
+
 .nav-item {
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #777673; /* Yellow color for the circle */
+    background-color: #777673;
+    /* Yellow color for the circle */
     border-radius: 50%;
     margin-right: 40px;
-    width: 30px; /* Adjust as necessary */
-    height: 30px; /* Adjust as necessary */
+    width: 30px;
+    /* Adjust as necessary */
+    height: 30px;
+    /* Adjust as necessary */
 }
 
 #profile-image {
     cursor: pointer;
     width: 50%;
     height: auto;
-    border-radius: 50%; /* Makes the image round */
+    border-radius: 50%;
+    /* Makes the image round */
 }
 
 /* HEADER
@@ -60,11 +68,13 @@ header {
 
 .container {
     display: flex;
-    flex-direction: row; /* This will make the aside appear on the right */
+    flex-direction: row;
+    /* This will make the aside appear on the right */
 }
 
 section {
-    flex: 2.5; /* This will allow the section to fill the remaining space */
+    flex: 2.5;
+    /* This will allow the section to fill the remaining space */
     /* Add styling for the section here */
 }
 
@@ -73,7 +83,7 @@ section {
 /*LEFT COLUMN*/
 .left-nav {
     width: 15%;
-    max-height:max-content;
+    max-height: max-content;
     background-color: white;
 
 }
@@ -127,7 +137,7 @@ li:not(:last-child) {
 .main-dashboard .intern-details {
     width: 100%;
     background: white;
-    height: 40%;   
+    height: 40%;
     border-radius: 40px;
     margin-bottom: 20;
 
@@ -152,7 +162,7 @@ li:not(:last-child) {
     margin-top: 10px;
 }
 
-.intern-details .bg-image img{
+.intern-details .bg-image img {
     object-fit: cover;
     width: 100%;
     height: 40px;
@@ -178,15 +188,24 @@ li:not(:last-child) {
 }
 
 @keyframes floating {
-    0% { transform: translate(0,  0px); }
-    50%  { transform: translate(0, 15px); }
-    100%   { transform: translate(0, -0px); }    
+    0% {
+        transform: translate(0, 0px);
+    }
+
+    50% {
+        transform: translate(0, 15px);
+    }
+
+    100% {
+        transform: translate(0, -0px);
+    }
 }
 
 
 .dashboard-slu-logo img {
     height: 85%;
 }
+
 .dashboard-slu-logo {
     flex: .4;
     height: 200px;
@@ -233,7 +252,7 @@ li:not(:last-child) {
 }
 
 .intern-details .details {
-    margin-bottom:10%;
+    margin-bottom: 10%;
 }
 
 /* INTERN COUNT*/
@@ -247,8 +266,8 @@ li:not(:last-child) {
 
 .intern-count-box .pending-students,
 .intern-count-box .total-interns,
-.intern-count-box .finished-interns   {
-    background-color:rgb(228, 228, 228);
+.intern-count-box .finished-interns {
+    background-color: rgb(228, 228, 228);
     width: 160px;
     height: 150px;
     border-radius: 30px;
@@ -280,7 +299,7 @@ li:not(:last-child) {
 }
 
 .view-by {
-    margin-right: 10px;    
+    margin-right: 10px;
 }
 
 .input-box {
@@ -293,46 +312,51 @@ li:not(:last-child) {
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
+
 .input-box i,
 .input-box .button {
-position: absolute;
-top: 50%;
-transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
+
 .input-box i {
-left: 0px;
-font-size: 20px;
-color: #707070;
+    left: 0px;
+    font-size: 20px;
+    color: #707070;
 }
+
 .input-box input {
-height: 100%;
-width: 100%;
-outline: none;
-font-size: 18px;
-font-weight: 400;
-border: none;
-left: 10px  ;
-padding: 0 155px 0 10px;
-background-color: transparent;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    font-size: 18px;
+    font-weight: 400;
+    border: none;
+    left: 10px;
+    padding: 0 155px 0 10px;
+    background-color: transparent;
 }
+
 .input-box .button {
-right: 20px;
-font-size: 16px;
-font-weight: 400;
-color: #fff;
-border: none;
-padding: 12px 30px;
-border-radius: 6px;
-background-color: #4070f4;
-cursor: pointer;
+    right: 20px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    background-color: #4070f4;
+    cursor: pointer;
 }
+
 .input-box .button:active {
-transform: translateY(-50%) scale(0.98);
+    transform: translateY(-50%) scale(0.98);
 }
 
 .intern-list-container {
     width: 80%;
-
+    position: relative;
     background-color: white;
     display: block;
     margin-left: auto;
@@ -345,7 +369,7 @@ transform: translateY(-50%) scale(0.98);
 }
 
 .intern-table .table-header {
-    background-color:  rgb(228, 228, 228);
+    background-color: rgb(228, 228, 228);
     color: #0D0464;
 }
 
@@ -355,7 +379,7 @@ transform: translateY(-50%) scale(0.98);
 
 table {
     border-collapse: collapse;
-    border-spacing: 2; 
+    border-spacing: 2;
     width: 100%;
 }
 
@@ -364,23 +388,26 @@ table {
     text-align: center;
 }
 
-th, td {
+th,
+td {
     text-align: left;
     padding: 8px;
 }
 
 .intern-table tr {
     margin-bottom: 5px;
-    border-bottom: 2px solid  rgb(228, 228, 228);
+    border-bottom: 2px solid rgb(228, 228, 228);
 }
 
-.intern-table-holder .tr:hover {   
+.intern-table-holder .tr:hover {
     background-color: #0D0464;
 }
 
 .table-label-filter {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    /* Aligns items vertically */
     margin: 30px 30px 0 30px;
 }
 
@@ -399,7 +426,7 @@ th, td {
 }
 
 .table-data:hover {
-    background-color:  rgb(228, 228, 228);
+    background-color: rgb(228, 228, 228);
     cursor: pointer;
 }
 
@@ -463,35 +490,35 @@ th, td {
 }
 
 .announcement-container .gray-horizontal-divider {
-    height:1px;
+    height: 1px;
     width: 100%;
     background-color: #777673;
 }
 
 .announcement-column .create-post-button {
-background-color: #024708;
-  border-radius: 80px;
-  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
+    background-color: #024708;
+    border-radius: 80px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
 
-  padding: 7px 20px 10px ;
-  text-align: center;
-  text-decoration: none;
-  transition: all 250ms;
-  border: 0;
-  font-size: 16px;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+    padding: 7px 20px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
 
 .announcement-column .create-post-button:hover {
-    box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+    box-shadow: rgba(44, 187, 99, .35) 0 -25px 18px -14px inset, rgba(44, 187, 99, .25) 0 1px 2px, rgba(44, 187, 99, .25) 0 2px 4px, rgba(44, 187, 99, .25) 0 4px 8px, rgba(44, 187, 99, .25) 0 8px 16px, rgba(44, 187, 99, .25) 0 16px 32px;
     transform: scale(1.05) rotate(-1deg);
 }
 
@@ -510,26 +537,26 @@ background-color: #024708;
 /*ANNOUNCEMENT POP UP*/
 .create-post-button {
     background-color: #024708;
-      border-radius: 80px;
-      box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 20px;
-    
-      padding: 7px 20px 10px ;
-      text-align: center;
-      text-decoration: none;
-      transition: all 250ms;
-      border: 0;
-      font-size: 16px;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
-    
+    border-radius: 80px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+
+    padding: 7px 20px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
 
 
 .modal {
@@ -577,7 +604,7 @@ background-color: #024708;
 .content_info_holder .header {
     margin-bottom: 10px;
     font-weight: bold;
-    color:#0D0464;
+    color: #0D0464;
     display: flex;
 }
 
@@ -595,6 +622,7 @@ background-color: #024708;
     font-weight: bold;
     color: black;
 }
+
 .content_info_holder select {
     border-radius: 20px;
     margin-top: 20px;
@@ -614,7 +642,7 @@ background-color: #024708;
     align-items: center;
     justify-content: space-between;
     margin-top: 20px;
-    
+
 }
 
 .content .intern-row,
@@ -630,7 +658,7 @@ background-color: #024708;
 }
 
 .intern-details .intern-name {
-    color:#0D0464;
+    color: #0D0464;
     font-weight: bold;
 }
 
@@ -641,17 +669,18 @@ background-color: #024708;
 }
 
 .intern-details .companyname {
-    display:block;
+    display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
 .flex-container {
     display: flex;
-    align-items: center; /* This will vertically center the items */
-  }
-  
-.cancel-button a{
+    align-items: center;
+    /* This will vertically center the items */
+}
+
+.cancel-button a {
     text-decoration: none;
     color: black;
 }
@@ -713,7 +742,7 @@ background-color: #024708;
 .content .horizontal-gray-ruler {
     height: 1px;
     width: 100%;
-    background-color:  rgb(0, 0, 0);
+    background-color: rgb(0, 0, 0);
     margin: 20px 0px 24px 0px;
 }
 
@@ -726,14 +755,14 @@ background-color: #024708;
 .content .content-holder-subject {
     width: 100%;
     margin-top: 10px;
-    background-color:rgb(228, 228, 228);
-    resize:none
+    background-color: rgb(228, 228, 228);
+    resize: none
 }
 
 .content .content-holder-description {
     width: 100%;
     margin-top: 10px;
-    background-color:rgb(228, 228, 228);
+    background-color: rgb(228, 228, 228);
     resize: none;
 }
 
@@ -743,15 +772,179 @@ background-color: #024708;
     color: black;
 }
 
+.status-box {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 8%;
+}
+
+.status-box img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 /*ANNOUNCEMENT POP UP*/
 
+/* POPUP CONTAINER */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F1F1F1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    width: 70%;
+    height: 80%;
+    border-radius: 15px;
+    /* Adjust as needed */
+    padding: 2%;
+    /* Adjust as needed */
+    box-sizing: border-box;
+}
+
+/* Close button styling */
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    font-size: 2rem;
+    /* Adjust as needed */
+    color: #D6D6D6;
+}
+
+/* Overlay styling */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9000;
+}
+
+/* Requirements box styling */
+.requirements-box {
+    margin: 1% auto;
+    /* Center the box */
+    background-color: #FFFFFF;
+    width: 96%;
+    /* Adjust as needed */
+    height: auto;
+    /* Adjust to be auto or based on content */
+    padding: 1% 2%;
+    /* Adjust as needed */
+    box-sizing: border-box;
+}
+
+/* Table styling */
+.requirements-box table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.requirements-box table th,
+.requirements-box table td {
+    text-align: center;
+    font-size: .9vw;
+}
+
+.requirements-box table th {
+
+    height: 5%;
+    width: auto;
+}
+
+.requirements-box table td {
+    justify-content: center;
+    align-items: center;
+}
+
+.requirements-box table td:nth-child(1) h4 {
+    font-weight: 100;
+}
+
+.report-links {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.report-links ol {
+    display: flex;
+    padding: 0;
+    margin: 30px 30px 0 30px;
+    list-style-type: none;
+}
+
+.report-links li {
+    margin-right: 20px;
+    white-space: nowrap;
+}
+
+/* meow */
+.report-links a {}
+
+.report-links li:last-child {
+    margin-right: 0;
+}
+
+/* POPUP CONTAINER BUTTONS */
+.button-box {
+    display: flex;
+    justify-content: end;
+    margin-top: 1.5%;
+}
+
+.button-box .button-holder {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 7%;
+    width: 40%
+}
+
+.button-box .button-holder .cancel-btn,
+.button-box .button-holder .save-btn {
+    padding: 2.5% 15% 2.5%;
+    font-size: 1vw;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    border: none;
+}
+
+
+.button-box .button-holder .cancel-btn {
+    background-color: #D6D6D6;
+    color: black
+}
+
+.button-box .button-holder .save-btn {
+    background-color: #024708;
+    color: white;
+}
+
+/* NOTE */
+section .section-holder .note {
+    margin-top: 3.5%;
+    display: flex;
+    justify-content: center;
+}
 
 
 /*ICON */
 .material-symbols-outlined {
     font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24
-  }
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+}

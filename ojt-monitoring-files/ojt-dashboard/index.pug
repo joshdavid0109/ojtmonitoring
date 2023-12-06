@@ -69,6 +69,14 @@ main.container
     .intern-list-container
       .table-label-filter
         .title INTERNS
+        .report-links
+          ol 
+            li 
+            a(href='localhost:8080/ojt-dashboard') Daily Report
+            li 
+            a(href='localhost:8080/ojt-dashboard') Weekly Report
+            li 
+            a(href='localhost:8080/ojt-dashboard') Requirements
         .filter
           label.view-by(for='view-by')  FILTER 
           select#intern-filter
@@ -97,6 +105,45 @@ main.container
                 td= intern.companyaddress
                 td.tothours= intern.totalhours
                 td= intern.status
+  .popup-container#popupContainer
+      span.close-btn(onclick="closePopup()") ×
+      .requirements-box
+        h2#studentName #{studentName} 
+        .popup-scrollable
+          table
+            tbody
+              tr
+                th Date
+                th Time in
+                th Time out
+                th Supervisor
+                th Description 
+                th Hours
+                th Supporting Documents 
+                th Remarks 
+                th Status
+              each report in reports 
+                tr
+                  td #{report.date}
+                  td #{report.timeIn}
+                  td #{report.timeOut}
+        
+                  td #{report.supervisorId}
+                  td #{report.workdescription}
+                  td #{report.hours}
+                  td Supporting Documents Placeholder
+                  td #{report.remark}
+                  td.status-box
+                    if report.verificationstatus === 'Verified'
+                      img(src="../../ojt-images/check-mark.png")
+                    else
+                      img(src="../../ojt-images/x-mark.png")
+      .button-box
+        .button-holder
+          button.cancel-btn(onclick="closePopup()") Cancel
+          button.save-btn Save
+      
+
   section.third-column
     .announcement-column
       .announcement-title
@@ -171,7 +218,11 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
                     text #{intern.companyname}
                   div.companyaddress 
                     text #{intern.companyaddress}
-              input(type='checkbox' name="recipient" value=intern.studentname)
+              input(type='checkbox' name="recipient" value=intern.studentname)            
+           
+
+
+              
 script.
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
@@ -219,27 +270,53 @@ script.
       e.preventDefault();
       const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
       const checkedValues = Array.from(checkedCheckboxes).map((checkbox) => checkbox.value);
+
       alert('Checked values: ' + checkedValues.join(', '));
     })
-  })
-   
-  document.addEventListener("On Click", () => {
-
-  })
-    // Function to show popup
-  function showInternPopup(internId) {
-    alert('Intern ' + internId + ' was clicked!');
-  }
-  
-  // Wait for the DOM to be fully loaded
-  document.addEventListener('DOMContentLoaded', function() {
-    // Get all the intern rows
-    var rows = document.querySelectorAll('.intern-row');
-    // Add click event listener to each row
-    rows.forEach(function(row) {
-      row.addEventListener('click', function() {
-        var internId = this.getAttribute('data-intern-id');
-        showInternPopup(internId);
-      });
-    });
   });
+   
+  // opens the popup container and populates the student details
+          function openPopup(studentName) {
+              document.getElementById('studentName').innerHTML = studentName;
+              document.getElementById('popupContainer').style.display = 'block';
+              document.getElementById('overlay').style.display = 'block';
+          }
+  
+          // closes the popup container
+          function closePopup() {
+              document.getElementById('popupContainer').style.display = 'none';
+              document.getElementById('overlay').style.display = 'none';
+          }
+  
+          // adds click event listeners to the first <td> element within each row and calls the openPopup function
+          var rows = document.querySelectorAll('.table-data');
+          rows.forEach(function(row) {
+              var firstTd = row.querySelector('td:first-child');
+              if (firstTd) {
+                  firstTd.addEventListener('click', function() {
+                      var studentName = firstTd.textContent;
+                      openPopup(studentName);
+                  });
+              }
+          });
+  
+          document.addEventListener('DOMContentLoaded', function () {
+          var editableCells = document.querySelectorAll('.editable');
+  
+          editableCells.forEach(function (cell) {
+              cell.addEventListener('focus', function () {
+                  cell.dataset.originalContent = cell.textContent;
+              });
+  
+              cell.addEventListener('blur', function () {
+                  if (cell.dataset.originalContent !== cell.textContent) {
+                      console.log('Content changed:', cell.textContent);
+                  }
+              });
+          });
+      });
+  
+
+
+    
+
