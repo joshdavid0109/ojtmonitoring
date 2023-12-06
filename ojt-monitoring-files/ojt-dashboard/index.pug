@@ -219,7 +219,6 @@ script.
       e.preventDefault();
       const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
       const checkedValues = Array.from(checkedCheckboxes).map((checkbox) => checkbox.value);
-
       alert('Checked values: ' + checkedValues.join(', '));
     })
   })

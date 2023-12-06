@@ -18,11 +18,11 @@ app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
 // Import functions from database.js
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements} = require('./database.js');
+const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database.js');
 
 
-app.get("/ojt-dashboard", async(req, res) => {
+app.get("/ojt-dashboard", async (req, res) => {
     try {
 
         const adviser = await fetchAdviser();
@@ -32,7 +32,7 @@ app.get("/ojt-dashboard", async(req, res) => {
 
         for (let i = 0; i < interns.length; i++) {
             let intern = interns[i];
-            switch(intern.status) {
+            switch (intern.status) {
                 case 'ON GOING':
                     pendingcount++;
                     break;
@@ -45,7 +45,7 @@ app.get("/ojt-dashboard", async(req, res) => {
         const announcements = await fetchAnnouncements(adviser.adviserID);
         console.log(announcements)
 
-        res.render('ojt-dashboard/index', {adviser, interns, announcements, pendingcount: pendingcount, finished: finished, total: total});
+        res.render('ojt-dashboard/index', { adviser, interns, announcements, pendingcount: pendingcount, finished: finished, total: total });
     } catch (error) {
         console.error('Error', error);
         res.status(500).send("Warning: Internal Server Error")
@@ -97,11 +97,12 @@ app.post("/ojt-login-page", async (req, res) => {
 
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
-
-        // if itern is authenticated
-        
+        if (adviser) {
+            console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
             res.redirect('/ojt-dashboard');
-       
+        } else {
+            console.log('SERVER: NOT AN AVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
+        }
 
     } catch (error) {
         console.error('Error:', error.message);
