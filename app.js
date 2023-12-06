@@ -21,6 +21,9 @@ const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./d
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, fetchInternDailyReports, fetchDailyReports } = require('./database.js');
 
 const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database.js');
+const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId } = require('./database.js');
+const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
+const { fetchStudents, fetchPendingStudents, updateStatus, fetchInternDailyReports } = require('./database.js');
 
 //GET GET
 
@@ -72,6 +75,33 @@ app.get("/ojt-dashboard", async (req, res) => {
     }
 });
 
+app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
+    try {
+        const internName = req.params.internName;
+        console.log('Fetching reports for intern:', internName);
+
+        // Fetch the intern ID
+        const internIdResult = await fetchInternId(internName);
+
+        // Assuming fetchInternId returns an array of rows, and we need the first row
+        const internId = internIdResult[0]?.internid;
+        if (!internId) {
+            console.log('No intern found for name:', internName);
+            return res.status(404).send("Intern not found");
+        }
+
+        console.log(internId + ' is ' + internName);
+
+        // Fetch the reports using the intern ID
+        const reports = await fetchInternDailyReports(internId);
+        console.log('Reports:', reports);
+
+        res.render('ojt-dashboard/views/intern-reports.pug', { reports });
+    } catch (error) {
+        console.error('Error', error);
+        res.status(500).send("Error: Internal Server Error");
+    }
+});
 
 // run node app.js then access http://localhost:8080/ojt-pending/
 app.get("/ojt-pending", async (req, res) => {

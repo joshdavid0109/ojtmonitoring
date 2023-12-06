@@ -59,14 +59,14 @@ async function fetchStudent(studentID) {
 // updates the status in the interns table
 async function updateStatus(studentID, newStatus) {
     try {
-      const result = await pool.query('UPDATE interns SET status = ? WHERE studentid = ?', [newStatus, studentID]);
-      console.log('Update Result:', result);
-      return result;
+        const result = await pool.query('UPDATE interns SET status = ? WHERE studentid = ?', [newStatus, studentID]);
+        console.log('Update Result:', result);
+        return result;
     } catch (error) {
-      console.error('Error executing query:', error.message);
-      throw error;
+        console.error('Error executing query:', error.message);
+        throw error;
     }
-  }
+}
 
 async function authenticateAdviser(adviserEmail, password) {
     try {
@@ -203,6 +203,21 @@ async function fetchDailyReports() {
     }
 }
 
+async function fetchInternId(name) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT interns.internid
+            FROM interns
+            JOIN students ON interns.studentid = students.studentID
+            WHERE students.studentName = ?
+        `, [name]);
+
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
 async function fetchInternDailyReports(internID) {
     try {
         const [rows] = await pool.query(`
@@ -275,6 +290,7 @@ module.exports = {
     authenticateAdviser,
     hashAdviserPasswords,
     insertAnnouncement, fetchDailyReports, fetchInternDailyReports,
+    insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId,
     closeDatabase,
 
 };
