@@ -168,12 +168,12 @@ li:not(:last-child) {
 
 .details .db-time-and-date .dashboard-slu-logo {
     width: 10px;
-    margin-left: -60px;
+    margin-left: 0px;
     animation-name: floating;
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-    margin-left: 30px;
+    margin-left: 0px;
     margin-top: 5px;
 }
 
