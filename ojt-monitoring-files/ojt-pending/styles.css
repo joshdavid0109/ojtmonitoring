@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;600;800&family=PT+Sans&display=swap');
 
-html, body {
+html,
+body {
     font-family: 'Noto Sans', sans-serif;
     margin: 0;
     padding: 0;
@@ -8,7 +9,7 @@ html, body {
     background-color: rgb(228, 228, 228);
 }
 
-body{
+body {
     height: 46vw;
 }
 
@@ -17,11 +18,12 @@ header {
     font-size: 12px;
     font-weight: bold;
 }
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0D0464; 
+    background-color: #0D0464;
     color: #E1AD0F;
     padding: 10px 20px;
 }
@@ -32,15 +34,16 @@ header {
     font-weight: bold;
     font-size: 12px;
 }
+
 .nav-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #777673; 
+    background-color: #777673;
     border-radius: 50%;
     margin-right: 40px;
-    width: 30px; 
-    height: 30px; 
+    width: 30px;
+    height: 30px;
 }
 
 #profile-image {
@@ -52,13 +55,13 @@ header {
 
 .container {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
     height: 100%;
     width: 100%;
 }
 
 section {
-    flex: 2.5; 
+    flex: 2.5;
 }
 
 /*Navigation Bar*/
@@ -93,12 +96,12 @@ li:not(:last-child) {
 }
 
 /* PENDING STUDENTS SECTION */
-section{
+section {
     padding-top: 30px;
-    width: 100%;   
+    width: 100%;
 }
 
-section .section-holder{
+section .section-holder {
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -113,7 +116,7 @@ section .pending-title {
     text-transform: uppercase;
 }
 
-section .pending-students-box{
+section .pending-students-box {
     background-color: #FFFFFF;
     width: 90%;
     height: 80%;
@@ -121,48 +124,48 @@ section .pending-students-box{
     padding: 1% 5% 0;
 }
 
-section .pending-students-box .scrollable{
+section .pending-students-box .scrollable {
     overflow-y: auto;
     height: 80%;
     padding: 0 0 1%;
 }
 
-section .pending-students-box .title-filter-box{
+section .pending-students-box .title-filter-box {
     display: flex;
     justify-content: space-between;
     text-transform: uppercase;
 }
 
-section .pending-students-box .title-filter-box h4{
+section .pending-students-box .title-filter-box h4 {
     font-weight: 600;
     font-size: 1vw;
 }
 
 section .pending-students-box .title-filter-box .view-box .view-dropdown-box,
 section .pending-students-box .title-filter-box .view-box .search-field-box {
-   width: 50%;
+    width: 50%;
 }
 
-section .pending-students-box .title-filter-box .view-box .view-dropdown-box label{
+section .pending-students-box .title-filter-box .view-box .view-dropdown-box label {
     margin-right: 3%;
     font-size: .7vw;
 }
 
-section .pending-students-box .title-filter-box .view-box{
+section .pending-students-box .title-filter-box .view-box {
     display: flex;
     align-self: center;
     justify-content: space-between;
     width: 45%;
 }
 
-section .pending-students-box .students-table{
+section .pending-students-box .students-table {
     padding: 20px;
     width: 100%;
     height: 200px;
     border-collapse: collapse;
 }
 
-.students-table .table-header th{
+.students-table .table-header th {
     background-color: #F1F1F1;
     padding: 20px;
     height: 20px;
@@ -172,32 +175,37 @@ section .pending-students-box .students-table{
     font-weight: 600;
 }
 
-.students-table .table-header, .students-table .table-data td{
+.students-table .table-header,
+.students-table .table-data td {
     padding: 20px;
     height: 20px;
     width: 28%;
 }
 
-.students-table .table-data td:first-child{
+.students-table .table-data td:first-child {
     cursor: pointer;
 }
 
-.students-table .table-data{
+.students-table .table-data {
     border-bottom: 1px solid black;
 }
 
-.status-box{
+.status-box {
     display: flex;
     align-items: center;
     justify-content: start;
     gap: 8%;
 }
 
-.status-box img{
-    width:20px;
+.status-box img {
+    width: 20px;
     height: 20px;
     cursor: pointer;
 }
+
+
+
+
 
 /* POPUP CONTAINER */
 .popup-container {
@@ -234,7 +242,7 @@ section .pending-students-box .students-table{
     z-index: 9000;
 }
 
-.requirements-box{
+.requirements-box {
     margin: 8% 0 0;
     background-color: #FFFFFF;
     width: 94%;
@@ -242,7 +250,7 @@ section .pending-students-box .students-table{
     padding: 1.5% 3% 0;
 }
 
-.requirements-box h2{
+.requirements-box h2 {
     color: #0D0464;
 }
 
@@ -255,8 +263,8 @@ section .pending-students-box .students-table{
 }
 
 .popup-scrollable {
-    height: 80%; 
-    overflow-y: auto; 
+    height: 80%;
+    overflow-y: auto;
 }
 
 .requirements-box table th,
@@ -265,11 +273,11 @@ section .pending-students-box .students-table{
     font-size: .9vw;
 }
 
-.requirements-box table th:nth-child(2), 
+.requirements-box table th:nth-child(2),
 .requirements-box table td:nth-child(2),
-.requirements-box table th:last-child, 
+.requirements-box table th:last-child,
 .requirements-box table td:last-child {
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
 .requirements-box table th:nth-child(1),
@@ -292,13 +300,13 @@ section .pending-students-box .students-table{
     width: 10%;
 }
 
-.requirements-box table th{
+.requirements-box table th {
     padding: 20px 5px 20px;
     height: 5%;
     width: auto;
 }
 
-.requirements-box table td{
+.requirements-box table td {
     justify-content: center;
     align-items: center;
 }
@@ -308,20 +316,20 @@ section .pending-students-box .students-table{
 }
 
 
-.check-name-box{
+.check-name-box {
     display: flex;
     flex-direction: row;
     gap: 5%
 }
 
 /* POPUP CONTAINER BUTTONS */
-.button-box{
+.button-box {
     display: flex;
     justify-content: end;
     margin-top: 1.5%;
 }
 
-.button-box .button-holder{
+.button-box .button-holder {
     display: flex;
     justify-content: space-between;
     margin-right: 7%;
@@ -329,7 +337,7 @@ section .pending-students-box .students-table{
 }
 
 .button-box .button-holder .cancel-btn,
-.button-box .button-holder .save-btn{
+.button-box .button-holder .save-btn {
     padding: 2.5% 15% 2.5%;
     font-size: 1vw;
     text-transform: uppercase;
@@ -340,24 +348,20 @@ section .pending-students-box .students-table{
 }
 
 
-.button-box .button-holder .cancel-btn{
+.button-box .button-holder .cancel-btn {
     background-color: #D6D6D6;
     color: black
 }
 
-.button-box .button-holder .save-btn{
+.button-box .button-holder .save-btn {
     background-color: #024708;
-    color:white;
+    color: white;
 }
 
 /* NOTE */
-section .section-holder .note{
+section .section-holder .note {
     margin-top: 3.5%;
     display: flex;
-  
+
     justify-content: center;
 }
-
-
-
-

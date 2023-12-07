@@ -133,6 +133,17 @@ CREATE TABLE `dailyreports` (
 LOCK TABLES `dailyreports` WRITE;
 /*!40000 ALTER TABLE `dailyreports` DISABLE KEYS */;
 INSERT INTO `dailyreports` VALUES (1,1,1,110,'2023-10-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (2,1,1,110,'2023-11-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (3,1,1,110,'2023-12-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (4,1,1,110,'2023-13-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (5,1,1,110,'2023-14-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (6,1,1,110,'2023-15-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (7,1,1,110,'2023-16-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (8,1,1,110,'2023-17-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (9,1,1,110,'2023-18-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (10,1,1,110,'2023-19-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+INSERT INTO `dailyreports` VALUES (11,1,1,110,'2023-20-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
+
 /*!40000 ALTER TABLE `dailyreports` ENABLE KEYS */;
 UNLOCK TABLES;
 

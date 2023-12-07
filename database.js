@@ -120,14 +120,14 @@ async function fetchStudent(studentID) {
 // updates the status in the interns table
 async function updateStatus(studentID, newStatus) {
     try {
-      const result = await pool.query('UPDATE interns SET status = ? WHERE studentid = ?', [newStatus, studentID]);
-      console.log('Update Result:', result);
-      return result;
+        const result = await pool.query('UPDATE interns SET status = ? WHERE studentid = ?', [newStatus, studentID]);
+        console.log('Update Result:', result);
+        return result;
     } catch (error) {
-      console.error('Error executing query:', error.message);
-      throw error;
+        console.error('Error executing query:', error.message);
+        throw error;
     }
-  }
+}
 
 async function authenticateAdviser(adviserEmail, password) {
     try {
@@ -154,8 +154,8 @@ async function authenticateAdviser(adviserEmail, password) {
 async function fetchAdviser() {
     try {
         const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=? and password=?", ["jonathan.carter@example.com", "jon123"]);
-        
-        if (rows.length == 1){
+
+        if (rows.length == 1) {
             const adviser = rows[0]
             console.log(adviser)
             return adviser
@@ -171,16 +171,16 @@ async function fetchAdviser() {
 async function insertAnnouncement(sender, recipient, subject, announcement) {
 
 
-   // Get the current date
-   const now = new Date();
+    // Get the current date
+    const now = new Date();
 
-   // Format the date as YYYY-MM-DD
-   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    // Format the date as YYYY-MM-DD
+    const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
 
 
     try {
-        if (recipient.length == 1){
+        if (recipient.length == 1) {
             await pool.query("INSERT INTO announcements(date, senderid, recipientid, subject, message) values (?,?,?,?,?)", [date, sender, recipient[0], subject, announcement]);
         } else {
             for (let i = 0; i < recipient.length; i++) {
@@ -201,8 +201,8 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
 async function fetchAdviser() {
     try {
         const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=?", ["jonathan.carter@example.com"]);
-        
-        if (rows.length == 1){
+
+        if (rows.length == 1) {
             const adviser = rows[0]
             console.log(adviser)
             return adviser
@@ -225,13 +225,10 @@ async function fetchInterns() {
     }
 }
 
-
-
 async function fetchAnnouncements(senderid) {
     try {
-
         const [rows] = await pool.query("SELECT a.date, a.recipientid, a.subject, a.message, CASE WHEN a.recipientid = 0 THEN 'All Students' ELSE s.studentName END AS studentName FROM announcements a LEFT JOIN interns i ON a.recipientid = i.internid LEFT JOIN students s ON i.studentID = s.studentid WHERE a.senderid = ? ORDER BY a.announcementid desc", [senderid]);
-    
+
         // Reformat the date for each row
         const formattedRows = rows.map(row => {
             // Assuming row.date is a JavaScript Date object
@@ -248,6 +245,59 @@ async function fetchAnnouncements(senderid) {
         throw error;
     }
 }
+
+async function fetchDailyReports() {
+    try {
+        const [rows] = await pool.query(`
+            SELECT 
+                date, timeIn, timeOut, hours, workdescription, 
+                verificationstatus, remark 
+            FROM 
+                dailyreports 
+           
+        `,);
+
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function fetchInternId(name) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT interns.internid
+            FROM interns
+            JOIN students ON interns.studentid = students.studentID
+            WHERE students.studentName = ?
+        `, [name]);
+
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+async function fetchInternDailyReports(internID) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT 
+                date, timeIn, timeOut, hours, workdescription, 
+                verificationstatus, remark 
+            FROM 
+                dailyreports 
+            WHERE 
+                internid = ?
+        `, [internID]);
+
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
 
 
 
@@ -299,7 +349,7 @@ module.exports = {
     fetchInterns,
     fetchAnnouncements,
     fetchAdviser,
-    insertAnnouncement,
+    insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId,
     closeDatabase,
 
 };
