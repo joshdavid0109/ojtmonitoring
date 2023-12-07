@@ -1,34 +1,16 @@
-link(rel='stylesheet' type='text/css' href='/ojt-dashboard/styles.css')
-.popup-container#popupContainer
-        span.close-btn(onclick="closePopup()") ×
-        .requirements-box
-            h2#studentName #{studentName} 
-            .popup-scrollable
-            table
-                tbody
-                    tr
-                        th Date
-                        th Time in
-                        th Time out
-                        th Supervisor
-                        th Description 
-                        th Hours
-                        th Supporting Documents 
-                        th Remarks 
-                        th Status
-                    each report in reports 
-                        tr
-                        td #{report.date}
-                        td #{report.timeIn}
-                        td #{report.timeOut}
-                
-                        td #{report.supervisorId}
-                        td #{report.workdescription}
-                        td #{report.hours}
-                        td Supporting Documents Placeholder
-                        td #{report.remark}
-                        td.status-box
-                            if report.verificationstatus === 'Verified'
-                                img(src="../../ojt-images/check-mark.png")
-                            else
-                                img(src="../../ojt-images/x-mark.png")
+each report in reports 
+    tr
+        td #{report.date}
+        td #{report.timeIn}
+        td #{report.timeOut}
+        td #{report.supervisorId}
+        td #{report.workdescription}
+        td #{report.hours}
+        td Supporting Documents Placeholder
+        td #{report.remark}
+        td
+            .status-box
+                if report.verificationstatus === 'Verified'
+                    img(src="../../ojt-images/check-mark.png")
+                else
+                    img(src="../../ojt-images/x-mark.png")

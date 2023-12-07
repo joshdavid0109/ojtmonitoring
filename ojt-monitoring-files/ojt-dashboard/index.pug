@@ -69,14 +69,7 @@ main.container
     .intern-list-container
       .table-label-filter
         .title INTERNS
-        .report-links
-          ol 
-            li 
-            a(href='localhost:8080/ojt-dashboard') Daily Report
-            li 
-            a(href='localhost:8080/ojt-dashboard') Weekly Report
-            li 
-            a(href='localhost:8080/ojt-dashboard') Requirements
+       
         .filter
           label.view-by(for='view-by')  FILTER 
           select#intern-filter
@@ -126,6 +119,8 @@ main.container
             .button-holder
               button.cancel-btn(onclick="closePopup()") Cancel
               button.save-btn Save    
+
+        .note NOTE: CLICK ON THE NAME OF THE SELECTED INTERN TO VIEW INTERN REQUIREMENTS
       
   section.third-column
     .announcement-column
@@ -284,8 +279,7 @@ script.
                   .then(response => response.text())
                   .then(html => {
                       document.querySelector('.popup-container').style.display = 'block';
-                      document.querySelector('.popup-scrollable table tbody tr').innerHTML = html;
-                     
+                      document.querySelector('.popup-scrollable table tbody').innerHTML = html;
                   })
                   .catch(error => console.error('Error:', error));
           });
