@@ -786,6 +786,11 @@ td {
 }
 
 /*ANNOUNCEMENT POP UP*/
+.popup-scrollable {
+    height: 80%;
+    overflow-y: auto;
+    /* Enables vertical scrolling */
+}
 
 /* POPUP CONTAINER */
 .popup-container {
@@ -840,12 +845,13 @@ td {
     /* Adjust to be auto or based on content */
     padding: 1% 2%;
     /* Adjust as needed */
-    box-sizing: border-box;
+
 }
 
 /* Table styling */
 .requirements-box table {
     width: 100%;
+
     border-collapse: collapse;
     table-layout: fixed;
 }
