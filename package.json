@@ -27,6 +27,7 @@
     "pug": "^3.0.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.1",
     "nodemon": "^3.0.1"
   }
 }
