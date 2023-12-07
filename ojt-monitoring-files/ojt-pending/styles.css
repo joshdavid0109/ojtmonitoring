@@ -43,10 +43,11 @@ header {
     height: 30px; 
 }
 
-.profile-image {
+#profile-image {
+    cursor: pointer;
     width: 50%;
     height: auto;
-    border-radius: 50%; 
+    border-radius: 50%;
 }
 
 .container {
