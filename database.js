@@ -45,6 +45,67 @@ async function fetchPendingStudents() {
     }
 }
 
+async function fetchPendingStudentsByName() {
+    try {
+        const [rows] = await pool.query(`
+            SELECT s.studentName, c.companyname, c.companyaddress
+            FROM interns i
+            JOIN students s ON i.studentid = s.studentid
+            JOIN company c ON i.companyid = c.companyid
+            WHERE i.status = 'PENDING'
+            ORDER BY s.studentName;
+        `);
+        console.log('Fetch Pending Students Query Result:', rows);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function fetchPendingStudentsByCompany() {
+    try {
+        const [rows] = await pool.query(`
+            SELECT s.studentName, c.companyname, c.companyaddress
+            FROM interns i
+            JOIN students s ON i.studentid = s.studentid
+            JOIN company c ON i.companyid = c.companyid
+            WHERE i.status = 'PENDING'
+            ORDER BY c.companyname;
+        `);
+        console.log('Fetch Pending Students Query Result:', rows);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function fetchPendingStudentsByAddress() {
+    try {
+        const [rows] = await pool.query(`
+            SELECT s.studentName, c.companyname, c.companyaddress
+            FROM interns i
+            JOIN students s ON i.studentid = s.studentid
+            JOIN company c ON i.companyid = c.companyid
+            WHERE i.status = 'PENDING'
+            ORDER BY c.companyaddress;
+        `);
+        console.log('Fetch Pending Students Query Result:', rows);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+// view by name:
+// SELECT s.studentName, c.companyname, c.companyaddress
+// FROM interns i
+// JOIN students s ON i.studentid = s.studentid
+// JOIN company c ON i.companyid = c.companyid
+// WHERE i.status = 'PENDING'
+// ORDER BY s.studentName;
+
 // fetches a student's information from student table
 async function fetchStudent(studentID) {
     try {
@@ -298,6 +359,9 @@ module.exports = {
     fetchStudent,
     authenticateIntern,
     fetchPendingStudents,
+    fetchPendingStudentsByName,
+    fetchPendingStudentsByCompany,
+    fetchPendingStudentsByAddress,
     updateStatus,
     authenticateAdviser,
     hashAdviserPasswords,
