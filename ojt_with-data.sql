@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ojt_with-data
 -- ------------------------------------------------------
--- Server version	8.0.31
+-- Server version	5.7.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `advisers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `advisers` (
-  `adviserID` int NOT NULL,
+  `adviserID` int(11) NOT NULL,
   `adviserName` varchar(45) NOT NULL,
   `adviserEmail` varchar(45) NOT NULL,
   `password` varchar(60) NOT NULL,
@@ -50,15 +50,15 @@ DROP TABLE IF EXISTS `announcements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `announcements` (
-  `announcementid` int NOT NULL AUTO_INCREMENT,
+  `announcementid` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `senderid` varchar(45) NOT NULL,
-  `recipientid` int NOT NULL,
+  `recipientid` int(11) NOT NULL,
   `subject` varchar(45) NOT NULL,
   `message` varchar(45) NOT NULL,
   PRIMARY KEY (`announcementid`),
   UNIQUE KEY `announcementid_UNIQUE` (`announcementid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `announcements` (
 
 LOCK TABLES `announcements` WRITE;
 /*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
-INSERT INTO `announcements` VALUES (1,'2023-12-03','4',1,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(2,'2023-12-03','4',2,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(3,'2023-12-03','4',3,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(4,'2023-12-03','4',0,'',''),(5,'2023-12-03','4',0,'asdvvv','vvvv'),(6,'2023-12-03','4',0,'sadvcqwvr','vasdc'),(7,'2023-12-03','4',1,'abcde','abcdefghijk'),(8,'2023-12-03','4',4,'abcde','abcdefghijk'),(9,'2023-12-03','4',5,'abcde','abcdefghijk'),(10,'2023-12-03','4',1,'12casdcas','cascsa'),(11,'2023-12-03','4',6,'12casdcas','cascsa'),(12,'2023-12-03','4',2,'12casdcas','cascsa'),(13,'2023-12-03','4',1,'sadvqw','sdvsacwq'),(14,'2023-12-03','4',6,'sadvqw','sdvsacwq'),(15,'2023-12-03','4',2,'sadvqw','sdvsacwq');
+INSERT INTO `announcements` VALUES (1,'2023-12-03','4',1,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(2,'2023-12-03','4',2,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(3,'2023-12-03','4',3,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(4,'2023-12-03','4',0,'',''),(5,'2023-12-03','4',0,'asdvvv','vvvv'),(6,'2023-12-03','4',0,'sadvcqwvr','vasdc'),(7,'2023-12-03','4',1,'abcde','abcdefghijk'),(8,'2023-12-03','4',4,'abcde','abcdefghijk'),(9,'2023-12-03','4',5,'abcde','abcdefghijk'),(10,'2023-12-03','4',1,'12casdcas','cascsa'),(11,'2023-12-03','4',6,'12casdcas','cascsa'),(12,'2023-12-03','4',2,'12casdcas','cascsa'),(13,'2023-12-03','4',1,'sadvqw','sdvsacwq'),(14,'2023-12-03','4',6,'sadvqw','sdvsacwq'),(15,'2023-12-03','4',2,'sadvqw','sdvsacwq'),(16,'2023-12-05','4',1,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(17,'2023-12-05','4',6,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(18,'2023-12-05','4',5,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(19,'2023-12-05','4',1,'vasds','asdvasdvasdas');
 /*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS `company`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `company` (
-  `companyid` int NOT NULL,
+  `companyid` int(11) NOT NULL,
   `companyname` varchar(45) DEFAULT NULL,
   `companyaddress` varchar(45) DEFAULT NULL,
   `companytype` varchar(45) DEFAULT 'P, G',
@@ -105,16 +105,16 @@ DROP TABLE IF EXISTS `dailyreports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `dailyreports` (
-  `reportid` int NOT NULL,
-  `internid` int NOT NULL,
-  `companyid` int NOT NULL,
-  `supervisorid` int NOT NULL,
+  `reportid` int(11) NOT NULL,
+  `internid` int(11) NOT NULL,
+  `companyid` int(11) NOT NULL,
+  `supervisorid` int(11) NOT NULL,
   `date` date NOT NULL,
   `timeIn` time DEFAULT NULL,
   `timeOut` time DEFAULT NULL,
-  `hours` int DEFAULT NULL,
+  `hours` int(11) DEFAULT NULL,
   `workdescription` varchar(45) DEFAULT NULL,
-  `verificationstatus` varchar(45) DEFAULT NULL,
+  `verificationstatus` varchar(45) DEFAULT 'PENDING',
   `remark` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`reportid`,`internid`),
   UNIQUE KEY `reportid_UNIQUE` (`reportid`),
@@ -132,36 +132,8 @@ CREATE TABLE `dailyreports` (
 
 LOCK TABLES `dailyreports` WRITE;
 /*!40000 ALTER TABLE `dailyreports` DISABLE KEYS */;
+INSERT INTO `dailyreports` VALUES (1,1,1,110,'2023-10-06','08:00:00','16:00:00',8,'joshua nagooverthink','yes','yes');
 /*!40000 ALTER TABLE `dailyreports` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `interninfo`
---
-
-DROP TABLE IF EXISTS `interninfo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `interninfo` (
-  `internid` int NOT NULL,
-  `companyid` int DEFAULT NULL,
-  `totalhours` int DEFAULT NULL,
-  `teamno` int DEFAULT NULL,
-  PRIMARY KEY (`internid`),
-  UNIQUE KEY `internid_UNIQUE` (`internid`),
-  KEY `companyid_idx` (`companyid`),
-  KEY `comp_id_idx` (`companyid`),
-  CONSTRAINT `comp_id` FOREIGN KEY (`companyid`) REFERENCES `company` (`companyid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `interninfo`
---
-
-LOCK TABLES `interninfo` WRITE;
-/*!40000 ALTER TABLE `interninfo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `interninfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -172,7 +144,7 @@ DROP TABLE IF EXISTS `internrequirements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `internrequirements` (
-  `internid` int NOT NULL,
+  `internid` int(11) NOT NULL,
   `requirementname` varchar(45) NOT NULL,
   `datesubmitted` varchar(45) DEFAULT NULL,
   `status` varchar(45) DEFAULT NULL,
@@ -198,15 +170,16 @@ DROP TABLE IF EXISTS `interns`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interns` (
-  `internid` int NOT NULL,
+  `internid` int(11) NOT NULL,
   `password` varchar(60) NOT NULL,
-  `adviserid` int NOT NULL,
-  `studentid` int NOT NULL,
-  `companyid` int DEFAULT NULL,
-  `supervisorid` int NOT NULL,
-  `totalhours` int DEFAULT NULL,
+  `adviserid` int(11) NOT NULL,
+  `studentid` int(11) NOT NULL,
+  `companyid` int(11) DEFAULT NULL,
+  `supervisorid` int(11) DEFAULT NULL,
+  `totalhours` int(11) DEFAULT NULL,
   `worktype` varchar(45) DEFAULT NULL,
   `image` blob,
+  `status` varchar(45) DEFAULT 'PENDING',
   PRIMARY KEY (`internid`),
   UNIQUE KEY `internid_UNIQUE` (`internid`),
   KEY `adviserid_idx` (`adviserid`),
@@ -226,32 +199,8 @@ CREATE TABLE `interns` (
 
 LOCK TABLES `interns` WRITE;
 /*!40000 ALTER TABLE `interns` DISABLE KEYS */;
-INSERT INTO `interns` VALUES (1,'1234',1,2221023,1,110,NULL,'WFH',NULL),(2,'1234',2,2213241,2,120,180,'ON-SITE',NULL),(3,'1234',3,2211353,3,130,NULL,'WFH',NULL),(4,'1234',4,2211261,3,140,NULL,'ON-SITE',NULL),(5,'1234',5,2224514,4,150,240,'ON-SITE',NULL),(6,'1234',4,2225134,5,120,NULL,'WFH',NULL),(7,'1234',4,2225415,6,110,NULL,'ON-SITE',NULL),(8,'1234',5,2225134,1,110,240,'WFH',NULL);
+INSERT INTO `interns` VALUES (1,'1234',1,2221023,1,110,NULL,'WFH',NULL,'ACCEPTED'),(2,'1234',2,2213241,2,120,180,'ON-SITE',NULL,'ACCEPTED'),(3,'1234',3,2211353,3,130,NULL,'WFH',NULL,'ACCEPTED'),(4,'1234',4,2211261,3,140,NULL,'ON-SITE',NULL,'ACCEPTED'),(5,'1234',5,2224514,4,150,240,'ON-SITE',NULL,'ACCEPTED'),(6,'1234',4,2225134,5,120,NULL,'WFH',NULL,'ACCEPTED'),(7,'1234',4,2225415,6,110,NULL,'ON-SITE',NULL,'ACCEPTED'),(8,'1234',5,2225134,1,110,240,'WFH',NULL,'ACCEPTED'),(9,'1234',5,2211010,3,NULL,NULL,NULL,NULL,'REJECTED'),(10,'1234',2,2223142,1,NULL,NULL,NULL,NULL,'ACCEPTED'),(11,'1234',4,2212312,3,NULL,NULL,NULL,NULL,'PENDING'),(12,'1234',2,2132132,NULL,NULL,NULL,NULL,NULL,'PENDING');
 /*!40000 ALTER TABLE `interns` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `pendingstudents`
---
-
-DROP TABLE IF EXISTS `pendingstudents`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pendingstudents` (
-  `studentid` int NOT NULL,
-  `companyid` int NOT NULL,
-  `status` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`studentid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pendingstudents`
---
-
-LOCK TABLES `pendingstudents` WRITE;
-/*!40000 ALTER TABLE `pendingstudents` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pendingstudents` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -262,7 +211,7 @@ DROP TABLE IF EXISTS `students`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `students` (
-  `studentID` int NOT NULL,
+  `studentID` int(11) NOT NULL,
   `studentName` varchar(45) NOT NULL,
   `course` varchar(45) NOT NULL,
   `year` varchar(45) NOT NULL,
@@ -277,7 +226,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (2211261,'Martel Molintas','BSCS','3'),(2211353,'Bads Villalobos','BSCS','3'),(2213241,'Shane Saguid','BSCS','3'),(2221023,'AJ Ramos','BSCS','3'),(2222551,'Daniel David','BSCS','3'),(2224514,'Ariel Tarlit','BSCS','3'),(2225134,'Claire Tumaliuan','BSCS','3'),(2225415,'Kiko Abella','BSCS','3');
+INSERT INTO `students` VALUES (2132132,'Test','BSCS','3'),(2211010,'Peterjan Antonio','BSCS','3'),(2211261,'Martel Molintas','BSCS','3'),(2211353,'Bads Villalobos','BSCS','3'),(2212312,'Kaizer Gura','BSCS','3'),(2213241,'Shane Saguid','BSCS','3'),(2221023,'AJ Ramos','BSCS','3'),(2222551,'Daniel David','BSCS','3'),(2223142,'Kaizer Oman','BSCS','3'),(2224514,'Ariel Tarlit','BSCS','3'),(2225134,'Claire Tumaliuan','BSCS','3'),(2225415,'Kiko Abella','BSCS','3');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -289,11 +238,11 @@ DROP TABLE IF EXISTS `supervisors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `supervisors` (
-  `supervisorid` int NOT NULL,
+  `supervisorid` int(11) NOT NULL,
   `supervisorname` varchar(45) DEFAULT NULL,
   `supervisoremail` varchar(45) DEFAULT NULL,
   `position` varchar(45) DEFAULT NULL,
-  `companyid` int DEFAULT NULL,
+  `companyid` int(11) DEFAULT NULL,
   PRIMARY KEY (`supervisorid`),
   KEY `companyid_idx` (`companyid`),
   CONSTRAINT `companid` FOREIGN KEY (`companyid`) REFERENCES `company` (`companyid`)
@@ -319,4 +268,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-05 10:44:03
+-- Dump completed on 2023-12-06 14:08:39
