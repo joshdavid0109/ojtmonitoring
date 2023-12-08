@@ -19,9 +19,9 @@ app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 // Import functions from database.js
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId } = require('./database.js');
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
-const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByAddress, 
-        fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
-        fetchRequirementsByStudentId, updateRemarks } = require('./database.js');
+const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByAddress,
+    fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
+    fetchRequirementsByStudentId, updateRemarks } = require('./database.js');
 
 //GET 
 
@@ -80,8 +80,6 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
 
         // Fetch the intern ID
         const internIdResult = await fetchInternId(internName);
-
-        // Assuming fetchInternId returns an array of rows, and we need the first row
         const internId = internIdResult[0]?.internid;
         if (!internId) {
             console.log('No intern found for name:', internName);
@@ -92,14 +90,23 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
 
         // Fetch the reports using the intern ID
         const reports = await fetchInternDailyReports(internId);
+
+        for (let report of reports) {
+            report.date = new Date(report.date).toDateString();
+            const supervisorDetails = await fetchSupervisor(report.supervisorid);
+            report.supervisorName = supervisorDetails.supervisorname;
+        }
         console.log('Reports:', reports);
 
+        // Render the intern reports view with the reports data
         res.render('ojt-dashboard/views/intern-reports.pug', { reports });
     } catch (error) {
         console.error('Error', error);
         res.status(500).send("Error: Internal Server Error");
     }
 });
+
+
 
 // run node app.js then access http://localhost:8080/ojt-pending/
 app.get("/ojt-pending", async (req, res) => {
@@ -184,7 +191,7 @@ app.post('/update-status', async (req, res) => {
         await updateStatus(studentId, newStatus);
         const updatedStudent = await fetchStudent(studentId);
         res.json(updatedStudent);
-        
+
     } catch (error) {
         console.error('Error updating status:', error.message);
         res.status(500).send('Warning: Internal Server Error');
