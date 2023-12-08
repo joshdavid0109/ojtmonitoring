@@ -857,14 +857,20 @@ td {
     table-layout: fixed;
 }
 
+.requirements-box table th {
+    background-color: #F1F1F1;
+}
+
 .requirements-box table th,
 .requirements-box table td {
     text-align: center;
     font-size: .9vw;
+    border-bottom: 1px solid grey;
+    /* Add a grey line below each row */
 }
 
 .requirements-box table th {
-
+    border-bottom: none;
     height: 5%;
     width: auto;
 }
@@ -878,17 +884,35 @@ td {
     font-weight: 100;
 }
 
+/* Header container styling to align items in the center */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* This will align the studentName and report links vertically */
+    padding: 0 30px;
+    /* Adjust padding as needed */
+}
+
+/* Student name styling */
+#studentName {
+    color: #0D0464;
+    margin-right: auto;
+    /* This will push the report links to the end */
+}
+
+/* Links container styling */
 .report-links {
     display: flex;
     justify-content: flex-end;
-    /* Align items to the right */
     align-items: center;
 }
 
 .report-links ol {
     display: flex;
     padding: 0;
-    margin: 30px 30px 0 30px;
+    margin: 0;
+    /* Adjusted margin to align with the name */
     list-style-type: none;
 }
 
@@ -904,13 +928,6 @@ td {
     margin-right: 0;
 }
 
-
-/* NOTE */
-section .section-holder .note {
-    margin-top: 3.5%;
-    display: flex;
-    justify-content: center;
-}
 
 
 /*ICON */
