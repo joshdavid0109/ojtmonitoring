@@ -27,22 +27,12 @@ const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId }
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, updateStatus, fetchInternDailyReports, fetchSupervisor } = require('./database.js');
 
-//GET GET
-
-// run node app.js then access http://localhost:8080/ojt-login-page/
-app.get("/ojt-login-page", async (req, res) => {
-    try {
-        const students = await fetchStudents();
-        res.render('ojt-login-page/index', { students })
-    } catch (error) {
-        console.error('Error:', error.message);
-        res.status(500).send('Warning: Internal Server Error');
-    }
-});
 
 app.get("/ojt-dashboard", async (req, res) => {
     try {
+
         const adviser = await fetchAdviser();
+        // console.log(adviser)
         const interns = await fetchInterns();
         let pendingcount = 0, total = interns.length, finished = 0;
 
@@ -58,22 +48,13 @@ app.get("/ojt-dashboard", async (req, res) => {
             }
         }
 
-        reports = {} // temporarry still doing
+        const announcements = await fetchAnnouncements(adviser.adviserID);
+        console.log(announcements)
 
-        const announcements = await fetchAnnouncements(adviser.adviserID)
-
-        res.render('ojt-dashboard/index', {
-            adviser,
-            interns,
-            announcements,
-            pendingcount,
-            finished,
-            reports,
-            total
-        });
+        res.render('ojt-dashboard/index', { adviser, interns, announcements, pendingcount: pendingcount, finished: finished, total: total });
     } catch (error) {
         console.error('Error', error);
-        res.status(500).send("Warning: Internal Server Error");
+        res.status(500).send("Warning: Internal Server Error")
     }
 });
 
@@ -115,21 +96,15 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
 // run node app.js then access http://localhost:8080/ojt-pending/
 app.get("/ojt-pending", async (req, res) => {
     try {
-        const adviser = await fetchAdviser();
         const students = await fetchStudents();
         const pendingStudents = await fetchPendingStudents();
-        res.render('ojt-pending/index', { adviser, students, pendingStudents })
+        res.render('ojt-pending/index', { students, pendingStudents })
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
     }
 });
 
-
-//POST REQUESTS
-
-
-//POST REQUESTS
 app.get('/ojt-pending/sort', async (req, res) => {
     const sortBy = req.query.sortBy;
 
@@ -159,21 +134,36 @@ app.get('/ojt-pending/sort', async (req, res) => {
     }
 });
 
+//POST REQUESTS
 // Update the '/update-status' route in ojt-pending-page
+=======
+//POST REQUESTS
+
+// update the '/update-status' route in ojt-pending-page
+>>>>>>> c8ef4af (Implement dynamic search functionality:ojt-pending)
 app.post('/update-status', async (req, res) => {
     const { studentId, newStatus } = req.body;
-  
+    
     console.log('Received Update Request - Student ID:', studentId, 'New Status:', newStatus);
-  
+    
     try {
+<<<<<<< HEAD
       await updateStatus(studentId, newStatus);
       res.send('Status updated successfully');
+=======
+        await updateStatus(studentId, newStatus);
+        const updatedStudent = await fetchStudent(studentId);
+        res.json(updatedStudent);
+        
+>>>>>>> c8ef4af (Implement dynamic search functionality:ojt-pending)
     } catch (error) {
       console.error('Error updating status:', error.message);
       res.status(500).send('Warning: Internal Server Error');
+      console.error('Error updating status:', error.message);
+      res.status(500).send('Warning: Internal Server Error');
     }
-  });
-  
+    });
+    
 
 // handling of the post requst (authenticating advisor in login)
 app.post("/ojt-login-page", async (req, res) => {
@@ -183,12 +173,9 @@ app.post("/ojt-login-page", async (req, res) => {
         const adviser = await authenticateAdviser(adviserEmail, password);
         if (adviser) {
             console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
-            /*  res.cookie('adviserEmail', adviserEmail, { httpOnly: true });
-              res.cookie('adviserPassword', adviserEmail, { httpOnly: true });
-              */
             res.redirect('/ojt-dashboard');
         } else {
-            console.log('SERVER: NOT AN ADVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
+            console.log('SERVER: NOT AN AVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
         }
 
     } catch (error) {

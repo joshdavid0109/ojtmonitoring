@@ -31,7 +31,7 @@ async function fetchStudents() {
 async function fetchPendingStudents() {
     try {
         const [rows] = await pool.query(`
-            SELECT s.studentid, s.studentName, s.course, c.companyname, c.companyaddress
+            SELECT s.studentid, s.studentName, c.companyname, c.companyaddress
             FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
@@ -48,7 +48,7 @@ async function fetchPendingStudents() {
 async function fetchPendingStudentsByName() {
     try {
         const [rows] = await pool.query(`
-            SELECT s.studentName, c.companyname, c.companyaddress
+            SELECT s.studentid, s.studentName, c.companyname, c.companyaddress
             FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
@@ -66,7 +66,7 @@ async function fetchPendingStudentsByName() {
 async function fetchPendingStudentsByCompany() {
     try {
         const [rows] = await pool.query(`
-            SELECT s.studentName, c.companyname, c.companyaddress
+            SELECT s.studentid, s.studentName, c.companyname, c.companyaddress
             FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
@@ -84,7 +84,7 @@ async function fetchPendingStudentsByCompany() {
 async function fetchPendingStudentsByAddress() {
     try {
         const [rows] = await pool.query(`
-            SELECT s.studentName, c.companyname, c.companyaddress
+            SELECT s.studentid, s.studentName, c.companyname, c.companyaddress
             FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
