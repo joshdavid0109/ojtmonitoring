@@ -68,9 +68,9 @@ function updateTable(data) {
   });
 }
 
+var originalRemarks = [];
 
 // opens the popup container and populates the student details
-// Update the openPopup function to accept an object
 async function openPopup(studentData) {
   const studentId = studentData.dataset.studentId;
   window.studentId = studentId;
@@ -82,6 +82,7 @@ async function openPopup(studentData) {
 
   try {
       const requirements = await fetchRequirements(studentId);
+      originalRemarks = requirements.map(req => req.remarks);
       updateRequirementsTable(requirements);
   } catch (error) {
       console.error('Error fetching requirements:', error);
@@ -200,6 +201,16 @@ $('.save-btn').on('click', function () {
     }
   });
 });
+
+$('.cancel-btn').on('click', function () {
+  var editableCells = document.querySelectorAll('.editable');
+
+  editableCells.forEach(function (cell, index) {
+    cell.textContent = originalRemarks[index] || 'Type here your remarks...';
+  });
+
+});
+
 
 
 
