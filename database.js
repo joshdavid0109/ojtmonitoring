@@ -153,6 +153,24 @@ async function fetchAdviser() {
     }
 }
 
+async function fetchSupervisor(supervisorId) {
+    try {
+        const [rows] = await pool.query("SELECT supervisorname FROM supervisors WHERE supervisorid = ?", [supervisorId]);
+
+        if (rows.length === 1) {
+            const supervisor = rows[0];
+            console.log(supervisor);
+            return supervisor;
+        }
+        return null;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+
+
 async function fetchInterns() {
     try {
         const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid) AS subquery")
@@ -189,7 +207,7 @@ async function fetchDailyReports() {
     try {
         const [rows] = await pool.query(`
             SELECT 
-                date, timeIn, timeOut, hours, workdescription, 
+            supervisorid, date, timeIn, timeOut, hours, workdescription, 
                 verificationstatus, remark 
             FROM 
                 dailyreports 
@@ -222,7 +240,7 @@ async function fetchInternDailyReports(internID) {
     try {
         const [rows] = await pool.query(`
             SELECT 
-                date, timeIn, timeOut, hours, workdescription, 
+            supervisorid, date, timeIn, timeOut, hours, workdescription, 
                 verificationstatus, remark 
             FROM 
                 dailyreports 
@@ -291,6 +309,7 @@ module.exports = {
     hashAdviserPasswords,
     insertAnnouncement, fetchDailyReports, fetchInternDailyReports,
     insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId,
+    insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId, fetchSupervisor,
     closeDatabase,
 
 };
