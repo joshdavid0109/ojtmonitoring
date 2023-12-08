@@ -19,9 +19,11 @@ app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 // Import functions from database.js
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId } = require('./database.js');
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
-const { fetchStudents, fetchPendingStudents, updateStatus, fetchInternDailyReports, fetchSupervisor } = require('./database.js');
+const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByAddress,
+    fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
+    fetchRequirementsByStudentId, updateRemarks } = require('./database.js');
 
-//GET GET
+//GET 
 
 // run node app.js then access http://localhost:8080/ojt-login-page/
 app.get("/ojt-login-page", async (req, res) => {
@@ -109,19 +111,77 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
 // run node app.js then access http://localhost:8080/ojt-pending/
 app.get("/ojt-pending", async (req, res) => {
     try {
+        const adviser = await fetchAdviser();
         const students = await fetchStudents();
         const pendingStudents = await fetchPendingStudents();
-        res.render('ojt-pending/index', { students, pendingStudents })
+        res.render('ojt-pending/index', { adviser, students, pendingStudents })
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
     }
 });
 
+app.get('/ojt-pending/sort', async (req, res) => {
+    const sortBy = req.query.sortBy;
+
+    try {
+        let pendingStudents;
+
+        switch (sortBy) {
+            case 'name':
+                pendingStudents = await fetchPendingStudentsByName();
+                break;
+            case 'company':
+                pendingStudents = await fetchPendingStudentsByCompany();
+                break;
+            case 'address':
+                pendingStudents = await fetchPendingStudentsByAddress();
+                break;
+            default:
+                pendingStudents = await fetchPendingStudents();
+        }
+
+        res.json(pendingStudents);
+    } catch (error) {
+        console.error('Error:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.get('/ojt-pending/requirements', async (req, res) => {
+    const studentId = req.query.studentId;
+
+    try {
+        const requirements = await fetchRequirementsByStudentId(studentId);
+        res.json(requirements);
+    } catch (error) {
+        console.error('Error fetching requirements:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 //POST REQUESTS
 
-// Update the '/update-status' route in ojt-pending-page
+// updates the remarks
+app.post('/update-remarks', async (req, res) => {
+    const { studentId, remarks } = req.body;
+    console.log('Received Update Remarks Request - Student ID:', studentId, 'Remarks:', remarks);
+
+    try {
+        // Call the updateRemarks function from your database.js
+        await updateRemarks(studentId, remarks);
+
+        // Send a response indicating success
+        res.json({ message: 'Remarks updated successfully' });
+    } catch (error) {
+        console.error('Error updating remarks:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+// update the '/update-status' route in ojt-pending-page
 app.post('/update-status', async (req, res) => {
     const { studentId, newStatus } = req.body;
 
@@ -129,7 +189,9 @@ app.post('/update-status', async (req, res) => {
 
     try {
         await updateStatus(studentId, newStatus);
-        res.send('Status updated successfully');
+        const updatedStudent = await fetchStudent(studentId);
+        res.json(updatedStudent);
+
     } catch (error) {
         console.error('Error updating status:', error.message);
         res.status(500).send('Warning: Internal Server Error');

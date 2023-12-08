@@ -6,10 +6,12 @@ link(rel="stylesheet", href="https://unicons.iconscout.com/release/v4.0.0/css/li
 header
   nav.navbar
     .nav-logo SAINT LOUIS UNIVERSITY
-    .nav-name FIRSTNAME MIDDLENAME LASTNAME
-    .nav-item
-    
-      img.profile-image(src="path_to_your_image_placeholder", alt="Profile")
+    .nav-name  
+      p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
+    form(action='/ojt-dashboard/uploadpp' method='POST' target='_blank')
+      .nav-item
+          img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+          input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
 main.container
   aside.left-nav
     ol
@@ -30,12 +32,12 @@ main.container
             .view-dropdown-box
               label(for="view-dropdown") View by
               select#dropdown
-                option(value="name") Name
-                option(value="company") Company
-                option(value="hours") Total Hours
-                option(value="status") Status
+                option(value="default" data-view="default") Default
+                option(value="name" data-view="name") Name
+                option(value="company" data-view="company") Company
+                option(value="address" data-view="address") Address
             .search-field-box
-              input(type="text", placeholder="Search here...")
+              input#search-input(type="text", placeholder="Search here...")
               i.uil.uil-search#search-icon
         .overlay#overlay
         .scrollable
@@ -52,10 +54,9 @@ main.container
                 td= student.companyname 
                 td= student.companyaddress
                 td
-                  div.status-box
+                 div.status-box
                     img(src='/ojt-images/check-mark.png' class='status-update' alt='ACCEPTED')
                     img(src='/ojt-images/x-mark.png' class='status-update' alt='REJECTED') 
-
         //  pop-up container for student requirements 
         .popup-container#popupContainer
           span.close-btn(onclick="closePopup()") ×
@@ -69,72 +70,6 @@ main.container
                     th Date Submitted
                     th Remarks
                     th Status
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Application Letter
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Memorandum of Agreement
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Curriculum Vitae
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Recommendation Letter
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Medical Certificate
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Dental Certificate
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
           .button-box
             .button-holder
               button.cancel-btn Cancel
@@ -143,73 +78,4 @@ main.container
 footer
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")
 script(src="./script.js")
-script.
-  
-  // modifies the status of the pending student when clicked
-  $(document).ready(function() {
-    $('.status-update').on('click', function() {
-      var studentId = $(this).closest('.table-data').data('student-id');
-      var status = $(this).attr('alt'); 
 
-      var actionText = status === 'ACCEPTED' ? 'accept' : 'reject';
-      var confirmation = window.confirm(`Are you sure you want to ${actionText} the student's company?`);
-
-      if (confirmation) {
-        $.ajax({
-          type: 'POST',
-          url: '/update-status',
-          data: { studentId: studentId, newStatus: status },
-          success: function(response) {
-            console.log(response);
-          },
-          error: function(error) {
-            console.error(error);
-          }
-        });
-      } else {
-        console.log('Operation canceled by user.');
-      }
-    });
-  });
-
-  // opens the popup container and populates the student details
-          function openPopup(studentName) {
-              document.getElementById('studentName').innerHTML = studentName;
-              document.getElementById('popupContainer').style.display = 'block';
-              document.getElementById('overlay').style.display = 'block';
-          }
-  
-          // closes the popup container
-          function closePopup() {
-              document.getElementById('popupContainer').style.display = 'none';
-              document.getElementById('overlay').style.display = 'none';
-          }
-  
-          // adds click event listeners to the first <td> element within each row and calls the openPopup function
-          var rows = document.querySelectorAll('.table-data');
-          rows.forEach(function(row) {
-              var firstTd = row.querySelector('td:first-child');
-              if (firstTd) {
-                  firstTd.addEventListener('click', function() {
-                      var studentName = firstTd.textContent;
-                      openPopup(studentName);
-                  });
-              }
-          });
-  
-          document.addEventListener('DOMContentLoaded', function () {
-          var editableCells = document.querySelectorAll('.editable');
-  
-          editableCells.forEach(function (cell) {
-              cell.addEventListener('focus', function () {
-                  cell.dataset.originalContent = cell.textContent;
-              });
-  
-              cell.addEventListener('blur', function () {
-                  if (cell.dataset.originalContent !== cell.textContent) {
-                      console.log('Content changed:', cell.textContent);
-                  }
-              });
-          });
-      });
-  
