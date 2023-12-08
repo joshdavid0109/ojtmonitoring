@@ -111,6 +111,7 @@ app.get("/ojt-pending", async (req, res) => {
         res.status(500).send('Warning: Internal Server Error');
     }
 });
+
 app.get('/ojt-pending/sort', async (req, res) => {
     const sortBy = req.query.sortBy;
 
@@ -140,11 +141,9 @@ app.get('/ojt-pending/sort', async (req, res) => {
     }
 });
 
-
 //POST REQUESTS
 
-
-// Update the '/update-status' route in ojt-pending-page
+// update the '/update-status' route in ojt-pending-page
 app.post('/update-status', async (req, res) => {
     const { studentId, newStatus } = req.body;
 
@@ -152,7 +151,9 @@ app.post('/update-status', async (req, res) => {
 
     try {
         await updateStatus(studentId, newStatus);
-        res.send('Status updated successfully');
+        const updatedStudent = await fetchStudent(studentId);
+        res.json(updatedStudent);
+        
     } catch (error) {
         console.error('Error updating status:', error.message);
         res.status(500).send('Warning: Internal Server Error');
