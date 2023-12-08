@@ -1,7 +1,7 @@
 
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
-const bcrypt = require('bcrypt'); // bcrypt library for password hashing
+const bcrypt = require('bcryptjs'); // bcrypt library for password hashing
 dotenv.config()
 
 // uses pool instead of connection, instead of creating a brand new connection for each query,
