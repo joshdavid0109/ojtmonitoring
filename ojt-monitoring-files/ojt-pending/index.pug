@@ -54,10 +54,9 @@ main.container
                 td= student.companyname 
                 td= student.companyaddress
                 td
-                  div.status-box
+                 div.status-box
                     img(src='/ojt-images/check-mark.png' class='status-update' alt='ACCEPTED')
                     img(src='/ojt-images/x-mark.png' class='status-update' alt='REJECTED') 
-
         //  pop-up container for student requirements 
         .popup-container#popupContainer
           span.close-btn(onclick="closePopup()") ×
@@ -71,72 +70,6 @@ main.container
                     th Date Submitted
                     th Remarks
                     th Status
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Application Letter
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Memorandum of Agreement
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Curriculum Vitae
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Recommendation Letter
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Medical Certificate
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
-                  tr
-                    td
-                      .check-name-box
-                        input(type="checkbox")
-                        h4 Dental Certificate
-                    td 23/11/2023
-                    td.editable(contenteditable="true") Add Remarks
-                    td
-                      .status-box
-                        img(src="../../ojt-images/check-mark.png")
-                        img(src="../../ojt-images/x-mark.png")
           .button-box
             .button-holder
               button.cancel-btn Cancel
@@ -145,3 +78,4 @@ main.container
 footer
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")
 script(src="./script.js")
+

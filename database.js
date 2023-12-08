@@ -98,15 +98,52 @@ async function fetchPendingStudentsByAddress() {
         throw error;
     }
 }
-// view by name:
-// SELECT s.studentName, c.companyname, c.companyaddress
-// FROM interns i
-// JOIN students s ON i.studentid = s.studentid
-// JOIN company c ON i.companyid = c.companyid
-// WHERE i.status = 'PENDING'
-// ORDER BY s.studentName;
 
-// fetches a student's information from student table
+
+async function fetchRequirementsByStudentId(studentId) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT
+                requirements.requirementname,
+                internrequirements.datesubmitted,
+                internrequirements.remarks,
+                internrequirements.status
+            FROM
+                internrequirements
+            JOIN
+                interns ON internrequirements.internid = interns.internid
+            JOIN
+                students ON interns.studentid = students.studentID
+            JOIN
+                requirements ON internrequirements.reqid = requirements.reqid
+            WHERE
+                interns.status = 'PENDING' AND students.studentID = ?
+        `, [studentId]);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+// query to check all requirements of pending students:
+// SELECT
+//     students.studentID,
+//     students.studentName,
+//     requirements.requirementname,
+//     internrequirements.datesubmitted,
+//     internrequirements.remarks,
+//     internrequirements.status
+// FROM
+//     internrequirements
+// JOIN
+//     interns ON internrequirements.internid = interns.internid
+// JOIN
+//     students ON interns.studentid = students.studentID
+// JOIN
+//     requirements ON internrequirements.reqid = requirements.reqid
+// WHERE
+//     interns.status = 'PENDING';
+
 async function fetchStudent(studentID) {
     try {
         const [rows] = await pool.query("SELECT * FROM students WHERE studentID = ?", [studentID]);
@@ -128,6 +165,41 @@ async function updateStatus(studentID, newStatus) {
         throw error;
     }
 }
+
+// updates the status in the interns table
+async function updateRemarks(studentId, remarks) {
+    try {
+        // Fetch the intern ID using the student ID
+        const [internResult] = await pool.query('SELECT internid FROM interns WHERE studentid = ?', [studentId]);
+        const internId = internResult[0]?.internid;
+
+        if (!internId) {
+            console.error('No intern ID found for student ID:', studentId);
+            return;
+        }
+
+        console.log('Updating remarks for Intern ID:', internId, 'Remarks:', remarks);
+
+        // Loop through the remarks and update each one in the database
+        for (let i = 0; i < remarks.length; i++) {
+            await pool.query('UPDATE internrequirements SET remarks = ? WHERE internid = ? AND reqid = ?',
+                [remarks[i], internId, i + 1]); // Assuming reqid starts from 1
+        }
+
+        console.log('Remarks updated successfully');
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+
+
+
+
+
+
+
 
 async function authenticateAdviser(adviserEmail, password) {
     try {
@@ -343,6 +415,8 @@ module.exports = {
     fetchPendingStudentsByName,
     fetchPendingStudentsByCompany,
     fetchPendingStudentsByAddress,
+    fetchRequirementsByStudentId,
+    updateRemarks,
     updateStatus,
     authenticateAdviser,
     hashAdviserPasswords,
