@@ -210,16 +210,9 @@ async function updateRemarks(studentId, remarks) {
 }
 
 
-
-
-
-
-
-
-
 async function authenticateAdviser(adviserEmail, password) {
     try {
-        const [rows] = await pool.query("SELECT adviserEmail, password FROM advisers WHERE adviserEmail = ? LIMIT 1", [adviserEmail]);
+        const [rows] = await pool.query("SELECT adviserEmail, password FROM advisers WHERE adviserEmail = ? AND password = ? LIMIT 1", [adviserEmail, password]);
 
         if (rows.length === 1) {
             const adviser = rows[0];
