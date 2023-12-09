@@ -7,12 +7,27 @@ dotenv.config()
 // uses pool instead of connection, instead of creating a brand new connection for each query,
 // there will be a pool of connections that can be reused
 
+
+console.log(process.env);
 const pool = mysql.createPool({
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
 }).promise();
+
+// async function checkConnection() {
+//     try {
+//         // Attempt to execute a simple query
+//         const [rows, fields] = await pool.query('SELECT 1');
+//         console.log('Connection to MySQL database established successfully.');
+//     } catch (error) {
+//         console.error('Unable to connect to the MySQL database:', error);
+//     }
+// }
+
+// checkConnection();
+
 
 console.log('Database connection successful');
 

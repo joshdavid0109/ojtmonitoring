@@ -10,4 +10,4 @@ ENV MYSQL_ROOT_PASSWORD=
 COPY ojt_with-data.sql /docker-entrypoint-initdb.d/
 
 # By default, MySQL listens on port 3306
-EXPOSE 3306
+EXPOSE 3308
