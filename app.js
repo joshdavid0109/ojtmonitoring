@@ -21,7 +21,7 @@ const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId }
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByAddress,
     fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
-    fetchRequirementsByStudentId, updateRemarks } = require('./database.js');
+    fetchRequirementsByStudentId, updateRemarks, fetchSupervisor } = require('./database.js');
 
 //GET 
 
@@ -205,22 +205,18 @@ app.post("/ojt-login-page", async (req, res) => {
 
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
-        if (adviser) {
-            console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
-            /*  res.cookie('adviserEmail', adviserEmail, { httpOnly: true });
-              res.cookie('adviserPassword', adviserEmail, { httpOnly: true });
-              */
-            res.redirect('/ojt-dashboard');
-        } else {
-            console.log('SERVER: NOT AN ADVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
-        }
+
+
+        console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
+        res.redirect('/ojt-dashboard');
+
+
 
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
     }
 });
-
 
 app.post('/ojt-dashboard/postannouncement', async (req, res) => {
     const sender = req.body['sender'];
@@ -237,7 +233,7 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 });
 
 
-    app.listen(3000, () => {
-        console.log(`Server is running at port ${port}`);
-    });
+app.listen(3000, () => {
+    console.log(`Server is running at port ${port}`);
+});
 
