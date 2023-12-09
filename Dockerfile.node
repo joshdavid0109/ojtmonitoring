@@ -1,4 +1,4 @@
-FROM node:1
+FROM node:16
 
 # Set the working directory inside the container to /app
 WORKDIR /app
@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Inform Docker that the container listens on port 8080 at runtime
-EXPOSE 8080
+EXPOSE 3000
 
 # Define the command to run the application
 CMD ["node", "app.js"]

@@ -4,13 +4,13 @@ const bodyParser = require('body-parser');
 
 
 const app = express();
-const port = 8080;
+const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/ojt-images', express.static(path.join(__dirname, 'ojt-images')));
 app.use('/ojt-login-page', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-login-page')));
-app.use('/ojt-pending', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-pending')));
+app.use('/ojt-pending', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-pendingf')));
 app.use('/ojt-dashboard', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-dashboard')))
 
 app.set('view engine', 'pug');
@@ -236,8 +236,8 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
     res.redirect('/ojt-dashboard');
 });
 
-hashAdviserPasswords().then(() => {
-    app.listen(8080, () => {
+
+    app.listen(3000, () => {
         console.log(`Server is running at port ${port}`);
     });
-});
+
