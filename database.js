@@ -84,7 +84,7 @@ async function fetchPendingStudentsByClassCode() {
 async function fetchPendingStudentsByCompany() {
     try {
         const [rows] = await pool.query(`
-        SELECT s.studentid, s.studentName, c.companyname, c.companyaddress
+        SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
         FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
@@ -102,7 +102,7 @@ async function fetchPendingStudentsByCompany() {
 async function fetchPendingStudentsByAddress() {
     try {
         const [rows] = await pool.query(`
-        SELECT s.studentid, s.studentName, c.companyname, c.companyaddress
+        SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
         FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
@@ -310,7 +310,7 @@ async function fetchSupervisor(supervisorId) {
 
 async function fetchInterns(adviserID) {
     try {
-        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ?) AS subquery", [adviserID]);
+        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ?) AS subquery", [adviserID]);
         console.log('Fetch Interns Query Result:', rows);
         return rows;
     } catch (error) {
