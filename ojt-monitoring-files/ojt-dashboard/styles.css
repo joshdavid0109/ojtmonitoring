@@ -775,6 +775,20 @@ td {
     color: black;
 }
 
+.content .filter .rec-option-text {
+    display:inline-flex;
+    flex-direction:column;
+}
+
+.input-wrapper {
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.input-wrapper .display-input {
+    max-width:;
+}
+
 .status-box {
     display: flex;
     align-items: center;
@@ -793,6 +807,12 @@ td {
     height: 80%;
     overflow-y: auto;
     /* Enables vertical scrolling */
+}
+
+.display-input {
+    font-family: 'PT Sans', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
 }
 
 /* POPUP CONTAINER */
