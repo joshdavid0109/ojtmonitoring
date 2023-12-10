@@ -785,10 +785,6 @@ td {
     justify-content: space-between;
 }
 
-.input-wrapper .display-input {
-    max-width:;
-}
-
 .status-box {
     display: flex;
     align-items: center;
