@@ -283,10 +283,20 @@ section .pending-students-box .students-table {
     overflow-y: auto;
 }
 
+.requirements-box table th{
+    background-color: #F1F1F1;
+    color: #0D0464;
+}
+
 .requirements-box table th,
 .requirements-box table td {
     text-align: center;
     font-size: .9vw;
+    border-bottom: .5px solid black;
+}
+
+.requirements-box th{
+    border-bottom: none;
 }
 
 .requirements-box table th:nth-child(2),

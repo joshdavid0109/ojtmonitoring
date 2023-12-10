@@ -28,15 +28,15 @@ async function fetchStudents() {
 }
 
 //  fetches all details of pending students from interns table
-async function fetchPendingStudents() {
+async function fetchPendingStudents(adviserID) {
     try {
         const [rows] = await pool.query(`
         SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
         FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
-            WHERE i.status = 'PENDING'
-        `);
+            WHERE i.status = 'PENDING' AND i.adviserID = ?
+        `, [adviserID]);
         console.log('Fetch Pending Students Query Result:', rows);
         return rows;
     } catch (error) {
@@ -45,16 +45,16 @@ async function fetchPendingStudents() {
     }
 }
 
-async function fetchPendingStudentsByName() {
+async function fetchPendingStudentsByName(adviserID) {
     try {
         const [rows] = await pool.query(`
             SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
             FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
-            WHERE i.status = 'PENDING'
+            WHERE i.status = 'PENDING' AND i.adviserID = ?
             ORDER BY s.studentName;
-        `);
+        `, [adviserID]);
         console.log('Fetch Pending Students Query Result:', rows);
         return rows;
     } catch (error) {
@@ -63,16 +63,16 @@ async function fetchPendingStudentsByName() {
     }
 }
 
-async function fetchPendingStudentsByClassCode() {
+async function fetchPendingStudentsByClassCode(adviserID) {
     try {
         const [rows] = await pool.query(`
             SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
             FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
-            WHERE i.status = 'PENDING'
+            WHERE i.status = 'PENDING' AND i.adviserID = ?
             ORDER BY s.classcode;
-        `);
+        `, [adviserID]);
         console.log('Fetch Pending Students Query Result:', rows);
         return rows;
     } catch (error) {
@@ -81,16 +81,16 @@ async function fetchPendingStudentsByClassCode() {
     }
 }
 
-async function fetchPendingStudentsByCompany() {
+async function fetchPendingStudentsByCompany(adviserID) {
     try {
         const [rows] = await pool.query(`
         SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
         FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
-            WHERE i.status = 'PENDING'
+            WHERE i.status = 'PENDING' AND i.adviserID = ?
             ORDER BY c.companyname;
-        `);
+        `, [adviserID]);
         console.log('Fetch Pending Students Query Result:', rows);
         return rows;
     } catch (error) {
@@ -99,16 +99,16 @@ async function fetchPendingStudentsByCompany() {
     }
 }
 
-async function fetchPendingStudentsByAddress() {
+async function fetchPendingStudentsByAddress(adviserID) {
     try {
         const [rows] = await pool.query(`
         SELECT s.studentid, s.studentName, s.classcode, c.companyname, c.companyaddress
         FROM interns i
             JOIN students s ON i.studentid = s.studentid
             JOIN company c ON i.companyid = c.companyid
-            WHERE i.status = 'PENDING'
+            WHERE i.status = 'PENDING' AND i.adviserID = ?
             ORDER BY c.companyaddress;
-        `);
+        `, [adviserID]);
         console.log('Fetch Pending Students Query Result:', rows);
         return rows;
     } catch (error) {

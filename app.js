@@ -139,7 +139,7 @@ app.get("/ojt-pending", async (req, res) => {
     try {
         const adviser = await fetchAdviser(req.session.adviserID);
         const students = await fetchStudents();
-        const pendingStudents = await fetchPendingStudents();
+        const pendingStudents = await fetchPendingStudents(req.session.adviserID);
         res.render('ojt-pending/index', { students, pendingStudents })
     } catch (error) {
         console.error('Error:', error.message);
@@ -155,19 +155,19 @@ app.get('/ojt-pending/sort', async (req, res) => {
 
         switch (sortBy) {
             case 'name':
-                pendingStudents = await fetchPendingStudentsByName();
+                pendingStudents = await fetchPendingStudentsByName(req.session.adviserID);
                 break;
             case 'classcode':
-                pendingStudents = await fetchPendingStudentsByClassCode();
+                pendingStudents = await fetchPendingStudentsByClassCode(req.session.adviserID);
                 break;
             case 'company':
-                pendingStudents = await fetchPendingStudentsByCompany();
+                pendingStudents = await fetchPendingStudentsByCompany(req.session.adviserID);
                 break;
             case 'address':
-                pendingStudents = await fetchPendingStudentsByAddress();
+                pendingStudents = await fetchPendingStudentsByAddress(req.session.adviserID);
                 break;
             default:
-                pendingStudents = await fetchPendingStudents();
+                pendingStudents = await fetchPendingStudents(req.session.adviserID);
         }
 
         res.json(pendingStudents);
