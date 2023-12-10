@@ -1,13 +1,23 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 
 
 const app = express();
 const port = 8080;
+let loggedInAdviser;
+
+
+// for session handling
+app.use (session({
+    secret: 'sesh_cookie', // A secret key for signing the session ID cookie
+    resave: false,              // Forces the session to be saved back to the session store
+    saveUninitialized: true,    // Forces a session that is "uninitialized" to be saved to the store
+    cookie: { secure: false }   // Set true if using HTTPS, false otherwise
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use('/ojt-images', express.static(path.join(__dirname, 'ojt-images')));
 app.use('/ojt-login-page', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-login-page')));
 app.use('/ojt-pending', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-pending')));
@@ -31,7 +41,7 @@ const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPe
 
 //GET 
 
-// run node app.js then access http://localhost:8080/ojt-login-page/
+// // run node app.js then access http://localhost:8080/ojt-login-page/
 app.get("/ojt-login-page", async (req, res) => {
     try {
         const students = await fetchStudents();
@@ -42,10 +52,12 @@ app.get("/ojt-login-page", async (req, res) => {
     }
 });
 
+
+
 app.get("/ojt-dashboard", async (req, res) => {
     try {
 
-        const adviser = await fetchAdviser();
+        const adviser = await fetchAdviser(loggedInAdviser.adviserID);
         // console.log(adviser)
         const interns = await fetchInterns();
         let pendingcount = 0, total = interns.length, finished = 0;
@@ -215,7 +227,11 @@ app.post("/ojt-login-page", async (req, res) => {
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
         if (adviser) {
+            loggedInAdviser = adviser;
             console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
+            req.session.adviserID = adviser.adviserID;
+            req.session.isLoggedIn = true;
+
             res.redirect('/ojt-dashboard');
         } else {
             console.log('SERVER: NOT AN AVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
@@ -225,6 +241,26 @@ app.post("/ojt-login-page", async (req, res) => {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
     }
+});
+
+// In another route, check if the user is logged in
+app.get("/some-protected-route", (req, res) => {
+    if (req.session.isLoggedIn) {
+        // User is logged in
+        // Proceed with route logic
+    } else {
+        // User is not logged in
+        res.redirect('/ojt-login-page');
+    }
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.log("nakalog out na to")
+        }
+        res.redirect('/ojt-login-page');
+    });
 });
 
 

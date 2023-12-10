@@ -193,14 +193,6 @@ async function updateRemarks(studentId, remarks) {
     }
 }
 
-
-
-
-
-
-
-
-
 async function authenticateAdviser(adviserEmail, password) {
     try {
         const [rows] = await pool.query("SELECT adviserEmail, password FROM advisers WHERE adviserEmail = ? LIMIT 1", [adviserEmail]);
@@ -219,22 +211,6 @@ async function authenticateAdviser(adviserEmail, password) {
         return null;
     } catch (error) {
         console.error('Error executing query:', error.message);
-        throw error;
-    }
-}
-
-async function fetchAdviser() {
-    try {
-        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=? and password=?", ["jonathan.carter@example.com", "jon123"]);
-
-        if (rows.length == 1) {
-            const adviser = rows[0]
-            console.log(adviser)
-            return adviser
-        }
-        return null
-    } catch (error) {
-        console.error('Error executing qeury:', error.message);
         throw error;
     }
 }
@@ -270,9 +246,9 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
 
 
 
-async function fetchAdviser() {
+async function fetchAdviser(adviserID) {
     try {
-        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=?", ["jonathan.carter@example.com"]);
+        const [rows] = await pool.query("SELECT * FROM advisers where adviserID=?", [adviserID]);
 
         if (rows.length == 1) {
             const adviser = rows[0]
