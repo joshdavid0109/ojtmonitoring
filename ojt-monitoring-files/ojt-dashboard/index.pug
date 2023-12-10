@@ -197,7 +197,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
         div
         .horizontal-gray-ruler
         .input-box
-          input(type='text' placeholder='Search here...')
+          input#searchBar(type='text' placeholder='Search here...')
           i#search-icon.uil.uil-search
 
         .interns-placeholder
@@ -370,9 +370,30 @@ script.
             });
         });
         });
- 
-  
-  
+
+
+                // Get the search bar element and the rows of the table
+        const searchBar = document.getElementById('searchBar');
+        const tableRows = document.getElementsByClassName('table-data'); // Assuming 'intern-row' is the class for all table rows
+
+        searchBar.addEventListener('keyup', function(event) {
+          // Convert search text to lower case for case-insensitive comparison
+          const searchText = event.target.value.toLowerCase();
+
+          // Loop over each row in the table
+          Array.from(tableRows).forEach(function(row) {
+            // Get the text content of the first cell (NAME) in lower case
+            const nameCellText = row.cells[0].textContent.toLowerCase();
+
+            // If the name text includes the search text, show the row; otherwise, hide it
+            if (nameCellText.includes(searchText)) {
+              row.style.display = ''; // The row matches the search, so show it
+            } else {
+              row.style.display = 'none'; // The row does not match the search, so hide it
+            }
+          });
+        });
+          
 
 
     
