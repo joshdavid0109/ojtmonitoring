@@ -58,7 +58,7 @@ CREATE TABLE `announcements` (
   `message` varchar(45) NOT NULL,
   PRIMARY KEY (`announcementid`),
   UNIQUE KEY `announcementid_UNIQUE` (`announcementid`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `announcements` (
 
 LOCK TABLES `announcements` WRITE;
 /*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
-INSERT INTO `announcements` VALUES (1,'2023-12-03','4',1,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(2,'2023-12-03','4',2,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(3,'2023-12-03','4',3,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(4,'2023-12-03','4',0,'',''),(5,'2023-12-03','4',0,'asdvvv','vvvv'),(6,'2023-12-03','4',0,'sadvcqwvr','vasdc'),(7,'2023-12-03','4',1,'abcde','abcdefghijk'),(8,'2023-12-03','4',4,'abcde','abcdefghijk'),(9,'2023-12-03','4',5,'abcde','abcdefghijk'),(10,'2023-12-03','4',1,'12casdcas','cascsa'),(11,'2023-12-03','4',6,'12casdcas','cascsa'),(12,'2023-12-03','4',2,'12casdcas','cascsa'),(13,'2023-12-03','4',1,'sadvqw','sdvsacwq'),(14,'2023-12-03','4',6,'sadvqw','sdvsacwq'),(15,'2023-12-03','4',2,'sadvqw','sdvsacwq'),(16,'2023-12-05','4',1,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(17,'2023-12-05','4',6,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(18,'2023-12-05','4',5,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(19,'2023-12-05','4',1,'vasds','asdvasdvasdas');
+INSERT INTO `announcements` VALUES (1,'2023-12-03','4',1,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(2,'2023-12-03','4',2,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(3,'2023-12-03','4',3,'PASS YOUR REQUIREMENTS','MED, COA, ETC'),(4,'2023-12-03','4',0,'',''),(5,'2023-12-03','4',0,'asdvvv','vvvv'),(6,'2023-12-03','4',0,'sadvcqwvr','vasdc'),(7,'2023-12-03','4',1,'abcde','abcdefghijk'),(8,'2023-12-03','4',4,'abcde','abcdefghijk'),(9,'2023-12-03','4',5,'abcde','abcdefghijk'),(10,'2023-12-03','4',1,'12casdcas','cascsa'),(11,'2023-12-03','4',6,'12casdcas','cascsa'),(12,'2023-12-03','4',2,'12casdcas','cascsa'),(13,'2023-12-03','4',1,'sadvqw','sdvsacwq'),(14,'2023-12-03','4',6,'sadvqw','sdvsacwq'),(15,'2023-12-03','4',2,'sadvqw','sdvsacwq'),(16,'2023-12-05','4',1,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(17,'2023-12-05','4',6,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(18,'2023-12-05','4',5,'JANNSEN MAGPASA KA NA NG REQUIREMENTS','ASDCASVAS'),(19,'2023-12-05','4',1,'vasds','asdvasdvasdas'),(20,'2023-12-08','4',3,'IFHWNRFEF','oiwgraekg'),(21,'2023-12-08','4',4,'IFHWNRFEF','oiwgraekg'),(22,'2023-12-08','4',5,'IFHWNRFEF','oiwgraekg');
 /*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,12 +145,13 @@ DROP TABLE IF EXISTS `internrequirements`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `internrequirements` (
   `internid` int(11) NOT NULL,
-  `requirementname` varchar(45) NOT NULL,
+  `reqid` int(11) NOT NULL,
   `datesubmitted` varchar(45) DEFAULT NULL,
   `status` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`internid`,`requirementname`),
-  CONSTRAINT `internid` FOREIGN KEY (`internid`) REFERENCES `interns` (`internid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `remarks` varchar(200) DEFAULT NULL,
+  KEY `internid_fk_idx` (`internid`),
+  KEY `reqid_fk_idx` (`reqid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,6 +160,7 @@ CREATE TABLE `internrequirements` (
 
 LOCK TABLES `internrequirements` WRITE;
 /*!40000 ALTER TABLE `internrequirements` DISABLE KEYS */;
+INSERT INTO `internrequirements` VALUES (1,1,'2023-11-23','PENDING',NULL),(1,2,'2023-11-23','PENDING',NULL),(1,3,'2023-11-23','PENDING',NULL),(1,4,'2023-11-23','PENDING',NULL),(1,5,'2023-11-23','PENDING',NULL),(1,6,'2023-11-23','PENDING',NULL),(2,1,'2023-11-23','PENDING',NULL),(2,2,'2023-11-23','PENDING',NULL),(2,3,'2023-11-23','PENDING',NULL),(2,4,'2023-11-23','PENDING',NULL),(2,5,'2023-11-23','PENDING',NULL),(2,6,'2023-11-23','PENDING',NULL),(3,1,'2023-11-23','PENDING',NULL),(3,2,'2023-11-23','PENDING',NULL),(3,3,'2023-11-23','PENDING',NULL),(3,4,'2023-11-23','PENDING',NULL),(3,5,'2023-11-23','PENDING',NULL),(3,6,'2023-11-23','PENDING',NULL),(4,1,'2023-11-23','PENDING',NULL),(4,2,'2023-11-23','PENDING',NULL),(4,3,'2023-11-23','PENDING',NULL),(4,4,'2023-11-23','PENDING',NULL),(4,5,'2023-11-23','PENDING',NULL),(4,6,'2023-11-23','PENDING',NULL),(5,1,'2023-11-23','PENDING',NULL),(5,2,'2023-11-23','PENDING',NULL),(5,3,'2023-11-23','PENDING',NULL),(5,4,'2023-11-23','PENDING',NULL),(5,5,'2023-11-23','PENDING',NULL),(5,6,'2023-11-23','PENDING',NULL),(6,1,'2023-11-23','PENDING',NULL),(6,2,'2023-11-23','PENDING',NULL),(6,3,'2023-11-23','PENDING',NULL),(6,4,'2023-11-23','PENDING',NULL),(6,5,'2023-11-23','PENDING',NULL),(6,6,'2023-11-23','PENDING',NULL),(7,1,'2023-11-23','PENDING',NULL),(7,2,'2023-11-23','PENDING',NULL),(7,3,'2023-11-23','PENDING',NULL),(7,4,'2023-11-23','PENDING',NULL),(7,5,'2023-11-23','PENDING',NULL),(7,6,'2023-11-23','PENDING',NULL),(8,1,'2023-11-23','PENDING',NULL),(8,2,'2023-11-23','PENDING',NULL),(8,3,'2023-11-23','PENDING',NULL),(8,4,'2023-11-23','PENDING',NULL),(8,5,'2023-11-23','PENDING',NULL),(8,6,'2023-11-23','PENDING',NULL),(9,1,'2023-11-23','PENDING','3414'),(9,2,'2023-11-23','PENDING','qwersfewf'),(9,3,'2023-11-23','PENDING','asdffwef'),(9,4,'2023-11-23','PENDING','zxcv'),(9,5,'2023-11-23','PENDING','tyou'),(9,6,'2023-11-23','PENDING','ghjk'),(10,1,'2023-11-23','SUBMITTED','Please resubmit this to me by December 13'),(10,2,'2023-11-23','SUBMITTED','Please resubmit this to me by December 13'),(10,3,'2023-11-23','SUBMITTED',NULL),(10,4,'2023-11-23','SUBMITTED',NULL),(10,5,'2023-11-23','PENDING',NULL),(10,6,'2023-11-23','SUBMITTED',NULL),(11,1,'2023-11-23','PENDING',NULL),(11,2,'2023-11-23','PENDING',NULL),(11,3,'2023-11-23','PENDING',NULL),(11,4,'2023-11-23','PENDING',NULL),(11,5,'2023-11-23','PENDING',NULL),(11,6,'2023-11-23','PENDING',NULL),(12,1,'2023-11-23','PENDING',NULL),(12,2,'2023-11-23','PENDING',NULL),(12,3,'2023-11-23','PENDING',NULL),(12,4,'2023-11-23','PENDING',NULL),(12,5,'2023-11-23','PENDING',NULL),(12,6,'2023-11-23','PENDING',NULL),(13,1,'2023-11-23','PENDING',NULL),(13,2,'2023-11-23','PENDING',NULL),(13,3,'2023-11-23','PENDING',NULL),(13,4,'2023-11-23','PENDING',NULL),(13,5,'2023-11-23','PENDING',NULL),(13,6,'2023-11-23','PENDING',NULL),(14,1,'2023-11-23','PENDING','Please submit this form on or before december 13'),(14,2,'2023-11-23','PENDING','PLEASE SUBMIT THIS FORM ON OR BEFORE DECEMBER 15'),(14,3,'2023-11-23','PENDING',NULL),(14,4,'2023-11-23','PENDING',NULL),(14,5,'2023-11-23','PENDING',NULL),(14,6,'2023-11-23','PENDING',NULL),(15,1,'2023-11-23','PENDING','Please pass this on December 11'),(15,2,'2023-11-23','PENDING',NULL),(15,3,'2023-11-23','PENDING',NULL),(15,4,'2023-11-23','PENDING',NULL),(15,5,'2023-11-23','PENDING',NULL),(15,6,'2023-11-23','PENDING',NULL),(16,1,'2023-11-23','PENDING',NULL),(16,2,'2023-11-23','PENDING',NULL),(16,3,'2023-11-23','PENDING',NULL),(16,4,'2023-11-23','PENDING',NULL),(16,5,'2023-11-23','PENDING',NULL),(16,6,'2023-11-23','PENDING',NULL);
 /*!40000 ALTER TABLE `internrequirements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,8 +201,32 @@ CREATE TABLE `interns` (
 
 LOCK TABLES `interns` WRITE;
 /*!40000 ALTER TABLE `interns` DISABLE KEYS */;
-INSERT INTO `interns` VALUES (1,'1234',1,2221023,1,110,NULL,'WFH',NULL,'ACCEPTED'),(2,'1234',2,2213241,2,120,180,'ON-SITE',NULL,'ACCEPTED'),(3,'1234',3,2211353,3,130,NULL,'WFH',NULL,'ACCEPTED'),(4,'1234',4,2211261,3,140,NULL,'ON-SITE',NULL,'ACCEPTED'),(5,'1234',5,2224514,4,150,240,'ON-SITE',NULL,'ACCEPTED'),(6,'1234',4,2225134,5,120,NULL,'WFH',NULL,'ACCEPTED'),(7,'1234',4,2225415,6,110,NULL,'ON-SITE',NULL,'ACCEPTED'),(8,'1234',5,2225134,1,110,240,'WFH',NULL,'ACCEPTED'),(9,'1234',5,2211010,3,NULL,NULL,NULL,NULL,'REJECTED'),(10,'1234',2,2223142,1,NULL,NULL,NULL,NULL,'ACCEPTED'),(11,'1234',4,2212312,3,NULL,NULL,NULL,NULL,'PENDING'),(12,'1234',2,2132132,NULL,NULL,NULL,NULL,NULL,'PENDING');
+INSERT INTO `interns` VALUES (1,'1234',1,2221023,1,110,NULL,'WFH',NULL,'ACCEPTED'),(2,'1234',2,2213241,2,120,180,'ON-SITE',NULL,'ACCEPTED'),(3,'1234',3,2211353,3,130,NULL,'WFH',NULL,'ACCEPTED'),(4,'1234',4,2211261,3,140,NULL,'ON-SITE',NULL,'ACCEPTED'),(5,'1234',5,2224514,4,150,240,'ON-SITE',NULL,'ACCEPTED'),(6,'1234',4,2225134,5,120,NULL,'WFH',NULL,'ACCEPTED'),(7,'1234',4,2225415,6,110,NULL,'ON-SITE',NULL,'ACCEPTED'),(8,'1234',5,2225134,1,110,240,'WFH',NULL,'ACCEPTED'),(9,'1234',5,2211010,3,NULL,NULL,NULL,NULL,'ACCEPTED'),(10,'1234',2,2223142,2,NULL,NULL,NULL,NULL,'ACCEPTED'),(11,'1234',4,2212312,NULL,NULL,NULL,NULL,NULL,'PENDING'),(12,'1234',2,2132132,NULL,NULL,NULL,NULL,NULL,'PENDING'),(13,'1234',5,2235482,2,NULL,NULL,NULL,NULL,'ACCEPTED'),(14,'1234',3,2247598,6,NULL,NULL,NULL,NULL,'PENDING'),(15,'1234',2,2214325,1,NULL,NULL,NULL,NULL,'PENDING'),(16,'1234',2,2298643,5,NULL,NULL,NULL,NULL,'PENDING');
 /*!40000 ALTER TABLE `interns` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `requirements`
+--
+
+DROP TABLE IF EXISTS `requirements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `requirements` (
+  `reqid` int(11) NOT NULL,
+  `requirementname` varchar(45) NOT NULL,
+  PRIMARY KEY (`reqid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `requirements`
+--
+
+LOCK TABLES `requirements` WRITE;
+/*!40000 ALTER TABLE `requirements` DISABLE KEYS */;
+INSERT INTO `requirements` VALUES (1,'Application Letter'),(2,'Memorandum of Agreement'),(3,'Curriculum Vitae'),(4,'Recommendation Letter'),(5,'Medical Certificate'),(6,'Dental Certificate');
+/*!40000 ALTER TABLE `requirements` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -215,6 +241,7 @@ CREATE TABLE `students` (
   `studentName` varchar(45) NOT NULL,
   `course` varchar(45) NOT NULL,
   `year` varchar(45) NOT NULL,
+  `classcode` varchar(45) NOT NULL,
   PRIMARY KEY (`studentID`),
   UNIQUE KEY `studentID_UNIQUE` (`studentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -226,7 +253,7 @@ CREATE TABLE `students` (
 
 LOCK TABLES `students` WRITE;
 /*!40000 ALTER TABLE `students` DISABLE KEYS */;
-INSERT INTO `students` VALUES (2132132,'Test','BSCS','3'),(2211010,'Peterjan Antonio','BSCS','3'),(2211261,'Martel Molintas','BSCS','3'),(2211353,'Bads Villalobos','BSCS','3'),(2212312,'Kaizer Gura','BSCS','3'),(2213241,'Shane Saguid','BSCS','3'),(2221023,'AJ Ramos','BSCS','3'),(2222551,'Daniel David','BSCS','3'),(2223142,'Kaizer Oman','BSCS','3'),(2224514,'Ariel Tarlit','BSCS','3'),(2225134,'Claire Tumaliuan','BSCS','3'),(2225415,'Kiko Abella','BSCS','3');
+INSERT INTO `students` VALUES (2132132,'Raya Colcol','BSCS','3','9375'),(2211010,'Peterjan Antonio','BSCS','3','9375'),(2211261,'Martel Molintas','BSCS','3','9375'),(2211353,'Bads Villalobos','BSCS','3','9375'),(2212312,'Kaizer Gura','BSCS','3','9375'),(2213241,'Shane Saguid','BSCS','3','9375'),(2214325,'Dennis Dumlao','BSCS','3','9375'),(2221023,'AJ Ramos','BSCS','3','9375'),(2222551,'Daniel David','BSCS','3','9375'),(2223142,'Kaizer Oman','BSCS','3','9376'),(2224514,'Ariel Tarlit','BSCS','3','9376'),(2225134,'Claire Tumaliuan','BSCS','3','9376'),(2225415,'Kiko Abella','BSCS','3','9376'),(2235482,'Kobe Rosales','BSCS','3','9376'),(2247598,'Kyle Sinaking','BSCS','3','9376'),(2298643,'Gregg Balagtey','BSCS','3','9376');
 /*!40000 ALTER TABLE `students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,4 +295,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-06 14:08:39
+-- Dump completed on 2023-12-10 19:48:12

@@ -96,6 +96,7 @@
     "path-to-regexp": "^0.1.7",
     "popups": "^1.1.3",
     "proxy-addr": "^2.0.7",
+    "pug": "^3.0.2",
     "qs": "^6.11.0",
     "random-bytes": "^1.0.0",
     "range-parser": "^1.2.1",
@@ -138,13 +139,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "mysql2": "^3.6.5",
-    "pug": "^3.0.2"
-  }
+  "license": "ISC"
 }

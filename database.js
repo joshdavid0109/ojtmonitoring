@@ -211,9 +211,17 @@ async function updateRemarks(studentId, remarks) {
     }
 }
 
+
+
+
+
+
+
+
+
 async function authenticateAdviser(adviserEmail, password) {
     try {
-        const [rows] = await pool.query("SELECT adviserID, adviserEmail, password FROM advisers WHERE adviserEmail = ? LIMIT 1", [adviserEmail]);
+        const [rows] = await pool.query("SELECT adviserEmail, password FROM advisers WHERE adviserEmail = ? LIMIT 1", [adviserEmail]);
 
         if (rows.length === 1) {
             const adviser = rows[0];
@@ -229,6 +237,22 @@ async function authenticateAdviser(adviserEmail, password) {
         return null;
     } catch (error) {
         console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function fetchAdviser() {
+    try {
+        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=? and password=?", ["jonathan.carter@example.com", "jon123"]);
+
+        if (rows.length == 1) {
+            const adviser = rows[0]
+            console.log(adviser)
+            return adviser
+        }
+        return null
+    } catch (error) {
+        console.error('Error executing qeury:', error.message);
         throw error;
     }
 }
@@ -264,10 +288,9 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
 
 
 
-async function fetchAdviser(adviserID) {
+async function fetchAdviser() {
     try {
-        console.log(adviserID);
-        const [rows] = await pool.query("SELECT * FROM advisers where adviserID=?", [adviserID]);
+        const [rows] = await pool.query("SELECT * FROM advisers where adviserEmail=?", ["jonathan.carter@example.com"]);
 
         if (rows.length == 1) {
             const adviser = rows[0]
@@ -299,9 +322,9 @@ async function fetchSupervisor(supervisorId) {
 
 
 
-async function fetchInterns(adviserID) {
+async function fetchInterns() {
     try {
-        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ?) AS subquery", [adviserID]);
+        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid) AS subquery")
         console.log('Fetch Interns Query Result:', rows);
         return rows;
     } catch (error) {

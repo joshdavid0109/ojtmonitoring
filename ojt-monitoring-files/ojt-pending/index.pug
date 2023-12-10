@@ -21,7 +21,8 @@ main.container
         a(href="/ojt-pending") PENDING
       li
         a(href="#") ABOUT US
-    img(src="../", alt)
+      form(action='/logout' method="GET")
+        input(id="logoutbutton" type="submit" value="LOG OUT")
   section
     .section-holder
       .pending-title Pending Students

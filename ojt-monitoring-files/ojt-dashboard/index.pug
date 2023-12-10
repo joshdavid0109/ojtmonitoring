@@ -17,9 +17,9 @@ main.container
   aside.left-nav
     ol
       li
-        a(href='localhost:8080/ojt-dashboard') DASHBOARD
+        a(href='/ojt-dashboard') DASHBOARD
       li
-        a(href='localhost:8080/ojt-pending') PENDING
+        a(href='/ojt-pending') PENDING
       li
         a(href='#') ABOUT US
       li
@@ -90,6 +90,8 @@ main.container
               th
                 | NAME
               th
+                | CLASS CODE
+              th
                 | COMPANY
               th
                 | ADDRESS
@@ -100,6 +102,7 @@ main.container
             each intern in interns
               tr.table-data(data-intern-id=intern.studentname class='intern-row')
                 td= intern.studentname
+                td= intern.classcode
                 td= intern.companyname
                 td= intern.companyaddress
                 td.tothours= intern.totalhours
