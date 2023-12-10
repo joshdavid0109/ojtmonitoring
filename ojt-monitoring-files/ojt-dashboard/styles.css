@@ -557,7 +557,10 @@ td {
     touch-action: manipulation;
 }
 
-
+.recipients {
+    display: flex;
+    flex-direction: row;
+}
 
 .modal {
     position: fixed;
@@ -767,8 +770,8 @@ td {
 }
 
 .content .filter .rec-option-anchor {
-
     text-decoration: none;
+    border: none;
     color: black;
 }
 

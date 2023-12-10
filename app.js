@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const alert = require('alert');
 const path = require('path');
 const bodyParser = require('body-parser');
 
@@ -44,6 +45,11 @@ const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPe
 // // run node app.js then access http://localhost:8080/ojt-login-page/
 app.get("/ojt-login-page", async (req, res) => {
     try {
+        if (req.session.isLoggedIn){
+            
+            res.redirect('/ojt-dashboard');
+        }
+
         const students = await fetchStudents();
         res.render('ojt-login-page/index', { students })
     } catch (error) {
@@ -56,10 +62,9 @@ app.get("/ojt-login-page", async (req, res) => {
 
 app.get("/ojt-dashboard", async (req, res) => {
     try {
-
-        const adviser = await fetchAdviser(loggedInAdviser.adviserID);
-        // console.log(adviser)
-        const interns = await fetchInterns();
+        console.log(req.session.adviserID)
+        const adviser = await fetchAdviser(req.session.adviserID);
+        const interns = await fetchInterns(req.session.adviserID);
         let pendingcount = 0, total = interns.length, finished = 0;
 
         for (let i = 0; i < interns.length; i++) {
@@ -74,10 +79,22 @@ app.get("/ojt-dashboard", async (req, res) => {
             }
         }
 
-        const announcements = await fetchAnnouncements(adviser.adviserID);
-        console.log(announcements)
+        reports = {} // temporarry still doing
+        if (adviser) {
+            const announcements = await fetchAnnouncements(adviser.adviserID)
 
-        res.render('ojt-dashboard/index', { adviser, interns, announcements, pendingcount: pendingcount, finished: finished, total: total });
+            res.render('ojt-dashboard/index', {
+                adviser,
+                interns,
+                announcements,
+                pendingcount,
+                finished,
+                reports,
+                total
+            });
+        } else {
+            res.redirect('/ojt-login-page');
+        }
     } catch (error) {
         console.error('Error', error);
         res.status(500).send("Warning: Internal Server Error")
@@ -202,15 +219,10 @@ app.post('/update-status', async (req, res) => {
     console.log('Received Update Request - Student ID:', studentId, 'New Status:', newStatus);
     
     try {
-<<<<<<< HEAD
-      await updateStatus(studentId, newStatus);
-      res.send('Status updated successfully');
-=======
         await updateStatus(studentId, newStatus);
         const updatedStudent = await fetchStudent(studentId);
         res.json(updatedStudent);
         
->>>>>>> c8ef4af (Implement dynamic search functionality:ojt-pending)
     } catch (error) {
       console.error('Error updating status:', error.message);
       res.status(500).send('Warning: Internal Server Error');
@@ -227,8 +239,8 @@ app.post("/ojt-login-page", async (req, res) => {
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
         if (adviser) {
-            loggedInAdviser = adviser;
             console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
+            
             req.session.adviserID = adviser.adviserID;
             req.session.isLoggedIn = true;
 
@@ -259,6 +271,8 @@ app.get('/logout', (req, res) => {
         if (err) {
             console.log("nakalog out na to")
         }
+        console.log("pakilog out")
+        adviser = {};
         res.redirect('/ojt-login-page');
     });
 });

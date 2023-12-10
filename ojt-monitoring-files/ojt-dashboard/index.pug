@@ -23,7 +23,8 @@ main.container
       li
         a(href='#') ABOUT US
       li
-        input(action="/logout" id="logoutbutton" type="submit" value="SUBMIT")
+      form(action='/logout' method="GET")
+        input(id="logoutbutton" type="submit" value="LOG OUT")
     img(src='../' alt='')
   section
     .main-dashboard
@@ -62,7 +63,10 @@ main.container
               .count
                  if (finished)
                    text #{finished}
-              .text TOTAL FINISHED INTERNS
+              .text 
+                 if (finished)
+                   text #{"TOTAL FINISHED INTERNS"}
+                  
     .filtering
       .filtering-fields
         .input-box
@@ -152,7 +156,7 @@ main.container
             
         button.create-post-button(type='button')
           a(href='#announcement-pop-up') CREATE POST
-form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
+form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' target='_blank')
   #announcement-pop-up.modal(action='submit')
     .content
       a.close(href='#main') &Cross;
@@ -160,10 +164,11 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
         .content_info_holder
           .header ANNOUNCEMENT
           .filter
-              .rec-option-text
-                a(href='#announcement-pop-up1')
-                  input#message-recipient.rec-option-anchor(type="button" value="TO ALL")
-                  
+              .rec-option-text#recipients
+                  a(href='#announcement-pop-up1')
+                    span.material-symbols-outlined#message-recipient(style="vertical-align= middle")
+                      | TO ALL
+                      | add
           .horizontal-gray-ruler
           .pop-up-subject
             .title SUBJECT
@@ -183,7 +188,7 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
         .header
           div
             a(href='#announcement-pop-up')
-              span.material-symbols-outlined
+              span.material-symbols-outlined#back-button
                 | keyboard_return
           .text SPECIFIC INTERNS
         div
@@ -204,7 +209,7 @@ form(action='/ojt-dashboard/postannouncement' method='POST' target='_blank')
                   div.companyname
                     text #{intern.companyname}
                   div.companyaddress 
-                    text #{intern.companyaddress}
+                    text #{intern.companyaddress} 
               input(type='checkbox' name="recipient" value=intern.studentname)            
            
               
@@ -249,16 +254,84 @@ script.
     }
   })
 
-  document.getElementById("submitbutton").addEventListener('on click', function () {
-    const form = document.getElementById('recipient-form');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+  
+
+  document.getElementById("back-button").addEventListener('click', () => {
+    console.log("back button")
+    const form = document.getElementById('recipients');
+
       const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
       const checkedValues = Array.from(checkedCheckboxes).map((checkbox) => checkbox.value);
 
-      alert('Checked values: ' + checkedValues.join(', '));
-    })
-  });
+      if (checkedValues.length > 0) {
+        document.getElementById("message-recipient").remove();
+          checkedCheckboxes.forEach(checkbox => {
+          // Create a wrapper div for each input/button pair
+              const wrapperDiv = document.createElement('div');
+              wrapperDiv.classList.add('input-wrapper');
+
+              // Create the hidden input element to store the checkbox value
+              const hiddenInput = document.createElement('input');
+              hiddenInput.type = 'hidden';
+              hiddenInput.name = 'recipients[]';
+              hiddenInput.value = checkbox.value;
+              
+              // Create a visible text input to display the checkbox value
+              const textInput = document.createElement('input');
+              textInput.type = 'text';
+              textInput.value = checkbox.value;
+              textInput.readOnly = true; // Prevent editing the text input
+              textInput.classList.add('display-input');
+              textInput.style.border = "none";
+
+              // Create the "X" button element to remove the input
+              const removeButton = document.createElement('span');
+              removeButton.textContent = 'close';
+              removeButton.classList.add('material-symbols-outlined');
+              removeButton.style.verticalAlign = "middle";
+              removeButton.style.cursor = "pointer";
+              
+              // Append the hidden input, text input, and remove button to the wrapper
+              wrapperDiv.appendChild(hiddenInput);
+              wrapperDiv.appendChild(textInput);
+              wrapperDiv.appendChild(removeButton);
+              
+              // Append the wrapper div to the form
+              form.appendChild(wrapperDiv);
+
+              // Add an event listener to the remove button to handle the click event
+              removeButton.addEventListener('click', function() {
+                // Remove the wrapper div from the form to remove both the button and the input
+
+              const checkboxValueToUncheck = checkbox.value; // Replace this with the actual value
+              const checkboxToUncheck = document.querySelector(`input[type="checkbox"][value="${checkboxValueToUncheck}"]`);
+
+              if (checkboxToUncheck) {
+                  checkboxToUncheck.checked = false;
+              }
+                wrapperDiv.remove();
+                console.log ("kjh")
+
+                 if (form.children.length == 1) {
+
+                  const aLink = document.createElement('a');
+                  aLink.href = '#announcement-pop-up1';
+
+                  const rec = document.createElement('pan');
+                  rec.id = 'message-recipient';
+                  rec.classList.add('material-symbols-outlined');
+                  rec.style.verticalAlign = 'middle';
+                  rec.textContent = 'TO ALL add';
+
+                  aLink.appendChild(rec);
+
+                  form.appendChild(aLink)
+                }
+              });
+        });
+      }
+
+  })
    
   // opens the popup container and populates the student details
           function openPopup(studentName) {
@@ -290,9 +363,10 @@ script.
                       document.querySelector('.popup-scrollable table tbody').innerHTML = html;
                   })
                   .catch(error => console.error('Error:', error));
-          });
-      });
-  });
+            });
+        });
+        });
+ 
   
   
 
