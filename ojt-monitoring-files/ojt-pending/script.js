@@ -17,12 +17,12 @@ $(document).ready(function() {
         data: { studentId: studentId, newStatus: status },
         success: function(response) {
           console.log(response);
-          // TO-DO: something that would update the table AUTOMATICALLY
         },
         error: function(error) {
           console.error(error);
         }
       });
+      location.reload();
     } else {
       console.log('Operation canceled by user.');
     }
@@ -35,10 +35,11 @@ $(document).ready(function() {
 
     $('.table-data').filter(function() {
       const studentName = $(this).find('td:nth-child(1)').text().toLowerCase();
-      const companyName = $(this).find('td:nth-child(2)').text().toLowerCase();
-      const companyAddress = $(this).find('td:nth-child(3)').text().toLowerCase();
+      const classcode = $(this).find('td:nth-child(2)').text().toLowerCase();
+      const companyName = $(this).find('td:nth-child(3)').text().toLowerCase();
+      const companyAddress = $(this).find('td:nth-child(4)').text().toLowerCase();
       
-      return studentName.includes(searchText) || companyName.includes(searchText) || companyAddress.includes(searchText);
+      return studentName.includes(searchText) || classcode.includes(searchText) || companyName.includes(searchText) || companyAddress.includes(searchText);
     }).show();
   });
 });
@@ -62,8 +63,9 @@ function updateTable(data) {
     const existingRow = existingRows[index];
     if (existingRow) {
       existingRow.querySelector('td:nth-child(1)').textContent = student.studentName || '';
-      existingRow.querySelector('td:nth-child(2)').textContent = student.companyname || '';
-      existingRow.querySelector('td:nth-child(3)').textContent = student.companyaddress || '';
+      existingRow.querySelector('td:nth-child(2)').textContent = student.classcode || '';
+      existingRow.querySelector('td:nth-child(3)').textContent = student.companyname || '';
+      existingRow.querySelector('td:nth-child(4)').textContent = student.companyaddress || '';
     }
   });
 }
@@ -111,7 +113,7 @@ function closePopup() {
 // update the requirements table in the popup
 function updateRequirementsTable(requirements) {
   const tableBody = document.querySelector('#popupContainer table tbody');
-  tableBody.innerHTML = ''; // Clear existing rows
+  tableBody.innerHTML = ''; 
 
   // Add table headers
   const headerRow = document.createElement('tr');
@@ -154,15 +156,13 @@ rows.forEach(function(row) {
 });
 
 
-var originalContents = {};
-
 // allows the remarks to be editable
 document.addEventListener('DOMContentLoaded', function () {
   var editableCells = document.querySelectorAll('.editable');
 
   editableCells.forEach(function (cell) {
     cell.addEventListener('focus', function () {
-      // Store the original content when the cell gains focus
+
       originalContents[cell.dataset.studentId] = cell.textContent;
     });
 
@@ -193,6 +193,7 @@ $('.save-btn').on('click', function () {
     data: { studentId: studentId, remarks: remarks },
     success: function (response) {
       console.log(response);
+      originalRemarks = remarks.slice();
       alert('Remarks saved successfully!');
     },
     error: function (error) {

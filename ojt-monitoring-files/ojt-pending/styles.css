@@ -144,11 +144,27 @@ section .pending-students-box .title-filter-box h4 {
 section .pending-students-box .title-filter-box .view-box .view-dropdown-box,
 section .pending-students-box .title-filter-box .view-box .search-field-box {
     width: 50%;
+    display: flex;
+    align-items: center;
 }
 
 section .pending-students-box .title-filter-box .view-box .view-dropdown-box label {
     margin-right: 3%;
     font-size: .7vw;
+    width: 20%;
+}
+
+#dropdown, #search-input{
+    background-color: #F1F1F1;
+    border: none;
+    width: 70%;
+    font-size: 1vw;
+    padding: 3% 6% 3%;
+    color: #757575;
+}
+
+#search-input{
+    width: 80%;
 }
 
 section .pending-students-box .title-filter-box .view-box {
