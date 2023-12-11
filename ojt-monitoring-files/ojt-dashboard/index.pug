@@ -117,11 +117,11 @@ main.container
             .report-links
               ol 
                 li 
-                a(href='/ojt-dashboard') Daily Report
+                  span.daily-report(data-intern-name='') Daily Report
                 li 
-                a(href='/ojt-dashboard') Weekly Report
+                  span.weekly-report(data-intern-name='') Weekly Report
                 li 
-                a(href='/ojt-dashboard') DASHBOARD
+                  span.requirements(data-intern-name='') Requirements
           .popup-scrollable
                 table
                   thead
@@ -358,24 +358,69 @@ script.
           }
   
           // adds click event listeners to the first <td> element within each row and calls the openPopup function
-         document.addEventListener('DOMContentLoaded', function() {
-         var rows = document.querySelectorAll('.table-data');
-         rows.forEach(function(row) {
-          row.addEventListener('click', function() {
-              var internName = row.dataset.internId;
-           
-              var studentName = row.textContent; // Ensure you get the studentName correctly
-              fetch(`/ojt-dashboard/daily-reports/${internName}`)
-                  .then(response => response.text())
-                  .then(html => {
-                      document.getElementById('studentName').innerHTML = internName;
-                      document.querySelector('.popup-container').style.display = 'block';
-                      document.querySelector('.popup-scrollable table tbody').innerHTML = html;
-                  })
-                  .catch(error => console.error('Error:', error));
-            });
+         function updateReportLinksInternName(internName) {
+        document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
+            element.setAttribute('data-intern-name', internName);
         });
+    }
+
+    // Function to fetch and display data in the popup
+   function fetchAndDisplayData(url, internName, reportType) {
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('studentName').innerHTML = internName;
+            updateTableHeaders(reportType); // Update table headers
+            document.querySelector('.popup-container').style.display = 'block';
+            document.querySelector('.popup-scrollable table tbody').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+  }
+
+    // Event listeners for table rows (intern selection)
+    document.querySelectorAll('.table-data').forEach(row => {
+        row.addEventListener('click', function() {
+            var internName = row.dataset.internId;
+            // Update report links with the selected intern's name
+            updateReportLinksInternName(internName);
+            // Fetch and display intern's daily report
+            fetchAndDisplayData(`/ojt-dashboard/daily-reports/${internName}`, internName,'daily'); //default is daily my friend
         });
+    });
+
+    // Event listeners for report links
+   document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
+    element.addEventListener('click', function() {
+        var internName = this.dataset.internName;
+        if (internName) {
+            var reportType = this.className.includes('daily-report') ? 'daily' : 
+                             this.className.includes('weekly-report') ? 'weekly' : 
+                             'requirements'; 
+            fetchAndDisplayData(`/ojt-dashboard/${reportType}-reports/${internName}`, internName, reportType);
+        } else {
+            console.error('Intern name not set');
+        }
+    });
+  });
+  const reportTableStructures = {
+    daily: ["Date", "Time in", "Time out", "Supervisor", "Description", "Hours", "Supporting Documents", "Remarks", "Status"],
+    weekly: ["Day", "Date", "Description", "Hours"]
+
+  };
+
+  function updateTableHeaders(reportType) {
+    const tableHeaders = reportTableStructures[reportType] || [];
+    const thead = document.querySelector('.popup-scrollable table thead');
+    thead.innerHTML = ''; // Clear existing headers
+
+    const tr = document.createElement('tr');
+    tableHeaders.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+  }
 
 
         document.addEventListener('DOMContentLoaded', function() {

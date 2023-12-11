@@ -358,6 +358,8 @@ async function fetchDailyReports() {
     }
 }
 
+
+
 async function fetchInternId(name) {
     try {
         const [rows] = await pool.query(`
@@ -384,6 +386,31 @@ async function fetchInternDailyReports(internID) {
             WHERE 
                 internid = ?
         `, [internID]);
+
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function fetchWeeklyReports(internID) {
+    try {
+        const [rows] = await pool.query(`
+        SELECT 
+            DAYNAME(dailyreports.date) as dayOfWeek,
+            dailyreports.date as date,
+            dailyreports.workdescription as description,
+            dailyreports.hours as hours
+        FROM 
+            dailyreports
+        WHERE 
+            internid = ? AND
+            dailyreports.date >= (SELECT MIN(date) FROM dailyreports WHERE internid = ?) AND
+            dailyreports.date < (SELECT ADDDATE(MIN(date), INTERVAL 7 DAY) FROM dailyreports WHERE internid = ?)
+        ORDER BY
+            dailyreports.date
+        `, [internID, internID, internID]);
 
         return rows;
     } catch (error) {
@@ -452,7 +479,7 @@ module.exports = {
     hashAdviserPasswords,
     insertAnnouncement, fetchDailyReports, fetchInternDailyReports,
     insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId,
-    insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId, fetchSupervisor,
+    insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId, fetchSupervisor, fetchWeeklyReports,
     closeDatabase,
 
 };

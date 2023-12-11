@@ -10,7 +10,7 @@ let loggedInAdviser;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 // for session handling
-app.use (session({
+app.use(session({
     secret: 'sesh_cookie', // A secret key for signing the session ID cookie
     resave: false,              // Forces the session to be saved back to the session store
     saveUninitialized: true,    // Forces a session that is "uninitialized" to be saved to the store
@@ -37,15 +37,15 @@ const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId }
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress, 
         fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
-        fetchRequirementsByStudentId, updateRemarks } = require('./database.js');
+        fetchRequirementsByStudentId, updateRemarks, fetchSupervisor, fetchWeeklyReports } = require('./database.js');
 
 //GET 
 
 // // run node app.js then access http://localhost:8080/ojt-login-page/
 app.get("/ojt-login-page", async (req, res) => {
     try {
-        if (req.session.isLoggedIn){
-            
+        if (req.session.isLoggedIn) {
+
             res.redirect('/ojt-dashboard');
         }
 
@@ -131,6 +131,39 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
         res.status(500).send("Error: Internal Server Error");
     }
 });
+
+app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
+    try {
+        const internName = req.params.internName;
+        console.log('Fetching reports for intern:', internName);
+
+        // Fetch the intern ID
+        const internIdResult = await fetchInternId(internName);
+        const internId = internIdResult[0]?.internid;
+        if (!internId) {
+            console.log('No intern found for name:', internName);
+            return res.status(404).send("Intern not found");
+        }
+
+        console.log(internId + ' is ' + internName);
+
+        // Fetch the reports using the intern ID
+        const weeklyReports = await fetchWeeklyReports(internId);
+        console.log('Weekly Reports:', weeklyReports);
+
+        // Format the dates in the reports
+        weeklyReports.forEach(report => {
+            report.date = new Date(report.date).toDateString(); // Format the date
+        });
+
+        // Render the weekly report view with the reports data
+        res.render('ojt-dashboard/views/weekly-report.pug', { weeklyReports });
+    } catch (error) {
+        console.error('Error', error);
+        res.status(500).send("Error: Internal Server Error");
+    }
+});
+
 
 
 
@@ -239,7 +272,7 @@ app.post("/ojt-login-page", async (req, res) => {
         const adviser = await authenticateAdviser(adviserEmail, password);
         if (adviser) {
             console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
-            
+
             req.session.adviserID = adviser.adviserID;
             req.session.isLoggedIn = true;
 
