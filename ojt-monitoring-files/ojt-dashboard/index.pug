@@ -79,12 +79,14 @@ main.container
         .filter
           label.view-by(for='view-by')  FILTER 
           select#intern-filter
-            option(value='asdsadasdasdas') Name
-            option(value='')
-            option(value='')
-            option(value='')
+            option(value='0') Name
+            option(value='1') Class Code
+            option(value='2') Company
+            option(value='3') Address
+            option(value='4') Total Hours 
+            option(value='5') Status
       .intern-table
-        table.intern-table-holder
+        table.intern-table-holder#internsTable
           tbody
             tr.table-header
               th
@@ -166,12 +168,12 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
       .form(action="postannouncement" method="POST" target="_blank" )
         .content_info_holder
           .header ANNOUNCEMENT
-          .filter
-              .rec-option-text#recipients
-                  a(href='#announcement-pop-up1')
-                    span.material-symbols-outlined#message-recipient(style="vertical-align= middle")
-                      | TO ALL
-                      | add
+          .filter TO: 
+              .rec-option-text#recipients  
+                a(href='#announcement-pop-up1')
+                  span.material-symbols-outlined#message-recipient(style="vertical-align= middle")
+                    | TO ALL
+                    | add
           .horizontal-gray-ruler
           .pop-up-subject
             .title SUBJECT
@@ -314,9 +316,13 @@ script.
                   checkboxToUncheck.checked = false;
               }
                 wrapperDiv.remove();
-                console.log ("kjh")
+                console.log ("removing " + checkbox.value);
+                console.log(form.children.length)
 
                  if (form.children.length == 1) {
+                  while (form.firstChild) {
+                    form.removeChild(form.firstChild);
+                  }
 
                   const aLink = document.createElement('a');
                   aLink.href = '#announcement-pop-up1';
@@ -372,28 +378,35 @@ script.
         });
 
 
-                // Get the search bar element and the rows of the table
-        const searchBar = document.getElementById('searchBar');
-        const tableRows = document.getElementsByClassName('table-data'); // Assuming 'intern-row' is the class for all table rows
+        document.addEventListener('DOMContentLoaded', function() {
+          const filterSelect = document.getElementById('intern-filter');
+           const tbody = document.querySelector('#internsTable tbody');
 
-        searchBar.addEventListener('keyup', function(event) {
-          // Convert search text to lower case for case-insensitive comparison
-          const searchText = event.target.value.toLowerCase();
+            filterSelect.addEventListener('change', function() {
+              const columnIndex = this.value;
+              const rows = tbody.getElementsByTagName('tr');
 
-          // Loop over each row in the table
-          Array.from(tableRows).forEach(function(row) {
-            // Get the text content of the first cell (NAME) in lower case
-            const nameCellText = row.cells[0].textContent.toLowerCase();
+              // Display all rows first
+              for (let i = 0; i < rows.length; i++) {
+                rows[i].style.display = '';
+              }
 
-            // If the name text includes the search text, show the row; otherwise, hide it
-            if (nameCellText.includes(searchText)) {
-              row.style.display = ''; // The row matches the search, so show it
-            } else {
-              row.style.display = 'none'; // The row does not match the search, so hide it
-            }
+              // If the default option is selected, don't filter anything
+              if (columnIndex === "default") {
+                return;
+              }
+
+              // Filter rows by the selected column
+              for (let i = 0; i < rows.length; i++) {
+                let cell = rows[i].getElementsByTagName('td')[columnIndex];
+                if (cell) {
+                  rows[i].style.display = ''; // Show the row
+                } else {
+                  rows[i].style.display = 'none'; // Hide the row
+                }
+              }
           });
-        });
-          
+      });
 
 
     
