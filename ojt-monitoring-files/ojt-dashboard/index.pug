@@ -63,14 +63,15 @@ main.container
               .count
                  if (finished)
                    text #{finished}
+                 else 
+                   | 0
               .text 
-                 if (finished)
                    text #{"TOTAL FINISHED INTERNS"}
                   
     .filtering
       .filtering-fields
         .input-box
-          input(type='text' placeholder='Search here...')
+          input#searchbar(type='text' placeholder='Search here...')
           i#search-icon.uil.uil-search
     .intern-list-container
       .table-label-filter
@@ -199,7 +200,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
         div
         .horizontal-gray-ruler
         .input-box
-          input#searchBar(type='text' placeholder='Search here...')
+          input#searchbar(type='text' placeholder='Search here...')
           i#search-icon.uil.uil-search
 
         .interns-placeholder
@@ -216,8 +217,8 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
                   div.companyaddress 
                     text #{intern.companyaddress} 
               input(type='checkbox' name="recipient" value=intern.studentname)            
-           
               
+script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
@@ -421,38 +422,23 @@ script.
     });
     thead.appendChild(tr);
   }
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-          const filterSelect = document.getElementById('intern-filter');
-           const tbody = document.querySelector('#internsTable tbody');
-
-            filterSelect.addEventListener('change', function() {
-              const columnIndex = this.value;
-              const rows = tbody.getElementsByTagName('tr');
-
-              // Display all rows first
-              for (let i = 0; i < rows.length; i++) {
-                rows[i].style.display = '';
-              }
-
-              // If the default option is selected, don't filter anything
-              if (columnIndex === "default") {
-                return;
-              }
-
-              // Filter rows by the selected column
-              for (let i = 0; i < rows.length; i++) {
-                let cell = rows[i].getElementsByTagName('td')[columnIndex];
-                if (cell) {
-                  rows[i].style.display = ''; // Show the row
-                } else {
-                  rows[i].style.display = 'none'; // Hide the row
-                }
-              }
-          });
-      });
-
-
     
+   document.addEventListener('DOMContentLoaded', function () {
+      var searchInput = document.getElementById('searchbar');
+      console.log(searchInput);
 
+      searchInput.addEventListener('input', function () {
+        console.log(this.value)
+        var searchText = this.value.toLowerCase();
+        var internRows = document.querySelectorAll('.intern-row');
+
+        internRows.forEach(function (row) {
+          var rowText = row.innerText.toLowerCase();
+          if (rowText.indexOf(searchText) === -1) {
+            row.style.display = 'none';
+          } else {
+            row.style.display = '';
+          }
+        });
+      });
+    });

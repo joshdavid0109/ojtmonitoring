@@ -31,6 +31,7 @@ $(document).ready(function() {
   // listens to the keys on the search-input and filters the table based on it
   $('#search-input').on('input', function() {
     const searchText = $(this).val().toLowerCase();
+    console.log(searchText)
     $('.table-data').hide();
 
     $('.table-data').filter(function() {
