@@ -949,8 +949,8 @@ td {
 }
 
 .content .filter .rec-option-text {
-    display:inline-flex;
-    flex-direction:column;
+    display: inline-flex;
+    flex-direction: column;
     /* border: 1px solid; */
 }
 
@@ -1099,13 +1099,14 @@ td {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .report-links ol {
     display: flex;
     padding: 0;
     margin: 0;
-    /* Adjusted margin to align with the name */
     list-style-type: none;
 }
 
@@ -1114,11 +1115,22 @@ td {
     white-space: nowrap;
 }
 
-/* meow */
-.report-links a {}
+/* Style for the active link */
+.report-links a.active {
+    font-weight: bold;
+    color: blue;
+    border-bottom: 2px solid blue;
+    /* Blue underline for the active link */
+}
 
 .report-links li:last-child {
     margin-right: 0;
+}
+
+/* Hover effect for links */
+.report-links a:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 

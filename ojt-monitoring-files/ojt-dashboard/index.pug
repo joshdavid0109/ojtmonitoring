@@ -117,11 +117,11 @@ main.container
             .report-links
               ol 
                 li 
-                  span.daily-report(data-intern-name='') Daily Report
+                  a.daily-report( data-intern-name='', class='active') Daily Report
                 li 
-                  span.weekly-report(data-intern-name='') Weekly Report
+                  a.weekly-report(data-intern-name='') Weekly Report
                 li 
-                  span.requirements(data-intern-name='') Requirements
+                  a.requirements( data-intern-name='') Requirements
           .popup-scrollable
                 table
                   thead
@@ -513,4 +513,15 @@ script.
     });
   });
 
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const reportLinks = document.querySelectorAll('.report-links a');
+
+    reportLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            reportLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+  });
 

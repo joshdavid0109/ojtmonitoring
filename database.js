@@ -394,6 +394,30 @@ async function fetchInternDailyReports(internID) {
     }
 }
 
+async function fetchWeeklyReports(internID) {
+    try {
+        const [rows] = await pool.query(`
+        SELECT 
+            DAYNAME(dailyreports.date) as dayOfWeek,
+            dailyreports.date as date,
+            dailyreports.workdescription as description,
+            dailyreports.hours as hours
+        FROM 
+            dailyreports
+        WHERE 
+            internid = ? AND
+            dailyreports.date >= (SELECT MIN(date) FROM dailyreports WHERE internid = ?) AND
+            dailyreports.date < (SELECT ADDDATE(MIN(date), INTERVAL 7 DAY) FROM dailyreports WHERE internid = ?)
+        ORDER BY
+            dailyreports.date
+        `, [internID, internID, internID]);
+
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
 
 
 
@@ -431,7 +455,7 @@ async function uploadPicture(picture) {
         if (picture) {
             await pool.query('INSERT INTO advisers (image) VALUES (?)', [picture]);
             return true;
-        } 
+        }
     } catch (error) {
         console.error('Error uploading image:', error.message);
         throw error;
@@ -474,6 +498,7 @@ module.exports = {
     fetchInternDailyReports,
     fetchInternId,
     fetchSupervisor,
+    fetchWeeklyReports,
     closeDatabase,
 
 };
