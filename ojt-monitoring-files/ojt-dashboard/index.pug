@@ -23,8 +23,13 @@ main.container
       li
         a(href='#') ABOUT US
       li
-        form(action='/logout' method="GET")
-          input.logout-button(id="logoutbutton" type="submit" value="LOG OUT")
+        a(href="#") 
+          span.material-symbols-outlined(onclick="document.getElementById('logout-form').submit();")
+            | logout
+      form(action='/logout' method="GET" id="logout-form")
+          input(id="logoutbutton" type="hidden")
+
+            
   section
     .main-dashboard
       .main-dashboard-content
@@ -109,6 +114,15 @@ main.container
                 td= intern.companyaddress
                 td.tothours= intern.totalhours
                 td= intern.status
+
+        .intern-page
+          .buttons 
+             .back#back
+                | back
+             .next#next
+                | next
+
+
   .popup-container#popupContainer
         span.close-btn(onclick="closePopup()") ×
         .requirements-box
@@ -181,7 +195,7 @@ main.container
                           
         button.create-post-button(type='button')
           a(href='#announcement-pop-up') CREATE POST
-form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' target='_blank')
+form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
   #announcement-pop-up.modal(action='submit')
     .content
       a.close(href='#main') &Cross;
@@ -522,6 +536,58 @@ script.
             reportLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
         });
+    });
+  });
+
+  // FOR INTERNS TABLE
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const rowsPerPage = 2; // Set the number of rows per page
+    let currentPage = 1;
+
+    function showRows() {
+      const rows = document.querySelectorAll('.intern-row');
+      const startIndex = (currentPage - 1) * rowsPerPage;
+      const endIndex = startIndex + rowsPerPage;
+
+      rows.forEach((row, index) => {
+        if (index >= startIndex && index < endIndex) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+
+    function updatePageNumber() {
+      document.getElementById('pageNumber').textContent = currentPage;
+    }
+
+    // Initial setup
+    showRows();
+
+
+    // Next button click event
+    document.getElementById('next').addEventListener('on click', function() {
+      console.log ("next button clicked")
+      const rows = document.querySelectorAll('.intern-row');
+      const maxPage = Math.ceil(rows.length / rowsPerPage);
+
+      if (currentPage < maxPage) {
+        currentPage++;
+        showRows();
+
+      }
+    });
+
+    // Back button click event
+    document.getElementById('back').addEventListener('click', function() {
+      if (currentPage > 1) {
+        currentPage--;
+        showRows();
+
+      }
     });
   });
 
