@@ -1133,7 +1133,12 @@ td {
     cursor: pointer;
 }
 
-
+.no-pending-msg {
+    text-align: center;
+    color: #0D0464;
+    font-weight: bold;
+    font-size: 35px;
+}
 
 /*ICON */
 .material-symbols-outlined {

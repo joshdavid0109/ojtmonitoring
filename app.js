@@ -116,6 +116,15 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
         // Fetch the reports using the intern ID
         const reports = await fetchInternDailyReports(internId);
 
+        // Check if reports array is empty
+        if (reports.length === 0) {
+            return res.render('ojt-dashboard/views/no-reports.pug', {
+                message: 'No daily reports found for ' + internName,
+                colspan: 9,
+                reportsExist: false
+            });
+        }
+
         for (let report of reports) {
             report.date = new Date(report.date).toDateString();
             const supervisorDetails = await fetchSupervisor(report.supervisorid);
@@ -148,12 +157,21 @@ app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
 
         // Fetch the reports using the intern ID
         const weeklyReports = await fetchWeeklyReports(internId);
-        console.log('Weekly Reports:', weeklyReports);
 
-        // Format the dates in the reports
+        // Check if weeklyReports array is empty
+        if (weeklyReports.length === 0) {
+            return res.render('ojt-dashboard/views/no-reports.pug', {
+                message: 'No weekly reports found for ' + internName,
+                colspan: 4,
+                reportsExist: false
+            });
+        }
+
         weeklyReports.forEach(report => {
             report.date = new Date(report.date).toDateString(); // Format the date
         });
+
+        console.log('Weekly Reports:', weeklyReports);
 
         // Render the weekly report view with the reports data
         res.render('ojt-dashboard/views/weekly-report.pug', { weeklyReports });
@@ -345,14 +363,14 @@ app.post('/ojt-dashboard/uploadprofilepicture', async (req, res) => {
 
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
-      }
+    }
 
 
     let uploadedFile = req.files.prof_image;
     let filename = req.files.filename;
 
     uploadPicture(uploadedFile)
-    
+
 });
 
 
