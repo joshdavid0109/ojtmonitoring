@@ -9,10 +9,10 @@ header
     .nav-logo SAINT LOUIS UNIVERSITY
     .nav-name  
       p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
-    form(action='/ojt-dashboard/uploadpp' method='POST' target='_blank')
+    form(action='/ojt-dashboard/uploadprofilepicture' method='POST' enctype="multipart/form-data" target='_blank')
       .nav-item
-          img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
-          input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
+        img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+        input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
 main.container
   aside.left-nav
     ol
@@ -33,7 +33,7 @@ main.container
         .intern-details
           .bg-image
             .blue-shade
-              img(src='../ojt-images/maryheights.jpg' alt='maryheights')
+              img(src='../ojt-images/1.jpg' alt='maryheights')
           .details
             .adviser-name 
               if adviser
@@ -200,7 +200,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
         div
         .horizontal-gray-ruler
         .input-box
-          input#searchbar(type='text' placeholder='Search here...')
+          input#search-bar(type='text' placeholder='Search here...')
           i#search-icon.uil.uil-search
 
         .interns-placeholder
@@ -212,9 +212,9 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
                 .intern-details
                   .intern-name 
                     text #{intern.studentname}
-                  div.companyname
+                  .companyname
                     text #{intern.companyname}
-                  div.companyaddress 
+                  .companyaddress 
                     text #{intern.companyaddress} 
               input(type='checkbox' name="recipient" value=intern.studentname)            
               
@@ -422,7 +422,7 @@ script.
     });
     thead.appendChild(tr);
   }
-    
+
    document.addEventListener('DOMContentLoaded', function () {
       var searchInput = document.getElementById('searchbar');
       console.log(searchInput);
@@ -442,3 +442,26 @@ script.
         });
       });
     });
+
+      // JavaScript code for search functionality
+  const searchInput = document.getElementById('search-bar');
+  const internRows = document.querySelectorAll('.intern-row-checkbox');
+
+  searchInput.addEventListener('input', function () {
+    console.log("ASdas")
+    const searchTerm = searchInput.value.toLowerCase();
+
+    internRows.forEach(row => {
+      const internName = row.querySelector('.intern-name').innerText.toLowerCase();
+      const company = row.querySelector('.companyname').innerText.toLowerCase();
+      const companyAddress = row.querySelector('.companyaddress').innerText.toLowerCase();
+
+      const isMatch =
+        internName.includes(searchTerm) ||
+        company.includes(searchTerm) ||
+        companyAddress.includes(searchTerm);
+
+      row.style.display = isMatch ? 'flex' : 'none';
+    });
+  });
+

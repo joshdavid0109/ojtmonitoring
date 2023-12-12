@@ -178,12 +178,12 @@ li:not(:last-child) {
 
 .details .db-time-and-date .dashboard-slu-logo {
     width: 10px;
-    margin-left: 0px;
+    margin-left: -10px;
     animation-name: floating;
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-    margin-left: 0px;
+
     margin-top: 5px;
 }
 
@@ -204,6 +204,7 @@ li:not(:last-child) {
 
 .dashboard-slu-logo img {
     height: 85%;
+    margin-left: -10;
 }
 
 .dashboard-slu-logo {
@@ -295,7 +296,7 @@ li:not(:last-child) {
 .filtering .filtering-fields {
     display: flex;
     justify-content: right;
-    margin-right: 50px;
+    margin-right: 93px;
 }
 
 .view-by {
@@ -308,7 +309,7 @@ li:not(:last-child) {
     max-width: 300px;
     width: 100%;
     background: #fff;
-    margin: 0 20px;
+    vertical-align: middle;
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -321,7 +322,7 @@ li:not(:last-child) {
 }
 
 .input-box i {
-    left: 0px;
+    left: 3px;
     font-size: 20px;
     color: #707070;
 }
@@ -333,8 +334,7 @@ li:not(:last-child) {
     font-size: 18px;
     font-weight: 400;
     border: none;
-    left: 10px;
-    padding: 0 155px 0 10px;
+    padding: 0 35px 0 25px;
     background-color: transparent;
 }
 

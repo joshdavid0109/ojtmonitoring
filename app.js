@@ -3,7 +3,6 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 
-
 const app = express();
 const port = 8080;
 let loggedInAdviser;
@@ -16,7 +15,6 @@ app.use(session({
     saveUninitialized: true,    // Forces a session that is "uninitialized" to be saved to the store
     cookie: { secure: false }   // Set true if using HTTPS, false otherwise
 }));
-
 
 app.use('/ojt-images', express.static(path.join(__dirname, 'ojt-images')));
 app.use('/ojt-login-page', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-login-page')));
@@ -37,7 +35,7 @@ const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId }
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress, 
         fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
-        fetchRequirementsByStudentId, updateRemarks, fetchSupervisor, fetchWeeklyReports } = require('./database.js');
+        fetchRequirementsByStudentId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
 
 //GET 
 
@@ -171,9 +169,13 @@ app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
 app.get("/ojt-pending", async (req, res) => {
     try {
         const adviser = await fetchAdviser(req.session.adviserID);
-        const students = await fetchStudents();
-        const pendingStudents = await fetchPendingStudents(req.session.adviserID);
-        res.render('ojt-pending/index', { students, pendingStudents })
+        if (adviser) {
+            const students = await fetchStudents();
+            const pendingStudents = await fetchPendingStudents(req.session.adviserID);
+            res.render('ojt-pending/index', { students, pendingStudents })
+        } else {
+            res.redirect('/ojt-login-page');
+        }
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
@@ -318,14 +320,28 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
     const recipient = req.body.recipient;
     const subject = req.body['subject-text'];
     const description = req.body['description-text'];
-    console.log(sender);
-    console.log(recipient)
-    console.log(subject);
+    console.log("Inserting announcement");
 
     // Handle your data here (e.g., save to database, process, etc.)
     insertAnnouncement(sender, recipient, subject, description);
     res.redirect('/ojt-dashboard');
 });
+
+
+app.post('/ojt-dashbaord/uploadprofilepicture', async (req, res) => {
+    console.log(req.files.prof_image)
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+      }
+
+
+    let uploadedFile = req.files.prof_image;
+    let filename = req.files.filename;
+
+    uploadPicture(uploadedFile)
+    
+});
+
 
 hashAdviserPasswords().then(() => {
     app.listen(8080, () => {
