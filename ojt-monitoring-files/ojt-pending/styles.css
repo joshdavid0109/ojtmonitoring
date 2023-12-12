@@ -219,7 +219,12 @@ section .pending-students-box .students-table {
     cursor: pointer;
 }
 
-
+.no-pending-msg{
+    text-align: center;
+    color:#0D0464;
+    font-weight: bold;
+    font-size: 1.2vw;
+}
 
 
 
