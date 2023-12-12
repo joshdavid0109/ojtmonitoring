@@ -1,0 +1,31 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title= pageTitle
+    //- script(src="/public/logout.js") // Include your client-side JavaScript file
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11")
+  body
+    script.
+      // Display a confirmation dialog on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+          title: 'Logout Confirmation',
+          text: 'Are you sure you want to log out?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, log out!',
+          cancelButtonText: 'No, cancel'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // User clicked "Yes, log out!"
+            console.log("User confirmed logout");
+            window.location.href = '/ojt-login-page';
+          } else {
+            // User clicked "No, cancel" or closed the dialog
+            console.log("User canceled logout");
+            // Optionally handle the cancel action
+          }
+        });
+      });

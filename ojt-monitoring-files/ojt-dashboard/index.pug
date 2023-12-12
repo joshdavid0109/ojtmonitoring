@@ -23,9 +23,8 @@ main.container
       li
         a(href='#') ABOUT US
       li
-      form(action='/logout' method="GET")
-        input(id="logoutbutton" type="submit" value="LOG OUT")
-    img(src='../' alt='')
+        form(action='/logout' method="GET")
+          input.logout-button(id="logoutbutton" type="submit" value="LOG OUT")
   section
     .main-dashboard
       .main-dashboard-content
@@ -137,10 +136,7 @@ main.container
                       th Remarks 
                       th Status
                   tbody
-         
 
-      
-      
   section.third-column
     .announcement-column
       .announcement-title
@@ -151,15 +147,38 @@ main.container
             .announcement-box
               .announcement-box-title
                 text #{announcement.subject}
+                a.announcement-x(href="#popUpConfirmation") 
+                  .announcement-box-x#announcement-box-x-id
+                    input#announcementInput(type="submit" value='X' ) 
               .announcement-box-date
                 text #{announcement.date}
               .announcement-box-recipient TO: 
-                  text #{announcement.studentName}
+                text #{announcement.studentName}
               .announcement-box-content
                 text #{announcement.message}
               .gray-horizontal-divider
 
-            
+              
+              form(action="/ojt-dashboard/deleteannouncement"  id="confirmation-form" method='POST') 
+                #popUpConfirmation.modalConfirmation(action='submit')
+                  .content
+                    a.close(href='#main') &Cross;
+                    .content_info_holder
+                      .header
+                        .text CONFIRMATION
+                      div
+                        .horizontal-gray-ruler
+                      .confirmation-text
+                        text #{"Are you sure you want to delete this announcement?"}
+                      .button-options
+                        //- a.create-post-button(href="#" id="submit-button")
+                        input.create-post-button(type="submit" value="YES")
+                        input(type="hidden" name="announcementid" value=announcement.announcementid)
+                        a.cancel-post-button(href="#" id="cancel-button")
+                          | CANCEL
+                      
+
+                          
         button.create-post-button(type='button')
           a(href='#announcement-pop-up') CREATE POST
 form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' target='_blank')
@@ -216,7 +235,9 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' 
                     text #{intern.companyname}
                   .companyaddress 
                     text #{intern.companyaddress} 
-              input(type='checkbox' name="recipient" value=intern.studentname)            
+              input(type='checkbox' name="recipient" value=intern.studentname)    
+
+
               
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
@@ -261,8 +282,6 @@ script.
   })
 
   
- 
-
   document.getElementById("back-button").addEventListener('click', () => {
     console.log("back button")
     const form = document.getElementById('recipients');
@@ -345,25 +364,25 @@ script.
   })
    
   // opens the popup container and populates the student details
-          function openPopup(studentName) {
-              document.getElementById('studentName').innerHTML = studentName;
-              document.querySelector('.popup-container').style.display = 'block';
-              console.log('open')
-          }
-  
-          // closes the popup container
-          function closePopup() {
-               document.querySelector('.popup-container').style.display = 'none';
-               console.log('close')
-         
-          }
-  
-          // adds click event listeners to the first <td> element within each row and calls the openPopup function
-         function updateReportLinksInternName(internName) {
-        document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
-            element.setAttribute('data-intern-name', internName);
-        });
-    }
+      function openPopup(studentName) {
+          document.getElementById('studentName').innerHTML = studentName;
+          document.querySelector('.popup-container').style.display = 'block';
+          console.log('open')
+      }
+
+      // closes the popup container
+      function closePopup() {
+            document.querySelector('.popup-container').style.display = 'none';
+            console.log('close')
+      
+      }
+
+      // adds click event listeners to the first <td> element within each row and calls the openPopup function
+      function updateReportLinksInternName(internName) {
+    document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
+        element.setAttribute('data-intern-name', internName);
+    });
+  }
 
     // Function to fetch and display data in the popup
    function fetchAndDisplayData(url, internName, reportType) {
@@ -406,7 +425,6 @@ script.
   const reportTableStructures = {
     daily: ["Date", "Time in", "Time out", "Supervisor", "Description", "Hours", "Supporting Documents", "Remarks", "Status"],
     weekly: ["Day", "Date", "Description", "Hours"]
-
   };
 
   function updateTableHeaders(reportType) {
@@ -443,7 +461,7 @@ script.
       });
     });
 
-      // JavaScript code for search functionality
+      // JavaScript code for search functionality --- FOR ANNOUNCEMENT SPECIFIC INTERNS
   const searchInput = document.getElementById('search-bar');
   const internRows = document.querySelectorAll('.intern-row-checkbox');
 
@@ -464,4 +482,35 @@ script.
       row.style.display = isMatch ? 'flex' : 'none';
     });
   });
+
+
+
+        // Assuming this code is running on the client side (in a browser)
+ document.getElementById('submit-button').addEventListener('click', function() {
+  console.log("submit")
+    // Perform asynchronous form submission
+    const formData = new FormData(document.getElementById('confirmation-form'));
+
+    console.log("before")
+    console.log(formData)
+    
+    fetch('/ojt-dashboard/deleteannouncement', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      console.log("after fetch")
+      if (response.ok) {
+        console.log('Announcement deleted successfully');
+        // Close the modal using your preferred method (e.g., jQuery, Bootstrap modal functions)
+        // For example, if you are using Bootstrap modal:
+      } else {
+        console.error('Failed to delete announcement');
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err.message);
+    });
+  });
+
 

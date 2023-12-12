@@ -2,6 +2,7 @@
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const bcrypt = require('bcrypt'); // bcrypt library for password hashing
+const { format } = require('path');
 dotenv.config()
 
 // uses pool instead of connection, instead of creating a brand new connection for each query,
@@ -313,7 +314,7 @@ async function fetchInterns(adviserID) {
 
 async function fetchAnnouncements(senderid) {
     try {
-        const [rows] = await pool.query("SELECT a.date, a.recipientid, a.subject, a.message, CASE WHEN a.recipientid = 0 THEN 'All Students' ELSE s.studentName END AS studentName FROM announcements a LEFT JOIN interns i ON a.recipientid = i.internid LEFT JOIN students s ON i.studentID = s.studentid WHERE a.senderid = ? ORDER BY a.announcementid desc", [senderid]);
+        const [rows] = await pool.query("SELECT a.announcementid, a.date, a.recipientid, a.subject, a.message, CASE WHEN a.recipientid = 0 THEN 'All Students' ELSE s.studentName END AS studentName FROM announcements a LEFT JOIN interns i ON a.recipientid = i.internid LEFT JOIN students s ON i.studentID = s.studentid WHERE a.senderid = ? ORDER BY a.announcementid desc", [senderid]);
 
         // Reformat the date for each row
         const formattedRows = rows.map(row => {
@@ -327,7 +328,16 @@ async function fetchAnnouncements(senderid) {
 
         return formattedRows;
     } catch (error) {
-        console.error('Error executing qeury:', error.message);
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function deleteAnnouncement(announcementid) {
+    try {
+        await pool.query('DELETE from announcements where announcementid = ?', [announcementid]);
+    } catch(er) {
+        console.error('Error executing query:', error.message);
         throw error;
     }
 }
@@ -452,6 +462,7 @@ module.exports = {
     hashAdviserPasswords,
     fetchInterns,
     fetchAnnouncements,
+    deleteAnnouncement,
     fetchAdviser,
     insertAnnouncement,
     authenticateAdviser,

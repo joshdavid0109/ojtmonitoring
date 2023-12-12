@@ -1,0 +1,483 @@
+meta(charset='UTF-8')
+meta(name='viewport' content='width=device-width, initial-scale=1.0')
+title Admin
+link(rel='stylesheet' type='text/css' href='/ojt-dashboard/styles.css')
+link(rel='stylesheet' href='https://unicons.iconscout.com/release/v4.0.0/css/line.css')
+link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
+header
+  nav.navbar
+    .nav-logo SAINT LOUIS UNIVERSITY
+    .nav-name  
+      p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
+    form(action='/ojt-dashboard/uploadprofilepicture' method='POST' enctype="multipart/form-data" target='_blank')
+      .nav-item
+        img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+        input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
+main.container
+  aside.left-nav
+    ol
+      li
+        a(href='/ojt-dashboard') DASHBOARD
+      li
+        a(href='/ojt-pending') PENDING
+      li
+        a(href='#') ABOUT US
+      li
+        form(action='/logout' method="GET")
+          input.logout-button(id="logoutbutton" type="submit" value="LOG OUT")
+  section
+    .main-dashboard
+      .main-dashboard-content
+        .main-dashboard-title  DASHBOARD
+        .intern-details
+          .bg-image
+            .blue-shade
+              img(src='../ojt-images/1.jpg' alt='maryheights')
+          .details
+            .adviser-name 
+              if adviser
+                p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '')}
+            .yellow-horizontal.bar
+            .db-time-and-date
+              .dashboard-slu-logo
+                img(src='../ojt-images/slu-logo.png' alt='slu logo')
+              .dashboard-time
+                .time-text TIME
+                #current-time 10:22:31 GMT+7
+              .dashboard-date
+                .date-text DATE
+                #current-date MONDAY, 20 NOVEMBER 2023
+          .intern-count-box
+            .pending-students
+              .count 
+                if (pendingcount)
+                  text #{pendingcount}
+              .text TOTAL PENDING STUDENTS
+            .total-interns
+              .count
+                 if(total)
+                  text #{total}
+              .text TOTAL INTERNS
+            .finished-interns
+              .count
+                 if (finished)
+                   text #{finished}
+                 else 
+                   | 0
+              .text 
+                   text #{"TOTAL FINISHED INTERNS"}
+                  
+    .filtering
+      .filtering-fields
+        .input-box
+          input#searchbar(type='text' placeholder='Search here...')
+          i#search-icon.uil.uil-search
+    .intern-list-container
+      .table-label-filter
+        .title INTERNS
+       
+        .filter
+          label.view-by(for='view-by')  FILTER 
+          select#intern-filter
+            option(value='0') Name
+            option(value='1') Class Code
+            option(value='2') Company
+            option(value='3') Address
+            option(value='4') Total Hours 
+            option(value='5') Status
+      .intern-table
+        table.intern-table-holder#internsTable
+          tbody
+            tr.table-header
+              th
+                | NAME
+              th
+                | CLASS CODE
+              th
+                | COMPANY
+              th
+                | ADDRESS
+              th
+                | TOTAL HOURS
+              th
+                | STATUS
+            each intern in interns
+              tr.table-data(data-intern-id=intern.studentname class='intern-row')
+                td= intern.studentname
+                td= intern.classcode
+                td= intern.companyname
+                td= intern.companyaddress
+                td.tothours= intern.totalhours
+                td= intern.status
+  .popup-container#popupContainer
+        span.close-btn(onclick="closePopup()") ×
+        .requirements-box
+          .header-container
+            h2#studentName #{studentName} 
+            .report-links
+              ol 
+                li 
+                  span.daily-report(data-intern-name='') Daily Report
+                li 
+                  span.weekly-report(data-intern-name='') Weekly Report
+                li 
+                  span.requirements(data-intern-name='') Requirements
+          .popup-scrollable
+                table
+                  thead
+                    tr
+                      th Date
+                      th Time in
+                      th Time out
+                      th Supervisor
+                      th Description 
+                      th Hours
+                      th Supporting Documents 
+                      th Remarks 
+                      th Status
+                  tbody
+
+  section.third-column
+    .announcement-column
+      .announcement-title
+        | ANNOUNCEMENTS
+      .announcement-container
+        .scroll-container
+          each announcement in announcements
+            .announcement-box
+              .announcement-box-title
+                text #{announcement.subject}
+                a.announcement-x(href="#popUpConfirmation") 
+                  .announcement-box-x#announcement-box-x-id
+                    input#announcementInput(type="submit" value='X' ) 
+              .announcement-box-date
+                text #{announcement.date}
+              .announcement-box-recipient TO: 
+                text #{announcement.studentName}
+              .announcement-box-content
+                text #{announcement.message}
+              .gray-horizontal-divider
+
+              
+              form(action="/ojt-dashboard/deleteannouncement"  id="confirmation-form" method='POST' target='_blank') 
+                #popUpConfirmation.modalConfirmation(action='submit')
+                  .content
+                    a.close(href='#main') &Cross;
+                    .content_info_holder
+                      .header
+                        .text CONFIRMATION
+                      div
+                        .horizontal-gray-ruler
+                      .confirmation-text
+                        text #{"Are you sure you want to delete this announcement?"}
+                      .button-options
+                        input.create-post-button(id="submitbutton" type="submit" value="YES") 
+                        input.cancel-post-button(id="submitbutton" type="submit" value="CANCEL") 
+                        input(type="hidden" name="announcementid" value=announcement.announcementid)
+                          
+        button.create-post-button(type='button')
+          a(href='#announcement-pop-up') CREATE POST
+form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST' target='_blank')
+  #announcement-pop-up.modal(action='submit')
+    .content
+      a.close(href='#main') &Cross;
+      .form(action="postannouncement" method="POST" target="_blank" )
+        .content_info_holder
+          .header ANNOUNCEMENT
+          .filter TO: 
+              .rec-option-text#recipients  
+                a(href='#announcement-pop-up1')
+                  span.material-symbols-outlined#message-recipient(style="vertical-align= middle")
+                    | TO ALL
+                    | add
+          .horizontal-gray-ruler
+          .pop-up-subject
+            .title SUBJECT
+            // populate with subject txt
+            textarea#description-text-area.content-holder-subject(name='subject-text' cols='30' rows='3')
+            .horizontal-gray-ruler
+            .title DESCRIPTION
+            textarea#description-text-area.content-holder-description(name='description-text' cols='30' rows='10')
+            input(type="hidden" name="sender", value=adviser.adviserID)
+            input(type="hidden" name="recipient", value="0")
+            input.create-post-button(id="submitbutton" type="submit" value="SUBMIT") 
+  | &gt;
+  #announcement-pop-up1.modal(action='submit')
+    .content
+      a.close(href='#main') &Cross;
+      .content_info_holder
+        .header
+          div
+            a(href='#announcement-pop-up')
+              span.material-symbols-outlined#back-button
+                | keyboard_return
+          .text SPECIFIC INTERNS
+        div
+        .horizontal-gray-ruler
+        .input-box
+          input#search-bar(type='text' placeholder='Search here...')
+          i#search-icon.uil.uil-search
+
+        .interns-placeholder
+          each intern in interns
+            .intern-row-checkbox
+              .flex-container
+                .img-holder
+                  img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+                .intern-details
+                  .intern-name 
+                    text #{intern.studentname}
+                  .companyname
+                    text #{intern.companyname}
+                  .companyaddress 
+                    text #{intern.companyaddress} 
+              input(type='checkbox' name="recipient" value=intern.studentname)    
+
+
+              
+script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
+script.
+  // Displays the current time with respect to UTC+8 time zone
+  function updateCurrentTime() {
+      var now = new Date();
+      var hours = now.getUTCHours() + 8;
+      var minutes = now.getUTCMinutes();
+      var seconds = now.getUTCSeconds();
+      // Adjust hours to wrap around 24
+      hours = hours % 24;
+      // Format minutes and seconds to always be two digits
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      var currentTimeString = hours + ':' + minutes + ':' + seconds + ' UTC+8';
+      document.getElementById('current-time').textContent = currentTimeString;
+  }
+
+    setInterval(updateCurrentTime, 1000);
+    updateCurrentTime();
+    // Displays current date from device
+  function updateCurrentDate() {
+      var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      var currentDate = new Date().toLocaleDateString('en-US', options);
+      document.getElementById('current-date').textContent = currentDate;
+  }
+      updateCurrentDate();
+
+  document.getElementById('profile-image').addEventListener('click', function() {
+    document.getElementById('fileInput').click();
+  })
+
+  document.getElementById('fileInput').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profile-image').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+  })
+
+  
+  document.getElementById("back-button").addEventListener('click', () => {
+    console.log("back button")
+    const form = document.getElementById('recipients');
+
+      const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      const checkedValues = Array.from(checkedCheckboxes).map((checkbox) => checkbox.value);
+
+      if (checkedValues.length > 0) {
+        document.getElementById("message-recipient").remove();
+          checkedCheckboxes.forEach(checkbox => {
+          // Create a wrapper div for each input/button pair
+              const wrapperDiv = document.createElement('div');
+              wrapperDiv.classList.add('input-wrapper');
+
+              // Create the hidden input element to store the checkbox value
+              const hiddenInput = document.createElement('input');
+              hiddenInput.type = 'hidden';
+              hiddenInput.name = 'recipients[]';
+              hiddenInput.value = checkbox.value;
+              
+              // Create a visible text input to display the checkbox value
+              const textInput = document.createElement('input');
+              textInput.type = 'text';
+              textInput.value = checkbox.value;
+              textInput.readOnly = true; // Prevent editing the text input
+              textInput.classList.add('display-input');
+              textInput.style.border = "none";
+
+              // Create the "X" button element to remove the input
+              const removeButton = document.createElement('span');
+              removeButton.textContent = 'close';
+              removeButton.classList.add('material-symbols-outlined');
+              removeButton.style.verticalAlign = "middle";
+              removeButton.style.cursor = "pointer";
+              
+              // Append the hidden input, text input, and remove button to the wrapper
+              wrapperDiv.appendChild(hiddenInput);
+              wrapperDiv.appendChild(textInput);
+              wrapperDiv.appendChild(removeButton);
+              
+              // Append the wrapper div to the form
+              form.appendChild(wrapperDiv);
+
+              // Add an event listener to the remove button to handle the click event
+              removeButton.addEventListener('click', function() {
+                // Remove the wrapper div from the form to remove both the button and the input
+
+              const checkboxValueToUncheck = checkbox.value; // Replace this with the actual value
+              const checkboxToUncheck = document.querySelector(`input[type="checkbox"][value="${checkboxValueToUncheck}"]`);
+
+              if (checkboxToUncheck) {
+                  checkboxToUncheck.checked = false;
+              }
+                wrapperDiv.remove();
+                console.log ("removing " + checkbox.value);
+                console.log(form.children.length)
+
+                 if (form.children.length == 1) {
+                  while (form.firstChild) {
+                    form.removeChild(form.firstChild);
+                  }
+
+                  const aLink = document.createElement('a');
+                  aLink.href = '#announcement-pop-up1';
+
+                  const rec = document.createElement('pan');
+                  rec.id = 'message-recipient';
+                  rec.classList.add('material-symbols-outlined');
+                  rec.style.verticalAlign = 'middle';
+                  rec.textContent = 'TO ALL add';
+
+                  aLink.appendChild(rec);
+
+                  form.appendChild(aLink)
+                }
+              });
+        });
+      }
+
+  })
+   
+  // opens the popup container and populates the student details
+      function openPopup(studentName) {
+          document.getElementById('studentName').innerHTML = studentName;
+          document.querySelector('.popup-container').style.display = 'block';
+          console.log('open')
+      }
+
+      // closes the popup container
+      function closePopup() {
+            document.querySelector('.popup-container').style.display = 'none';
+            console.log('close')
+      
+      }
+
+      // adds click event listeners to the first <td> element within each row and calls the openPopup function
+      function updateReportLinksInternName(internName) {
+    document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
+        element.setAttribute('data-intern-name', internName);
+    });
+  }
+
+    // Function to fetch and display data in the popup
+   function fetchAndDisplayData(url, internName, reportType) {
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('studentName').innerHTML = internName;
+            updateTableHeaders(reportType); // Update table headers
+            document.querySelector('.popup-container').style.display = 'block';
+            document.querySelector('.popup-scrollable table tbody').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+  }
+
+    // Event listeners for table rows (intern selection)
+    document.querySelectorAll('.table-data').forEach(row => {
+        row.addEventListener('click', function() {
+            var internName = row.dataset.internId;
+            // Update report links with the selected intern's name
+            updateReportLinksInternName(internName);
+            // Fetch and display intern's daily report
+            fetchAndDisplayData(`/ojt-dashboard/daily-reports/${internName}`, internName,'daily'); //default is daily my friend
+        });
+    });
+
+    // Event listeners for report links
+   document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
+    element.addEventListener('click', function() {
+        var internName = this.dataset.internName;
+        if (internName) {
+            var reportType = this.className.includes('daily-report') ? 'daily' : 
+                             this.className.includes('weekly-report') ? 'weekly' : 
+                             'requirements'; 
+            fetchAndDisplayData(`/ojt-dashboard/${reportType}-reports/${internName}`, internName, reportType);
+        } else {
+            console.error('Intern name not set');
+        }
+    });
+  });
+  const reportTableStructures = {
+    daily: ["Date", "Time in", "Time out", "Supervisor", "Description", "Hours", "Supporting Documents", "Remarks", "Status"],
+    weekly: ["Day", "Date", "Description", "Hours"]
+  };
+
+  function updateTableHeaders(reportType) {
+    const tableHeaders = reportTableStructures[reportType] || [];
+    const thead = document.querySelector('.popup-scrollable table thead');
+    thead.innerHTML = ''; // Clear existing headers
+
+    const tr = document.createElement('tr');
+    tableHeaders.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        tr.appendChild(th);
+    });
+    thead.appendChild(tr);
+  }
+
+   document.addEventListener('DOMContentLoaded', function () {
+      var searchInput = document.getElementById('searchbar');
+      console.log(searchInput);
+
+      searchInput.addEventListener('input', function () {
+        console.log(this.value)
+        var searchText = this.value.toLowerCase();
+        var internRows = document.querySelectorAll('.intern-row');
+
+        internRows.forEach(function (row) {
+          var rowText = row.innerText.toLowerCase();
+          if (rowText.indexOf(searchText) === -1) {
+            row.style.display = 'none';
+          } else {
+            row.style.display = '';
+          }
+        });
+      });
+    });
+
+      // JavaScript code for search functionality
+  const searchInput = document.getElementById('search-bar');
+  const internRows = document.querySelectorAll('.intern-row-checkbox');
+
+  searchInput.addEventListener('input', function () {
+    console.log("ASdas")
+    const searchTerm = searchInput.value.toLowerCase();
+
+    internRows.forEach(row => {
+      const internName = row.querySelector('.intern-name').innerText.toLowerCase();
+      const company = row.querySelector('.companyname').innerText.toLowerCase();
+      const companyAddress = row.querySelector('.companyaddress').innerText.toLowerCase();
+
+      const isMatch =
+        internName.includes(searchTerm) ||
+        company.includes(searchTerm) ||
+        companyAddress.includes(searchTerm);
+
+      row.style.display = isMatch ? 'flex' : 'none';
+    });
+  });
+
+
+ 

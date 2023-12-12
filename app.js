@@ -24,6 +24,7 @@ app.use('/ojt-dashboard', express.static(path.join(__dirname, 'ojt-monitoring-fi
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
+
 // Import functions from database.js
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./database.js');
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, fetchInternDailyReports, fetchDailyReports } = require('./database.js');
@@ -32,7 +33,7 @@ const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPe
 
 const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database.js');
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
+const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, deleteAnnouncement } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress, 
         fetchPendingStudentsByCompany, updateStatus, fetchInternDailyReports,
         fetchRequirementsByStudentId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
@@ -305,7 +306,7 @@ app.get("/some-protected-route", (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            console.log("nakalog out na to")
+            console.log("A problem occured while logging out: "+ err.message)
         }
         console.log("pakilog out")
         adviser = {};
@@ -324,12 +325,24 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 
     // Handle your data here (e.g., save to database, process, etc.)
     insertAnnouncement(sender, recipient, subject, description);
-    res.redirect('/ojt-dashboard');
+    res.redirect('/ojt-dashboard#main');
 });
 
+app.post('/ojt-dashboard/deleteannouncement', async (req, res) => {
+    const announcementid = req.body['announcementid'];
+    
+    try {
+        deleteAnnouncement(announcementid);
 
-app.post('/ojt-dashbaord/uploadprofilepicture', async (req, res) => {
-    console.log(req.files.prof_image)
+        res.status(200).json({ success: true, message: 'Announcement deleted successfully' });
+    } catch (err) {
+        console.log(err.message);
+    }
+})
+
+
+app.post('/ojt-dashboard/uploadprofilepicture', async (req, res) => {
+
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
       }
