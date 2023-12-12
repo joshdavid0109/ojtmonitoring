@@ -940,13 +940,18 @@ td {
 
 .content .filter .rec-option-anchor {
     text-decoration: none;
-    border: none;
     color: black;
+}
+
+.filter {
+    display: flex;
+    align-items: center;
 }
 
 .content .filter .rec-option-text {
     display:inline-flex;
     flex-direction:column;
+    /* border: 1px solid; */
 }
 
 .input-wrapper {
