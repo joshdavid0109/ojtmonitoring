@@ -83,7 +83,7 @@ main.container
        
         .filter
           label.view-by(for='view-by')  FILTER 
-          select#intern-filter
+          select#internFilter
             option(value='0') Name
             option(value='1') Class Code
             option(value='2') Company
@@ -538,6 +538,34 @@ script.
         });
     });
   });
+
+  // FOR FILTERING
+
+    const filterSelect = document.getElementById('internFilter');
+    const searchBar = document.getElementById('searchbar');
+    const rows = document.querySelectorAll('.intern-row');
+
+    function filterTable() {
+      console.log("change")
+      const filterOption = filterSelect.value.toLowerCase();
+      const searchTerm = searchBar.value.toLowerCase();
+
+      rows.forEach(row => {
+        const rowData = row.querySelector(`td:nth-child(${parseInt(filterOption) + 1})`).textContent.toLowerCase();
+
+        if (rowData.includes(searchTerm)) {
+          row.style.display = 'table-row';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    // Event listeners for filtering
+    filterSelect.addEventListener('change', filterTable);
+    searchBar.addEventListener('input', filterTable);
+
+  
 
   // FOR INTERNS TABLE
 
