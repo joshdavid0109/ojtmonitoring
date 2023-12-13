@@ -114,15 +114,18 @@ section {
     color: #0D0464;
 }
 
-.logout-button {
-    font-family: 'PT Sans', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    border: none;
-    background-color: white;
-    border-radius: 5px;
-    color:#0D0464;
-    display: block;
+.left-nav form{
+    margin-top: 30%;
+}
+#logoutbutton{
+    border-radius: 20px;
+    padding: 2.5% 5.8% 2.5%;
+    border: 2px solid #0D0464;
+    color: #0D0464;
+    background-color: #F1F1F1;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .logout-button:hover {
