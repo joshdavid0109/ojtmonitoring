@@ -36,7 +36,7 @@ const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId }
 const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, deleteAnnouncement } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress,
     fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, fetchInternDailyReports,
-    fetchRequirementsByStudentId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
+    fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
 
 //GET 
 // // run node app.js then access http://localhost:8080/ojt-login-page/
@@ -211,11 +211,11 @@ app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
 
         console.log(internId + ' is ' + internName);
 
-        // Fetch the reports using the intern ID
-        const reports = await fetchInternDailyReports(internId);
+        // Fetch the requirements using the intern ID
+        const requirements = await fetchRequirementsByInternId(internId);
 
-        // Check if reports array is empty
-        if (reports.length === 0) {
+        // Check if requirements array is empty
+        if (requirements.length === 0) {
             return res.render('ojt-dashboard/views/no-reports.pug', {
                 message: 'No requirements found for ' + internName,
                 colspan: 4,
@@ -223,20 +223,23 @@ app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
             });
         }
 
-        for (let report of reports) {
-            report.date = new Date(report.date).toDateString();
-            const supervisorDetails = await fetchSupervisor(report.supervisorid);
-            report.supervisorName = supervisorDetails.supervisorname;
-        }
-        console.log('Reports:', reports);
+        // Format dates in requirements (if there's a date field in requirements)
+        requirements.forEach(requirement => {
+            if (requirement.datesubmitted) {
+                requirement.datesubmitted = new Date(requirement.datesubmitted).toDateString();
+            }
+        });
 
-        // Render the intern reports view with the reports data
-        res.render('ojt-dashboard/views/intern-requirements.pug', { reports });
+        console.log('Requirements:', requirements);
+
+        // Render the intern requirements view with the requirements data
+        res.render('ojt-dashboard/views/intern-requirement.pug', { requirements });
     } catch (error) {
         console.error('Error', error);
         res.status(500).send("Error: Internal Server Error");
     }
 });
+
 
 
 
