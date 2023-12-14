@@ -210,7 +210,6 @@ section .pending-students-box .students-table {
 .students-table .table-data td {
     padding: 20px;
     height: 20px;
-    width: 28%;
 }
 
 .students-table .table-data td:first-child {
