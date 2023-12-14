@@ -261,7 +261,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
               input(type='checkbox' name="recipient" value=intern.studentname)  
 
 
-  form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST')
+form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST')
   #requirement-pop-up.modal(action='submit')
     .content
       a.close(href='#main') &Cross;
@@ -282,7 +282,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
             .horizontal-gray-ruler
             input(type="hidden" name="sender", value=adviser.adviserID)
             
-            input(type="hidden" name="recipient", value="")
+            input(type="hidden" name="intern-recipient", value=0)
             input.create-post-button(id="submit-requirement-button" type="submit" value="SUBMIT") 
   | &gt;
   #requirement-pop-up1.modal(action='submit')

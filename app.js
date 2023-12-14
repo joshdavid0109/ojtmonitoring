@@ -399,7 +399,9 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 
 app.post('/ojt-dashboard/postrequirement', async (req, res) => {
     const requirementName = req.body['requirement-name'];
-    const recipientIDs = req.body['intern-recipient']; // Assuming this is an array of intern IDs
+    const recipientIDs = req.body['recipient']; // Assuming this is an array of intern IDs
+    console.log(recipientIDs)
+
     try {
         const requirementID = await insertNewRequirement(requirementName);
         await insertRequirementForInterns(requirementID, recipientIDs);
