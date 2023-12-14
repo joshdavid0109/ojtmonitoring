@@ -295,14 +295,11 @@ async function fetchAdviser(adviserID) {
 
 async function insertAnnouncement(sender, recipient, subject, announcement) {
 
-
     // Get the current date
     const now = new Date();
 
     // Format the date as YYYY-MM-DD
     const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-
-
 
     try {
         if (recipient.length == 1) {
@@ -317,6 +314,35 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
         }
     } catch (error) {
         console.error('Error executing qeury:', error.message);
+        throw error;
+    }
+}
+async function insertNewRequirement(requirementName) {
+    try {
+        const query = `INSERT INTO requirements (requirementname) VALUES (?)`;
+        const [result] = await pool.query(query, [requirementName]);
+        return result.insertId; // Assuming 'insertId' is the ID of the newly created requirement
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function insertRequirementForInterns(requirementID, internIDs) {
+    try {
+        // Begin a transaction
+        await pool.beginTransaction();
+
+        const query = `INSERT INTO internrequirements (internid, requirementid) VALUES (?, ?)`;
+
+        for (const internID of internIDs) {
+            await pool.query(query, [internID, requirementID]);
+        }
+
+        await pool.commit();
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        await pool.rollback();
         throw error;
     }
 }
@@ -338,6 +364,9 @@ async function fetchSupervisor(supervisorId) {
         throw error;
     }
 }
+
+
+
 
 
 
@@ -476,10 +505,6 @@ async function fetchWeeklyReports(internID) {
     }
 }
 
-
-
-
-
 async function hashAdviserPasswords() {
     try {
 
@@ -550,11 +575,8 @@ module.exports = {
     deleteAnnouncement,
     fetchAdviser,
     insertAnnouncement,
-    authenticateAdviser,
-    hashAdviserPasswords,
-    insertAnnouncement, fetchDailyReports, fetchInternDailyReports,
-    insertAnnouncement, fetchDailyReports, fetchInternDailyReports, fetchInternId,
-    insertAnnouncement,
+    insertNewRequirement,
+    insertRequirementForInterns,
     fetchDailyReports,
     fetchInternDailyReports,
     fetchInternId,

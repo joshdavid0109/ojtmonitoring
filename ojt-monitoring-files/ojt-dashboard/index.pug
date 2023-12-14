@@ -159,6 +159,8 @@ main.container
                       th Remarks 
                       th Status
                   tbody
+        button#addRequirementButton 
+          a(href='#requirement-pop-up') Add Requirement
 
   section.third-column
     .announcement-column
@@ -256,7 +258,62 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
                     text #{intern.companyname}
                   .companyaddress 
                     text #{intern.companyaddress} 
-              input(type='checkbox' name="recipient" value=intern.studentname)    
+              input(type='checkbox' name="recipient" value=intern.studentname)  
+
+
+  form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST')
+  #requirement-pop-up.modal(action='submit')
+    .content
+      a.close(href='#main') &Cross;
+      .form-container(action="postrequirement" method="POST")
+        .content_info_holder
+          .header ADD NEW REQUIREMENT
+          .horizontal-gray-ruler
+          .filter ASSIGN TO:
+            .rec-option-text#recipients  
+              a(href='#requirement-pop-up1')
+                span.material-symbols-outlined#message-recipient(style="vertical-align= middle")
+                  | TO ALL
+                  | add
+          .horizontal-gray-ruler
+          .pop-up-subject
+            .title REQUIREMENT NAME
+            textarea#requirement-name.content-holder-requirement(name='requirement-name' cols='30' rows='3')
+            .horizontal-gray-ruler
+            input(type="hidden" name="sender", value=adviser.adviserID)
+            // The recipient field will store selected intern IDs
+            input(type="hidden" name="recipient", value="")
+            input.create-post-button(id="submit-requirement-button" type="submit" value="SUBMIT") 
+  | &gt;
+  #requirement-pop-up1.modal(action='submit')
+    .content
+      a.close(href='#main') &Cross;
+      .content_info_holder
+        .header
+          div
+            a(href='#requirement-pop-up')
+              span.material-symbols-outlined#back-button
+                | keyboard_return
+          .text SPECIFIC INTERNS
+        div
+        .horizontal-gray-ruler
+        .input-box
+          input#search-bar(type='text' placeholder='Search here...')
+          i#search-icon.uil.uil-search
+        .interns-placeholder
+          each intern in interns
+            .intern-row-checkbox
+              .flex-container
+                .img-holder
+                  img.profile-image(src='../ojt-images/user-profile.png' alt='Profile')
+                .intern-details
+                  .intern-name 
+                    text #{intern.studentname}
+                  .companyname
+                    text #{intern.companyname}
+                  .companyaddress 
+                    text #{intern.companyaddress}
+              input(type='checkbox' name="intern-recipient" value=intern.studentname)
 
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
@@ -294,10 +351,8 @@ script.
       // FOR INTERNS TABLE
 
     document.addEventListener('DOMContentLoaded', function() {
-
       const windowWidth = window.innerWidth;
       let rowsPerPage = 4;
-
       console.log(windowWidth)
 
       // Adjust your table content based on the window width
@@ -631,13 +686,22 @@ script.
   });
 
   document.addEventListener('DOMContentLoaded', (event) => {
-    const reportLinks = document.querySelectorAll('.report-links a');
+  const reportLinks = document.querySelectorAll('.report-links a');
+  const addRequirementButton = document.getElementById('addRequirementButton');
 
-    reportLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            reportLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-        });
+  reportLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      // Remove 'active' class from all links and then add to the clicked one
+      reportLinks.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+
+      // Show the "Add Requirement" button only if the "Requirements" link is clicked
+      if (this.classList.contains('requirements')) {
+        addRequirementButton.style.display = 'block';
+      } else {
+        addRequirementButton.style.display = 'none';
+      }
+      });
     });
   });
 
@@ -654,3 +718,12 @@ script.
       // Your logic for handling the Next Page button click goes here
     });
   });
+
+  function toggleRequirementForm() {
+      var form = document.getElementById('requirementForm');
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+      } else {
+        form.style.display = 'none';
+      }
+    }
