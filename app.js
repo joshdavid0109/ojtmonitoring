@@ -294,20 +294,7 @@ app.get('/ojt-pending/sort', async (req, res) => {
     }
 });
 
-app.post('/ojt-dashboard/postrequirement', async (req, res) => {
-    const senderID = req.body.sender;
-    const requirementName = req.body['requirement-name'];
-    const recipientIDs = req.body['intern-recipient']; // Assuming this is an array of intern IDs
 
-    try {
-        const requirementID = await insertNewRequirement(requirementName);
-        await insertRequirementForInterns(requirementID, recipientIDs);
-        res.redirect('/ojt-dashboard');
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send("An error occurred while processing the requirement.");
-    }
-});
 
 
 
@@ -397,7 +384,6 @@ app.get('/logout', (req, res) => {
 });
 
 
-
 app.post('/ojt-dashboard/postannouncement', async (req, res) => {
     const sender = req.body['sender'];
     const recipient = req.body.recipient;
@@ -412,17 +398,18 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 });
 
 app.post('/ojt-dashboard/postrequirement', async (req, res) => {
-    const requirementName = req.body['subject-text'];
-    const recipientIDs = req.body['recipient']; // assuming this is an array of intern IDs
-    console.log("Inserting new requirement");
+    const requirementName = req.body['requirement-name'];
+    const recipientIDs = req.body['intern-recipient']; // Assuming this is an array of intern IDs
     try {
-        await insertRequirement(requirementName, recipientIDs);
+        const requirementID = await insertNewRequirement(requirementName);
+        await insertRequirementForInterns(requirementID, recipientIDs);
         res.redirect('/ojt-dashboard');
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send("An error occurred while inserting the requirement.");
+        res.status(500).send("An error occurred while processing the requirement.");
     }
 });
+
 
 app.post('/ojt-dashboard/deleteannouncement', async (req, res) => {
     const announcementid = req.body['announcementid'];

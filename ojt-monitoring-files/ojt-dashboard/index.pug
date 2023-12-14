@@ -281,7 +281,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
             textarea#requirement-name.content-holder-requirement(name='requirement-name' cols='30' rows='3')
             .horizontal-gray-ruler
             input(type="hidden" name="sender", value=adviser.adviserID)
-            // The recipient field will store selected intern IDs
+            
             input(type="hidden" name="recipient", value="")
             input.create-post-button(id="submit-requirement-button" type="submit" value="SUBMIT") 
   | &gt;

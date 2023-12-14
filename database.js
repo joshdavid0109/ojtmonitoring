@@ -321,7 +321,7 @@ async function insertNewRequirement(requirementName) {
     try {
         const query = `INSERT INTO requirements (requirementname) VALUES (?)`;
         const [result] = await pool.query(query, [requirementName]);
-        return result.insertId; // Assuming 'insertId' is the ID of the newly created requirement
+        return result.insertId;
     } catch (error) {
         console.error('Error executing query:', error.message);
         throw error;
