@@ -50,6 +50,7 @@ main.container
                 th CLASS CODE
                 th COMPANY
                 th ADDRESS
+                th WORK TYPE
                 th STATUS
               if pendingStudents.length > 0
                 each student in pendingStudents
@@ -58,6 +59,7 @@ main.container
                     td= student.classcode 
                     td= student.companyname 
                     td= student.companyaddress
+                    td= student.worktype
                     td
                       div.status-box
                           img(src='/ojt-images/check-mark.png' class='status-update' alt='ACCEPTED')
