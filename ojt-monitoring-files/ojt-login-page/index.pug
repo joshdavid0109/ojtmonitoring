@@ -27,16 +27,35 @@ link(rel="stylesheet" type="text/css" href="/ojt-login-page/styles.css")
 script.
   document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+
     loginForm.addEventListener('submit', function(e) {
-  
+      e.preventDefault(); // Prevent default form submission
+
+      fetch('/ojt-login-page', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `adviserEmail=${encodeURIComponent(emailInput.value)}&password=${encodeURIComponent(passwordInput.value)}`
+      })
+      .then(response => response.text())
+      .then(text => {
+        if (text === 'false') {
+          alert('Invalid email or password. Please try again.');
+        } else {
+          window.location.href = '/ojt-dashboard'; // Redirect on successful login
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     });
 
-    const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
-    const passwordInput = document.getElementById('password');
-    showPasswordCheckbox.addEventListener('change', function () {
+    showPasswordCheckbox.addEventListener('change', function() {
       passwordInput.type = this.checked ? 'text' : 'password';
     });
   });
-
-
 

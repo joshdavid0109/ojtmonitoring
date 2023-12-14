@@ -1,0 +1,16 @@
+each report in requirements 
+    tr
+        td #{report.date}
+        td #{report.timeIn}
+        td #{report.timeOut}
+        td #{report.supervisorName} 
+        td #{report.workdescription}
+        td #{report.hours}
+        td Supporting Documents Placeholder
+        td #{report.remark}
+        td
+            .status-box
+                if report.verificationstatus === 'Verified'
+                    img(src="../../ojt-images/check-mark.png")
+                else
+                    img(src="../../ojt-images/x-mark.png")

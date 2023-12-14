@@ -196,6 +196,48 @@ app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
     }
 });
 
+app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
+    try {
+        const internName = req.params.internName;
+        console.log('Fetching reports for intern:', internName);
+
+        // Fetch the intern ID
+        const internIdResult = await fetchInternId(internName);
+        const internId = internIdResult[0]?.internid;
+        if (!internId) {
+            console.log('No intern found for name:', internName);
+            return res.status(404).send("Intern not found");
+        }
+
+        console.log(internId + ' is ' + internName);
+
+        // Fetch the reports using the intern ID
+        const reports = await fetchInternDailyReports(internId);
+
+        // Check if reports array is empty
+        if (reports.length === 0) {
+            return res.render('ojt-dashboard/views/no-reports.pug', {
+                message: 'No requirements found for ' + internName,
+                colspan: 4,
+                reportsExist: false
+            });
+        }
+
+        for (let report of reports) {
+            report.date = new Date(report.date).toDateString();
+            const supervisorDetails = await fetchSupervisor(report.supervisorid);
+            report.supervisorName = supervisorDetails.supervisorname;
+        }
+        console.log('Reports:', reports);
+
+        // Render the intern reports view with the reports data
+        res.render('ojt-dashboard/views/intern-requirements.pug', { reports });
+    } catch (error) {
+        console.error('Error', error);
+        res.status(500).send("Error: Internal Server Error");
+    }
+});
+
 
 
 
@@ -307,16 +349,14 @@ app.post("/ojt-login-page", async (req, res) => {
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
         if (adviser) {
-            console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' ' + 'password = ' + password)
-
+            console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' password = ' + password);
             req.session.adviserID = adviser.adviserID;
             req.session.isLoggedIn = true;
-
             res.redirect('/ojt-dashboard');
         } else {
-            console.log('SERVER: NOT AN AVISER = email = ' + adviserEmail + ' ' + 'password = ' + password)
+            console.log('SERVER: NOT AN ADVISER = email = ' + adviserEmail + ' password = ' + password);
+            res.status(401).send('false'); // Send back a simple 'false' string
         }
-
     } catch (error) {
         console.error('Error:', error.message);
         res.status(500).send('Warning: Internal Server Error');
@@ -339,7 +379,7 @@ app.get("/some-protected-route", (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            console.log("A problem occured while logging out: "+ err.message)
+            console.log("A problem occured while logging out: " + err.message)
         }
         console.log("pakilog out")
         adviser = {};
@@ -364,7 +404,7 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 
 app.post('/ojt-dashboard/deleteannouncement', async (req, res) => {
     const announcementid = req.body['announcementid'];
-    
+
     try {
         deleteAnnouncement(announcementid);
         res.redirect('/ojt-dashboard')

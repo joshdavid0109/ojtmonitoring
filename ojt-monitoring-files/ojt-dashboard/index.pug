@@ -513,8 +513,8 @@ script.
 
       // adds click event listeners to the first <td> element within each row and calls the openPopup function
       function updateReportLinksInternName(internName) {
-    document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
-        element.setAttribute('data-intern-name', internName);
+      document.querySelectorAll('.daily-report, .weekly-report, .requirements').forEach(element => {
+      element.setAttribute('data-intern-name', internName);
     });
   }
 
@@ -558,7 +558,8 @@ script.
   });
   const reportTableStructures = {
     daily: ["Date", "Time in", "Time out", "Supervisor", "Description", "Hours", "Supporting Documents", "Remarks", "Status"],
-    weekly: ["Day", "Date", "Description", "Hours"]
+    weekly: ["Day", "Date", "Description", "Hours"],
+    requirements: ["Requirements", "Date Submitted", "Remarks", "Status"]
   };
 
   function updateTableHeaders(reportType) {
