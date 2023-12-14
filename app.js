@@ -39,6 +39,21 @@ const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPe
         fetchRequirementsByStudentId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
 
 //GET 
+// // run node app.js then access http://localhost:8080/ojt-login-page/
+app.get("/", async (req, res) => {
+    try {
+        if (req.session.isLoggedIn) {
+
+            res.redirect('/ojt-dashboard');
+        }
+
+        const students = await fetchStudents();
+        res.render('ojt-login-page/', { students })
+    } catch (error) {
+        console.error('Error:', error.message);
+        res.status(500).send('Warning: Internal Server Error');
+    }
+});
 
 // // run node app.js then access http://localhost:8080/ojt-login-page/
 app.get("/ojt-login-page", async (req, res) => {

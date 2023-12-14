@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;600;800&family=PT+Sans&display=swap');
 
 html,
 body {
@@ -292,15 +291,15 @@ li:not(:last-child) {
     display: flex;
     justify-content: space-around;
     margin: 10% 5% 50% 5%;
-    padding-bottom: 30px;
+    padding-bottom: 35%;
 }
 
 .intern-count-box .pending-students,
 .intern-count-box .total-interns,
 .intern-count-box .finished-interns {
     background-color: rgb(228, 228, 228);
-    width: 160px;
-    height: 150px;
+    width: 20%;
+    height: 30%;
     border-radius: 30px;
 }
 
@@ -309,7 +308,7 @@ li:not(:last-child) {
     font-family: "PT SANS", sans-serif;
     font-weight: 600;
     color: #0D0464;
-    font-size: 85px;
+    font-size: 10vh;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -338,7 +337,19 @@ li:not(:last-child) {
     color: #757575;
 }
 
+#internFilter, #search-input{
+    background-color: #F1F1F1;
+    border: none;
+    width: 100%;
+    font-size: 15px;
+    padding: 3% 6% 3%;
+    color: #757575;
+}
+
 .view-by {
+    font-weight: bold;
+    margin-right: 60px;
+    width: 100px;
     font-weight: bold;
     margin-right: 60px;
     width: 100px;
