@@ -436,21 +436,38 @@ async function fetchInternDailyReports(internID) {
 
 async function fetchWeeklyReports(internID) {
     try {
+        // Find out the earliest and latest date for the intern's reports
+        const [minMaxDates] = await pool.query(`
+            SELECT 
+                MIN(date) as minDate,
+                MAX(date) as maxDate
+            FROM 
+                dailyreports 
+            WHERE 
+                internid = ?
+        `, [internID]);
+
+        // Calculate the number of full weeks
+        const minDate = minMaxDates[0].minDate;
+        const maxDate = minMaxDates[0].maxDate;
+        const fullWeeks = Math.floor((new Date(maxDate) - new Date(minDate)) / (7 * 24 * 60 * 60 * 1000));
+
+        // Retrieve only the rows that fall within the full week range
         const [rows] = await pool.query(`
-        SELECT 
-            DAYNAME(dailyreports.date) as dayOfWeek,
-            dailyreports.date as date,
-            dailyreports.workdescription as description,
-            dailyreports.hours as hours
-        FROM 
-            dailyreports
-        WHERE 
-            internid = ? AND
-            dailyreports.date >= (SELECT MIN(date) FROM dailyreports WHERE internid = ?) AND
-            dailyreports.date < (SELECT ADDDATE(MIN(date), INTERVAL 7 DAY) FROM dailyreports WHERE internid = ?)
-        ORDER BY
-            dailyreports.date
-        `, [internID, internID, internID]);
+            SELECT 
+                DAYNAME(date) as dayOfWeek,
+                date,
+                workdescription as description,
+                hours
+            FROM 
+                dailyreports
+            WHERE 
+                internid = ? AND
+                date >= ? AND
+                date < ADDDATE(?, INTERVAL ?*7 DAY)
+            ORDER BY
+                date;
+        `, [internID, minDate, minDate, fullWeeks]);
 
         return rows;
     } catch (error) {
@@ -458,6 +475,8 @@ async function fetchWeeklyReports(internID) {
         throw error;
     }
 }
+
+
 
 
 

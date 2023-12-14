@@ -170,13 +170,13 @@ app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
 
         console.log(internId + ' is ' + internName);
 
-        // Fetch the reports using the intern ID
+        // Fetch the full week reports using the intern ID
         const weeklyReports = await fetchWeeklyReports(internId);
 
         // Check if weeklyReports array is empty
         if (weeklyReports.length === 0) {
             return res.render('ojt-dashboard/views/no-reports.pug', {
-                message: 'No weekly reports found for ' + internName,
+                message: 'No full week reports found for ' + internName,
                 colspan: 4,
                 reportsExist: false
             });
@@ -186,7 +186,7 @@ app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
             report.date = new Date(report.date).toDateString(); // Format the date
         });
 
-        console.log('Weekly Reports:', weeklyReports);
+        console.log('Full Week Reports:', weeklyReports);
 
         // Render the weekly report view with the reports data
         res.render('ojt-dashboard/views/weekly-report.pug', { weeklyReports });
