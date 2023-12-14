@@ -632,33 +632,7 @@ script.
 
 
 
-        // Assuming this code is running on the client side (in a browser)
- document.getElementById('submit-button').addEventListener('click', function() {
-  console.log("submit")
-    // Perform asynchronous form submission
-    const formData = new FormData(document.getElementById('confirmation-form'));
 
-    console.log("before")
-    console.log(formData)
-    
-    fetch('/ojt-dashboard/deleteannouncement', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => {
-      console.log("after fetch")
-      if (response.ok) {
-        console.log('Announcement deleted successfully');
-        // Close the modal using your preferred method (e.g., jQuery, Bootstrap modal functions)
-        // For example, if you are using Bootstrap modal:
-      } else {
-        console.error('Failed to delete announcement');
-      }
-    })
-    .catch(err => {
-      console.error('Error:', err.message);
-    });
-  });
 
 
   document.addEventListener('DOMContentLoaded', (event) => {
