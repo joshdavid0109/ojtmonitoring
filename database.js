@@ -144,6 +144,29 @@ async function fetchRequirementsByStudentId(studentId) {
         throw error;
     }
 }
+
+async function fetchRequirementsByInternId(internID) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT
+                requirements.requirementname,
+                internrequirements.datesubmitted,
+                internrequirements.remarks,
+                internrequirements.status
+            FROM
+                internrequirements
+            JOIN
+                requirements ON internrequirements.reqid = requirements.reqid
+            WHERE
+                internrequirements.internid = ?
+        `, [internID]);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
 // query to check all requirements of pending students:
 // SELECT
 //     students.studentID,
@@ -336,7 +359,7 @@ async function fetchAnnouncements(senderid) {
 async function deleteAnnouncement(announcementid) {
     try {
         await pool.query('DELETE from announcements where announcementid = ?', [announcementid]);
-    } catch(er) {
+    } catch (er) {
         console.error('Error executing query:', error.message);
         throw error;
     }
@@ -479,6 +502,7 @@ module.exports = {
     fetchPendingStudentsByCompany,
     fetchPendingStudentsByAddress,
     fetchRequirementsByStudentId,
+    fetchRequirementsByInternId,
     updateRemarks,
     updateStatus,
     uploadPicture,
