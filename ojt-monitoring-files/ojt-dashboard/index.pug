@@ -106,7 +106,7 @@ main.container
               th
                 | STATUS
             each intern in interns
-              tr.table-data(data-intern-id=intern.studentname class='intern-row')
+              tr.table-data(data-intern-id=intern.studentname data-internid=intern.internid class='intern-row')
                 input#intern-id(type="hidden" name="internid" value=intern.internid)
                 td= intern.studentname
                 td= intern.classcode
@@ -295,6 +295,30 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
 
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
+
+    document.addEventListener('DOMContentLoaded', function() {
+          // Get all the table rows with the class 'intern-row'
+          var internRows = document.querySelectorAll('.intern-row');
+
+          // Add click event listener to each row
+          internRows.forEach(function(row) {
+            row.addEventListener('click', function() {
+              console.log("this intern is being clicked")
+              // Get the value of the 'data-intern-id' attribute
+              var internId = row.getAttribute('data-internid');
+
+              // Log or use the internId as needed
+
+              console.log(internId + "is his internid");
+                
+              document.getElementById('internid').value = internId;
+
+
+              // You can also update a form input value or perform other actions
+              // Example: document.getElementById('internidInput').value = internId;
+            });
+          });
+        });
 
      document.addEventListener("DOMContentLoaded", function () {
         const internFilter = document.getElementById("internFilter");
@@ -558,8 +582,7 @@ script.
         .then(html => {
             document.getElementById('studentName').innerHTML = internName;  
             document.getElementById('student-name').innerText = internName;
-            const internid = document.getElementById('intern-id').value
-            document.getElementById('internid').value = internid;
+
             updateTableHeaders(reportType); // Update table headers
             document.querySelector('.popup-container').style.display = 'block';
             document.querySelector('.popup-scrollable table tbody').innerHTML = html;
@@ -630,6 +653,9 @@ script.
         });
       });
     });
+
+
+    
 
     document.addEventListener('DOMContentLoaded', function() {
     // Add a click event listener to each delete button
