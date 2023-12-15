@@ -35,8 +35,8 @@ const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId } = require('./database.js');
 const { fetchAdviser, fetchInterns, insertAnnouncement, insertNewRequirement, insertRequirementForInterns, fetchAnnouncements, deleteAnnouncement } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress,
-    fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, fetchInternDailyReports,
-    fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
+    fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, fetchAllRequirements,
+    fetchInternDailyReports, fetchUnassignedRequirements, fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
 
 //GET 
 // // run node app.js then access http://localhost:8080/ojt-login-page/
@@ -77,6 +77,9 @@ app.get("/ojt-dashboard", async (req, res) => {
         const interns = await fetchInterns(req.session.adviserID);
         let pendingcount = 0, total = interns.length, finished = 0;
 
+        // Prepare a map or object to hold the unassigned requirements for each intern
+
+
         for (let i = 0; i < interns.length; i++) {
             let intern = interns[i];
             switch (intern.status) {
@@ -87,9 +90,12 @@ app.get("/ojt-dashboard", async (req, res) => {
                     finished++;
                     break;
             }
+
+
         }
 
-        reports = {} // temporarry still doing
+        let unassignedRequirementsMap = {};
+        reports = {}; // Temporary still doing
 
         if (adviser) {
             const announcements = await fetchAnnouncements(adviser.adviserID)
@@ -101,7 +107,8 @@ app.get("/ojt-dashboard", async (req, res) => {
                 pendingcount,
                 finished,
                 reports,
-                total
+                total,
+                unassignedRequirementsMap
             });
         } else {
             res.redirect('/ojt-login-page');
@@ -112,6 +119,7 @@ app.get("/ojt-dashboard", async (req, res) => {
         res.status(500).send("Warning: Internal Server Error")
     }
 });
+
 
 app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
     try {
@@ -211,32 +219,65 @@ app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
 
         console.log(internId + ' is ' + internName);
 
-        // Fetch the requirements using the intern ID
-        const requirements = await fetchRequirementsByInternId(internId);
+        // Fetch the assigned requirements using the intern ID
+        const assignedRequirements = await fetchRequirementsByInternId(internId);
 
-        // Check if requirements array is empty
-        if (requirements.length === 0) {
-            return res.render('ojt-dashboard/views/no-reports.pug', {
-                message: 'No requirements found for ' + internName,
-                colspan: 4,
-                reportsExist: false
-            });
-        }
-
-        // Format dates in requirements (if there's a date field in requirements)
-        requirements.forEach(requirement => {
+        // Format dates in assigned requirements
+        assignedRequirements.forEach(requirement => {
             if (requirement.datesubmitted) {
                 requirement.datesubmitted = new Date(requirement.datesubmitted).toDateString();
             }
         });
 
-        console.log('Requirements:', requirements);
+        console.log('Assigned Requirements:', assignedRequirements);
+
 
         // Render the intern requirements view with the requirements data
-        res.render('ojt-dashboard/views/intern-requirement.pug', { requirements });
+        res.render('ojt-dashboard/views/intern-requirement.pug', {
+            assignedRequirements
+        });
     } catch (error) {
         console.error('Error', error);
         res.status(500).send("Error: Internal Server Error");
+    }
+});
+
+app.get("/fetch-unassigned-requirements/:internId", async (req, res) => {
+    try {
+        const internId = req.params.internId;
+        console.log('Fetching unassigned requirements for intern ID: ' + internId);
+        const internIdResult = await fetchInternId(internId);
+        console.log('Intern ID result: ' + JSON.stringify(internIdResult));
+
+        // Assuming internIdResult is an object and the actual ID is a property of this object
+        const actualInternId = internIdResult[0].internid;
+        console.log(actualInternId)
+
+        const unassignedRequirements = await fetchUnassignedRequirements(actualInternId);
+        console.log('Unassigned requirements from server: ', unassignedRequirements);
+        res.json(unassignedRequirements);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+
+app.post('/ojt-dashboard/postrequirement', async (req, res) => {
+    const requirementName = req.body['requirement-name'];
+    const recipientID = req.body['intern-id']; // Assuming this is an array of intern IDs
+    console.log(recipientID);
+    console.log(requirementName);
+
+    try {
+        const requirementID = await insertNewRequirement(requirementName);
+        await insertRequirementForInterns(requirementID, recipientID);
+        res.redirect('/ojt-dashboard');
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send("An error occurred while processing the requirement.");
     }
 });
 
@@ -405,21 +446,7 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 
 });
 
-app.post('/ojt-dashboard/postrequirement', async (req, res) => {
-    const requirementName = req.body['requirement-name'];
-    const recipientID = req.body['intern-id']; // Assuming this is an array of intern IDs
-    console.log(recipientID);
-    console.log(requirementName);
 
-    try {
-        const requirementID = await insertNewRequirement(requirementName);
-        await insertRequirementForInterns(requirementID, recipientID);
-        res.redirect('/ojt-dashboard');
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).send("An error occurred while processing the requirement.");
-    }
-});
 
 
 app.post('/ojt-dashboard/deleteannouncement', async (req, res) => {

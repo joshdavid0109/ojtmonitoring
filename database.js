@@ -136,6 +136,16 @@ async function fetchPendingStudentsByWorkType(adviserID) {
     }
 }
 
+async function fetchAllRequirements() {
+    try {
+        const [rows] = await pool.query(`SELECT * FROM requirements;`);
+        return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
 
 async function fetchRequirementsByStudentId(studentId) {
     try {
@@ -157,6 +167,25 @@ async function fetchRequirementsByStudentId(studentId) {
                 interns.status = 'ACCEPTED' AND students.studentID = ?
         `, [studentId]);
         return rows;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
+}
+
+async function fetchUnassignedRequirements(internID) {
+    try {
+        const [requirements] = await pool.query(`
+            SELECT
+                r.reqid,
+                r.requirementname
+            FROM
+                requirements r
+            LEFT JOIN internrequirements ir ON ir.reqid = r.reqid AND ir.internid = ?
+            WHERE
+                ir.reqid IS NULL
+        `, [internID]);
+        return requirements;
     } catch (error) {
         console.error('Error executing query:', error.message);
         throw error;
@@ -331,21 +360,14 @@ async function insertNewRequirement(requirementName) {
     }
 }
 
-async function insertRequirementForInterns(requirementID, internIDs) {
+async function insertInternRequirement(internid, reqid) {
     try {
-        // Begin a transaction
-        // await pool.beginTransaction();
-
-        const query = `INSERT INTO internrequirements (internid, reqid) VALUES (?, ?)`;
-
-        for (const internID of internIDs) {
-            await pool.query(query, [internID, requirementID]);
-        }
-
-        await pool.commit();
+        const query = `INSERT INTO internrequirements (internid, reqid, datesubmitted, status, remarks)
+         VALUES (?, ?, NULL, 'PENDING', NULL)`;
+        const [result] = await pool.query(query, [internid, reqid]);
+        return result.insertId;
     } catch (error) {
         console.error('Error executing query:', error.message);
-        await pool.rollback();
         throw error;
     }
 }
@@ -579,9 +601,11 @@ module.exports = {
     fetchAdviser,
     insertAnnouncement,
     insertNewRequirement,
-    insertRequirementForInterns,
+    insertInternRequirement,
     fetchDailyReports,
     fetchInternDailyReports,
+    fetchUnassignedRequirements,
+    fetchAllRequirements,
     fetchInternId,
     fetchSupervisor,
     fetchWeeklyReports,

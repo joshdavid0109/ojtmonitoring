@@ -108,7 +108,7 @@ main.container
             each intern in interns
               tr.table-data(data-intern-id=intern.studentname class='intern-row')
                 input#intern-id(type="hidden" name="internid" value=intern.internid)
-                td= intern.internid
+                td= intern.studentname
                 td= intern.classcode
                 td= intern.companyname
                 td= intern.companyaddress
@@ -275,9 +275,15 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
                 span.material-symbols-outlined#student-name(style="vertical-align= middle") 
                   | add
           .horizontal-gray-ruler
+           input#internid(type="hidden" name="intern-id" value='')
           .pop-up-subject
             .title REQUIREMENT NAME
-            textarea#requirement-name.content-holder-requirement(name='requirement-name' cols='30' rows='3')
+            select(name='existing-requirement-dropdown')
+                option(value='') Select Existing Requirement
+                          
+           
+            .title OR ADD NEW REQUIREMENT
+            textarea#requirement-name.content-holder-requirement(name='new-requirement-name' cols='30' rows='3' placeholder='Enter new requirement name')
             .horizontal-gray-ruler
             input#internid(type="hidden" name="intern-id" value=0)
             input(type="hidden" name="reqnumber", value=0)
@@ -285,6 +291,7 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
 .footer 
   .text 
     | DESIGN BY BRANCH @2
+
 
 
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
@@ -684,13 +691,13 @@ script.
     // Back button click event
     document.getElementById('back-page').addEventListener('click', function() {
       console.log("Back button clicked");
-      // Your logic for handling the Back button click goes here
+     
     });
 
     // Next Page button click event
     document.getElementById('nextPage').addEventListener('click', function() {
       console.log("Next Page button clicked");
-      // Your logic for handling the Next Page button click goes here
+    
     });
   });
 
@@ -714,3 +721,36 @@ script.
           }
       });
   }
+
+  function updateRequirementsDropdown(internId) {
+    fetch(`/fetch-unassigned-requirements/${internId}`)
+        .then(response => response.json())
+        .then(data => {
+            const dropdown = document.querySelector('select[name="existing-requirement-dropdown"]');
+            dropdown.innerHTML = '<option value="">Select Existing Requirement</option>'; // Reset dropdown
+
+            // Populate dropdown with unassigned requirements
+            data.forEach(req => {
+                const option = new Option(req.requirementname, req.reqid);
+                dropdown.add(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching unassigned requirements:', error);
+        });
+  }
+
+  // Add a click event listener to each row in the intern table
+  document.querySelectorAll('.intern-row').forEach(row => {
+      row.addEventListener('click', function() {
+          // Retrieve the internId from the data attribute of the clicked row
+          const internId = this.dataset.internId;
+          
+          // Set the internId in the hidden input inside the 'requirement-form'
+          document.getElementById('internid').value = internId;
+
+          // Trigger the function to update the dropdown based on the selected intern
+          console.log('updating to' )
+          updateRequirementsDropdown(internId);
+      });
+  });
