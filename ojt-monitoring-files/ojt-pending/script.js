@@ -132,7 +132,7 @@ function updateRequirementsTable(requirements) {
       const newRow = document.createElement('tr');
       newRow.innerHTML = `
           <td>${req.requirementname}</td>
-          <td>${req.datesubmitted}</td>
+          <td>${req.datesubmitted || ''}</td>
           <td class="editable" contenteditable="true">${req.remarks || 'Type here your remarks...'}</td>
           <td>${req.status}</td>
       `;

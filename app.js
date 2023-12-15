@@ -241,7 +241,17 @@ app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
 });
 
 
+app.get('/ojt-pending/requirements', async (req, res) => {
+    const studentId = req.query.studentId;
 
+    try {
+        const requirements = await fetchRequirementsByStudentId(studentId);
+        res.json(requirements);
+    } catch (error) {
+        console.error('Error fetching requirements:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 
