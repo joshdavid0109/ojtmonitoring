@@ -532,10 +532,10 @@ script.
       }
 
       // closes the popup container
-      function closePopup() {
-            document.querySelector('.popup-container').style.display = 'none';
-            console.log('close')
-      
+        function closePopup() {
+        document.querySelector('.popup-container').style.display = 'none';
+        resetReportLinkToDefault();
+        console.log('close');
       }
 
       // adds click event listeners to the first <td> element within each row and calls the openPopup function
@@ -702,3 +702,15 @@ script.
         form.style.display = 'none';
       }
     }
+
+  function resetReportLinkToDefault() {
+      const reportLinks = document.querySelectorAll('.report-links a');
+      reportLinks.forEach(link => {
+          link.classList.remove('active');
+          // Assuming the daily report link has a specific class or identifier
+          if (link.classList.contains('daily-report')) {
+              link.classList.add('active');
+              addRequirementButton.style.display = 'none'
+          }
+      });
+  }

@@ -1102,6 +1102,10 @@ td {
     z-index: 9000;
 }
 
+#addRequirementButton {
+    display: none;
+}
+
 /* Requirements box styling */
 .requirements-box {
     margin: 1% auto;
