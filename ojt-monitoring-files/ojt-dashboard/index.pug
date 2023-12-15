@@ -107,7 +107,8 @@ main.container
                 | STATUS
             each intern in interns
               tr.table-data(data-intern-id=intern.studentname class='intern-row')
-                td= intern.studentname
+                input#intern-id(type="hidden" name="internid" value=intern.internid)
+                td= intern.internid
                 td= intern.classcode
                 td= intern.companyname
                 td= intern.companyaddress
@@ -228,7 +229,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
             input(type="hidden" name="sender", value=adviser.adviserID)
             input(type="hidden" name="recipient", value="0")
             input.create-post-button(id="submitbutton" type="submit" value="SUBMIT") 
-  | &gt;
+  
   #announcement-pop-up1.modal(action='submit')
     .content
       a.close(href='#main') &Cross;
@@ -271,49 +272,20 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
           .horizontal-gray-ruler
           .filter ASSIGN TO:
             .rec-option-text#recipients  
-              a(href='#requirement-pop-up1')
-                span.material-symbols-outlined#message-recipient(style="vertical-align= middle")
-                  | TO ALL
+                span.material-symbols-outlined#student-name(style="vertical-align= middle") 
                   | add
           .horizontal-gray-ruler
           .pop-up-subject
             .title REQUIREMENT NAME
             textarea#requirement-name.content-holder-requirement(name='requirement-name' cols='30' rows='3')
             .horizontal-gray-ruler
-            input(type="hidden" name="sender", value=adviser.adviserID)
-            
-            input(type="hidden" name="intern-recipient", value=0)
+            input#internid(type="hidden" name="intern-id" value=0)
+            input(type="hidden" name="reqnumber", value=0)
             input.create-post-button(id="submit-requirement-button" type="submit" value="SUBMIT") 
-  | &gt;
-  #requirement-pop-up1.modal(action='submit')
-    .content
-      a.close(href='#main') &Cross;
-      .content_info_holder
-        .header
-          div
-            a(href='#requirement-pop-up')
-              span.material-symbols-outlined#back-button
-                | keyboard_return
-          .text SPECIFIC INTERNS
-        div
-        .horizontal-gray-ruler
-        .input-box
-          input#search-bar(type='text' placeholder='Search here...')
-          i#search-icon.uil.uil-search
-        .interns-placeholder
-          each intern in interns
-            .intern-row-checkbox
-              .flex-container
-                .img-holder
-                  img.profile-image(src='../ojt-images/user-profile.png' alt='Profile')
-                .intern-details
-                  .intern-name 
-                    text #{intern.studentname}
-                  .companyname
-                    text #{intern.companyname}
-                  .companyaddress 
-                    text #{intern.companyaddress}
-              input(type='checkbox' name="intern-recipient" value=intern.studentname)
+.footer 
+  .text 
+    | DESIGN BY BRANCH @2
+
 
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
@@ -578,7 +550,10 @@ script.
     fetch(url)
         .then(response => response.text())
         .then(html => {
-            document.getElementById('studentName').innerHTML = internName;
+            document.getElementById('studentName').innerHTML = internName;  
+            document.getElementById('student-name').innerText = internName;
+            const internid = document.getElementById('intern-id').value
+            document.getElementById('internid').value = internid;
             updateTableHeaders(reportType); // Update table headers
             document.querySelector('.popup-container').style.display = 'block';
             document.querySelector('.popup-scrollable table tbody').innerHTML = html;

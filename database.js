@@ -319,9 +319,12 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
 }
 async function insertNewRequirement(requirementName) {
     try {
-        const query = `INSERT INTO requirements (requirementname) VALUES (?)`;
-        const [result] = await pool.query(query, [requirementName]);
-        return result.insertId;
+        const numofrows = await pool.query('SELECT COUNT(reqid) + 1 as reqid FROM requirements;');
+        const reqid = numofrows[0][0].reqid;
+        const query = `INSERT INTO requirements (reqid, requirementname)
+        VALUES (?,?);`;
+        const [result] = await pool.query(query, [reqid, requirementName]);
+        return requirementName;
     } catch (error) {
         console.error('Error executing query:', error.message);
         throw error;
@@ -331,9 +334,9 @@ async function insertNewRequirement(requirementName) {
 async function insertRequirementForInterns(requirementID, internIDs) {
     try {
         // Begin a transaction
-        await pool.beginTransaction();
+        // await pool.beginTransaction();
 
-        const query = `INSERT INTO internrequirements (internid, requirementid) VALUES (?, ?)`;
+        const query = `INSERT INTO internrequirements (internid, reqid) VALUES (?, ?)`;
 
         for (const internID of internIDs) {
             await pool.query(query, [internID, requirementID]);
@@ -372,7 +375,7 @@ async function fetchSupervisor(supervisorId) {
 
 async function fetchInterns(adviserID) {
     try {
-        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ? AND interns.status = 'ACCEPTED') AS subquery", [adviserID]);
+        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT interns.internid, studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ? AND interns.status = 'ACCEPTED') AS subquery", [adviserID]);
         console.log('Fetch Interns Query Result:', rows);
         return rows;
     } catch (error) {

@@ -96,6 +96,7 @@ async function openPopup(studentData) {
 // fetch student requirements
 async function fetchRequirements(studentId) {
   try {
+      
       const response = await fetch(`/ojt-pending/requirements?studentId=${studentId}`);
       const requirements = await response.json();
       return requirements;

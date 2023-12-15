@@ -296,8 +296,6 @@ app.get('/ojt-pending/sort', async (req, res) => {
 
 
 
-
-
 //POST REQUESTS
 
 // updates the remarks
@@ -399,12 +397,13 @@ app.post('/ojt-dashboard/postannouncement', async (req, res) => {
 
 app.post('/ojt-dashboard/postrequirement', async (req, res) => {
     const requirementName = req.body['requirement-name'];
-    const recipientIDs = req.body['recipient']; // Assuming this is an array of intern IDs
-    console.log(recipientIDs)
+    const recipientID = req.body['intern-id']; // Assuming this is an array of intern IDs
+    console.log(recipientID);
+    console.log(requirementName);
 
     try {
         const requirementID = await insertNewRequirement(requirementName);
-        await insertRequirementForInterns(requirementID, recipientIDs);
+        await insertRequirementForInterns(requirementID, recipientID);
         res.redirect('/ojt-dashboard');
     } catch (error) {
         console.error('Error:', error);
