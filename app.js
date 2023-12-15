@@ -33,10 +33,10 @@ const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPe
 
 const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database.js');
 const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement, insertNewRequirement, insertRequirementForInterns, fetchAnnouncements, deleteAnnouncement } = require('./database.js');
+const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, deleteAnnouncement } = require('./database.js');
 const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress,
-    fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, fetchAllRequirements,
-    fetchInternDailyReports, fetchUnassignedRequirements, fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
+    fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, fetchAllRequirements, insertInternRequirement,
+    fetchInternDailyReports, fetchUnassignedRequirements, insertNewRequirement, fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
 
 //GET 
 // // run node app.js then access http://localhost:8080/ojt-login-page/
@@ -251,7 +251,7 @@ app.get("/fetch-unassigned-requirements/:internId", async (req, res) => {
 
         // Assuming internIdResult is an object and the actual ID is a property of this object
         const actualInternId = internIdResult[0].internid;
-        console.log(actualInternId)
+        console.log('this is beign sent' + actualInternId)
 
         const unassignedRequirements = await fetchUnassignedRequirements(actualInternId);
         console.log('Unassigned requirements from server: ', unassignedRequirements);
@@ -264,22 +264,37 @@ app.get("/fetch-unassigned-requirements/:internId", async (req, res) => {
 
 
 
-
 app.post('/ojt-dashboard/postrequirement', async (req, res) => {
-    const requirementName = req.body['requirement-name'];
-    const recipientID = req.body['intern-id']; // Assuming this is an array of intern IDs
-    console.log(recipientID);
-    console.log(requirementName);
+    const existingRequirementId = req.body['existing-requirement-dropdown'];
+    const newRequirementName = req.body['new-requirement-name'];
+    const internId = req.body['intern-id'];
 
     try {
-        const requirementID = await insertNewRequirement(requirementName);
-        await insertRequirementForInterns(requirementID, recipientID);
+        let requirementId;
+
+        if (newRequirementName) {
+            requirementId = await insertNewRequirement(newRequirementName);
+            console.log("New Requirement ID: ", requirementId); // Log for debugging
+            await insertInternRequirement(internId, requirementId);
+        } else if (existingRequirementId) {
+            requirementId = existingRequirementId;
+            await insertInternRequirement(internId, requirementId);
+        } else {
+            // Send a response with status 400 (Bad Request) and a message
+            return res.status(400).json({ message: "Pick a requirement please" });
+        }
+
         res.redirect('/ojt-dashboard');
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).send("An error occurred while processing the requirement.");
+        // Send a response with status 500 (Internal Server Error) and a message
+        return res.status(500).json({ message: "An error occurred while processing the requirement." });
     }
 });
+
+
+
+
 
 
 app.get('/ojt-pending/requirements', async (req, res) => {

@@ -346,14 +346,12 @@ async function insertAnnouncement(sender, recipient, subject, announcement) {
         throw error;
     }
 }
+
 async function insertNewRequirement(requirementName) {
     try {
-        const numofrows = await pool.query('SELECT COUNT(reqid) + 1 as reqid FROM requirements;');
-        const reqid = numofrows[0][0].reqid;
-        const query = `INSERT INTO requirements (reqid, requirementname)
-        VALUES (?,?);`;
-        const [result] = await pool.query(query, [reqid, requirementName]);
-        return requirementName;
+        const query = `INSERT INTO requirements (requirementname) VALUES (?);`;
+        const [result] = await pool.query(query, [requirementName]);
+        return result.insertId; // This should now return the auto-generated ID of the new requirement
     } catch (error) {
         console.error('Error executing query:', error.message);
         throw error;

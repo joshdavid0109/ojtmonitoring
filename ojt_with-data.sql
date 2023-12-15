@@ -213,7 +213,7 @@ DROP TABLE IF EXISTS `requirements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `requirements` (
-  `reqid` int(11) NOT NULL,
+  `reqid` int(11) NOT NULL AUTO_INCREMENT,
   `requirementname` varchar(45) NOT NULL,
   PRIMARY KEY (`reqid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

@@ -263,10 +263,10 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
 
 
 form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST')
-  #requirement-pop-up.modal(action='submit')
+  #requirement-pop-up.modal
     .content
       a.close(href='#main') &Cross;
-      .form-container(action="postrequirement" method="POST")
+      .form-container
         .content_info_holder
           .header ADD NEW REQUIREMENT
           .horizontal-gray-ruler
@@ -275,22 +275,21 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
                 span.material-symbols-outlined#student-name(style="vertical-align= middle") 
                   | add
           .horizontal-gray-ruler
-           input#internid(type="hidden" name="intern-id" value='')
           .pop-up-subject
             .title REQUIREMENT NAME
             select(name='existing-requirement-dropdown')
                 option(value='') Select Existing Requirement
-                          
-           
             .title OR ADD NEW REQUIREMENT
             textarea#requirement-name.content-holder-requirement(name='new-requirement-name' cols='30' rows='3' placeholder='Enter new requirement name')
             .horizontal-gray-ruler
-            input#internid(type="hidden" name="intern-id" value=0)
-            input(type="hidden" name="reqnumber", value=0)
+            // Make sure this hidden input is updated with the actual intern ID before the form is submitted
+            input#internid(type="hidden" name="intern-id")
+            input(type="hidden" name="reqnumber")
             input.create-post-button(id="submit-requirement-button" type="submit" value="SUBMIT") 
 .footer 
   .text 
     | DESIGN BY BRANCH @2
+
 
 
 
@@ -754,3 +753,19 @@ script.
           updateRequirementsDropdown(internId);
       });
   });
+
+  document.getElementById('requirement-form').addEventListener('submit', function(e) {
+      const existingRequirementId = document.querySelector('[name="existing-requirement-dropdown"]').value;
+      const newRequirementName = document.querySelector('[name="new-requirement-name"]').value;
+
+      if (!existingRequirementId && !newRequirementName) {
+          e.preventDefault(); // Prevent form submission only if validation fails
+          alert("Please select a requirement from the dropdown or enter a new requirement.");
+          return; // Exit the function if both are empty
+      }
+  });
+
+
+
+
+
