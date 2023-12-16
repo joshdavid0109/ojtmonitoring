@@ -379,7 +379,7 @@ async function insertNewRequirement(requirementName) {
 async function insertInternRequirement(internid, reqid) {
     try {
         const query = `INSERT INTO internrequirements (internid, reqid, datesubmitted, status, remarks)
-         VALUES (?, ?, NULL, 'PENDING', NULL)`;
+         VALUES (?, ?, '', 'PENDING', '')`;
         const [result] = await pool.query(query, [internid, reqid]);
         return result.insertId;
     } catch (error) {
