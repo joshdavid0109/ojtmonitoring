@@ -162,6 +162,10 @@ main.container
                   tbody
         button#addRequirementButton 
           a(href='#requirement-pop-up') Add Requirement
+        .button-box
+          .button-holder
+              //- button.add-btn Add Requirement
+              button.save-btn Save
 
   section.third-column
     .announcement-column
@@ -296,6 +300,8 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
 
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
+
+  
 
     document.addEventListener('DOMContentLoaded', function() {
           // Get all the table rows with the class 'intern-row'
@@ -792,7 +798,47 @@ script.
       }
   });
 
+  document.addEventListener('DOMContentLoaded', function() {
+      // Make remarks cells editable and track original content
+      var editableCells = document.querySelectorAll('.remarks-cell');
+      editableCells.forEach(function(cell) {
+          cell.addEventListener('focus', function() {
+              // Store the original content for comparison later
+              cell.dataset.originalContent = cell.textContent;
+          });
+      });
+  });
 
+  document.querySelector('.save-btn').addEventListener('click', function() {
+      var updatedRemarks = [];
+      
+      // Retrieve internId from the hidden input element
+      var internId = document.getElementById('internid').value;
 
+      // Collect all updated remarks
+      var editableCells = document.querySelectorAll('.remarks-cell');
+      editableCells.forEach(function(cell) {
+          if (cell.dataset.originalContent !== cell.textContent) {
+              updatedRemarks.push(cell.textContent);
+          }
+      });
 
-
+      // Check if intern ID is present and remarks are updated
+      if (internId && updatedRemarks.length > 0) {
+          $.ajax({
+              type: 'POST',
+              url: '/update-intern-remarks',
+              data: { internId: internId, remarks: updatedRemarks },
+              success: function(response) {
+                  console.log(response.message);
+                  alert('Remarks updated successfully!');
+              },
+              error: function(error) {
+                  console.error('Error updating intern remarks:', error);
+                  alert('Error updating remarks.');
+              }
+          });
+      } else {
+          alert('No intern selected or no remarks updated.');
+      }
+  });
