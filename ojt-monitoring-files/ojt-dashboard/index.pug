@@ -700,24 +700,34 @@ script.
   });
 
   document.addEventListener('DOMContentLoaded', (event) => {
-  const reportLinks = document.querySelectorAll('.report-links a');
-  const addRequirementButton = document.getElementById('addRequirementButton');
+      const reportLinks = document.querySelectorAll('.report-links a');
+      const addRequirementButton = document.getElementById('addRequirementButton');
+      const saveButton = document.querySelector('.save-btn'); // Get the save button
+      let currentReportType = '';
 
-  reportLinks.forEach(link => {
-    link.addEventListener('click', function() {
-      // Remove 'active' class from all links and then add to the clicked one
-      reportLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
+      reportLinks.forEach(link => {
+          link.addEventListener('click', function() {
+              // Update the current report type
+              currentReportType = this.classList.contains('daily-report') ? 'daily' :
+                                  this.classList.contains('weekly-report') ? 'weekly' :
+                                  'requirements';
 
-      // Show the "Add Requirement" button only if the "Requirements" link is clicked
-      if (this.classList.contains('requirements')) {
-        addRequirementButton.style.display = 'block';
-      } else {
-        addRequirementButton.style.display = 'none';
-      }
+              // Active link styling
+              reportLinks.forEach(l => l.classList.remove('active'));
+              this.classList.add('active');
+
+              // Toggle the "Add Requirement" button display
+              if (currentReportType === 'requirements') {
+                  addRequirementButton.style.display = 'block';
+                  saveButton.style.display = 'block'; // Show the save button
+              } else {
+                  addRequirementButton.style.display = 'none';
+                  saveButton.style.display = 'none'; // Hide the save button
+              }
+          });
       });
-    });
   });
+
 
   document.addEventListener('DOMContentLoaded', function() {
     // Back button click event
@@ -811,20 +821,22 @@ script.
 
   document.querySelector('.save-btn').addEventListener('click', function() {
       var updatedRemarks = [];
+      var remarksChanged = false; // Flag to check if any remark has been changed
       
       // Retrieve internId from the hidden input element
       var internId = document.getElementById('internid').value;
 
-      // Collect all updated remarks
+      // Collect all updated remarks and check if any have been changed
       var editableCells = document.querySelectorAll('.remarks-cell');
       editableCells.forEach(function(cell) {
           if (cell.dataset.originalContent !== cell.textContent) {
               updatedRemarks.push(cell.textContent);
+              remarksChanged = true; // Set the flag to true if any remark has been changed
           }
       });
 
-      // Check if intern ID is present and remarks are updated
-      if (internId && updatedRemarks.length > 0) {
+      // Check if intern ID is present and any remarks have been changed
+      if (internId && remarksChanged) {
           $.ajax({
               type: 'POST',
               url: '/update-intern-remarks',
@@ -842,3 +854,4 @@ script.
           alert('No intern selected or no remarks updated.');
       }
   });
+
