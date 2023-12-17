@@ -1153,11 +1153,51 @@ td {
     z-index: 9000;
 }
 
+.button-holder {
+    display: flex;
+    flex-direction: row;
+}
+
 #addRequirementButton {
+    background-color: #62af69;
+    border-radius: 80px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 7px 20px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
     display: none;
 }
 
+#addreqbtn {
+    text-decoration: none;
+    color: white;
+}
+
 .save-btn {
+    background-color: #024708;
+    border-radius: 80px;
+    box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    padding: 7px 20px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
     display: none;
 }
 

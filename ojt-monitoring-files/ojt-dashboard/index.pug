@@ -160,12 +160,12 @@ main.container
                       th Remarks 
                       th Status
                   tbody
-        button#addRequirementButton 
-          a(href='#requirement-pop-up') Add Requirement
-        .button-box
-          .button-holder
+        .button-holder
+          button#addRequirementButton 
+            a#addreqbtn(href='#requirement-pop-up') Add Requirement
+          .button-box
               //- button.add-btn Add Requirement
-              button.save-btn Save
+              button.save-btn#save-btn Save
 
   section.third-column
     .announcement-column
@@ -811,7 +811,10 @@ script.
   document.addEventListener('DOMContentLoaded', function() {
       // Make remarks cells editable and track original content
       var editableCells = document.querySelectorAll('.remarks-cell');
+
       editableCells.forEach(function(cell) {
+        
+        console.log(cell.textContent);
           cell.addEventListener('focus', function() {
               // Store the original content for comparison later
               cell.dataset.originalContent = cell.textContent;
@@ -829,11 +832,16 @@ script.
       // Collect all updated remarks and check if any have been changed
       var editableCells = document.querySelectorAll('.remarks-cell');
       editableCells.forEach(function(cell) {
-          if (cell.dataset.originalContent !== cell.textContent) {
+          if (cell.dataset.originalContent != cell.textContent) {
+              console.log("hello cell");
+              console.log(cell.textContent);
+              console.log(cell.originalContent);
               updatedRemarks.push(cell.textContent);
+              
               remarksChanged = true; // Set the flag to true if any remark has been changed
+              return;
           }
-      });
+  });
 
       // Check if intern ID is present and any remarks have been changed
       if (internId && remarksChanged) {
@@ -842,14 +850,16 @@ script.
               url: '/update-intern-remarks',
               data: { internId: internId, remarks: updatedRemarks },
               success: function(response) {
+                  remarksChanged = false;
                   console.log(response.message);
-                  alert('Remarks updated successfully!');
+                  updatedRemarks = [];
               },
               error: function(error) {
                   console.error('Error updating intern remarks:', error);
-                  alert('Error updating remarks.');
               }
           });
+
+         
       } else {
           alert('No intern selected or no remarks updated.');
       }
