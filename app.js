@@ -17,6 +17,7 @@ app.use(session({
 }));
 
 app.use('/ojt-images', express.static(path.join(__dirname, 'ojt-images')));
+app.use('/ojt-about-us', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-about-us')))
 app.use('/ojt-login-page', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-login-page')));
 app.use('/ojt-pending', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-pending')));
 app.use('/ojt-dashboard', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-dashboard')))
@@ -431,6 +432,22 @@ app.get("/some-protected-route", (req, res) => {
     } else {
         // User is not logged in
         res.redirect('/ojt-login-page');
+    }
+});
+
+// run node app.js then access http://localhost:8080/ojt-pending/
+app.get("/ojt-about-us", async (req, res) => {
+    try {
+        const adviser = await fetchAdviser(req.session.adviserID);
+        if (adviser) {
+           
+            res.render('ojt-about-us/index', { adviser })
+        } else {
+            res.redirect('/ojt-login-page');
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
+        res.status(500).send('Warning: Internal Server Error');
     }
 });
 

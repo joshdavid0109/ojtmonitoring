@@ -48,7 +48,7 @@ header {
 
 #profile-image {
     cursor: pointer;
-    width: 50%;
+    width: 100%;
     height: auto;
     border-radius: 50%;
 }
@@ -422,4 +422,21 @@ section .section-holder .note {
     display: flex;
 
     justify-content: center;
+}
+
+
+/* FOOTER */
+
+.footer {
+    background-color: #0D0464;
+    text-align: center;
+    position: static;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
+
+.footer .text {
+    font-weight: 600;
+    color: white;
 }

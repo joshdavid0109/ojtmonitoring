@@ -1,11 +1,27 @@
 /* Imports */
-@import url('https://fonts.googleapis.com/css?family=Atkinson Hyperlegible');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;600;800&family=PT+Sans&display=swap');
 
 * {
-  font-family: 'Nunito', sans-serif;
+
   box-sizing: border-box;
 }
 
+html,
+body {
+    font-family: 'Noto Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 120vh;
+    width: 100%;
+    background-color: rgb(228, 228, 228);
+}
+
+
+
+/* HEADER
+*/
 header {
   font-size: 12px;
   font-weight: bold;
@@ -13,7 +29,6 @@ header {
 
 .navbar {
   display: flex;
-  border-radius: 5px;
   justify-content: space-between;
   align-items: center;
   background-color: #0D0464;
@@ -44,16 +59,97 @@ header {
   /* Adjust as necessary */
 }
 
+#profile-image {
+  cursor: pointer;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  /* Makes the image round */
+}
+
+/* HEADER
+*/
+
+
+/* HEADER
+*/
+header {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0D0464;
+  /* Dark purple color */
+  color: #E1AD0F;
+  padding: 10px 20px;
+}
+
+.nav-name {
+  margin-left: auto;
+  margin-right: 15px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.nav-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #777673;
+  /* Yellow color for the circle */
+  border-radius: 50%;
+  margin-right: 40px;
+  width: 30px;
+  /* Adjust as necessary */
+  height: 30px;
+  /* Adjust as necessary */
+}
+
+#profile-image {
+  cursor: pointer;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  /* Makes the image round */
+}
+
+
+/* MAIN
+*/
+
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 120vh;
+  /* This will make the aside appear on the right */
+}
+
+section {
+  flex: 2.5;
+  /* This will allow the section to fill the remaining space */
+  /* Add styling for the section here */
+}
+
+
+
 /*LEFT COLUMN*/
 .left-nav {
   width: 15%;
-  max-height: max-content;
   background-color: white;
+  height: 120vh;
+}
 
+.left-nav .material-symbols-outlined:hover {
+  cursor: pointer;
 }
 
 .container ol {
-  width: auto;
+  width: 100%;
   font-weight: 600;
   font-size: 14px;
   list-style: none;
@@ -67,8 +163,35 @@ header {
   display: block;
 }
 
-.left-nav a:link {
+
+.left-nav .material-symbols-outlined {
+  transform: scale(4);
+  height: auto;
+  margin: 50px;
   color: #0D0464;
+}
+
+.left-nav form {
+  margin-top: 30%;
+}
+
+#logoutbutton {
+  border-radius: 20px;
+  padding: 2.5% 5.8% 2.5%;
+  border: 2px solid #0D0464;
+  color: #0D0464;
+  background-color: #F1F1F1;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  cursor: pointer;
+}
+
+.left-nav a:link {
+  color: black;
   text-decoration: none;
 }
 
@@ -76,13 +199,8 @@ li:not(:last-child) {
   margin-bottom: 25px;
 }
 
-#profile-image {
-  cursor: pointer;
-  width: 50%;
-  height: auto;
-  border-radius: 50%;
-  /* Makes the image round */
-}
+/*LEFT COLUMN*/
+
 
 .about-the-project {
   display: flex;
@@ -124,16 +242,20 @@ li:not(:last-child) {
 }
 
 .container-block {
-  justify-content: space-evenly;
-  align-items: stretch;
+  display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 70vh;
 }
 
 .outer-container {
   padding: 10px;
   background-color: #ffffff; 
   width: 90%;
-  max-width: 800px;
+  max-width: 1000px;
   height: auto;
   padding: 20px; 
   border-radius: 10px; 
@@ -141,13 +263,6 @@ li:not(:last-child) {
   margin: 10px auto;
 }
 
-.inner-container {
-  max-width: 720px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px auto;
-}
 
 .section-head-text {
   margin: 0 0 10px 0;
@@ -196,6 +311,13 @@ li:not(:last-child) {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 293px;
+  
+}
+
+.team-card:last-child {
+
+  flex-basis: calc(33% - 20px); /* Adjust the width and spacing as needed */
 }
 
 .name,
@@ -215,15 +337,17 @@ li:not(:last-child) {
 }
 
 .team-img {
-  width: 50%;
-  height: 50%;
+  width: 25%;
+  height: 25%;
 }
 
 .team-card-container {
-  flex: 0 0 auto;
+  flex: 3;
   width: 280px;
   margin: 0 10px 40px 10px;
 }
+
+
 
 
 @media only screen and (max-width: 600px) {
@@ -246,3 +370,18 @@ li:not(:last-child) {
 }
 
 
+/* FOOTER */
+
+.footer {
+  background-color: #0D0464;
+  text-align: center;
+  position: static;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.footer .text {
+  font-weight: 600;
+  color: white;
+}

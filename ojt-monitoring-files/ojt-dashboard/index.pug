@@ -21,7 +21,7 @@ main.container
       li
         a(href='/ojt-pending') PENDING
       li
-        a(href='#') ABOUT US
+        a(href='/ojt-about-us') ABOUT US
       li
         a(href="#") 
         form(action='/logout' method="GET" id="logout-form")
@@ -286,9 +286,10 @@ form(action='/ojt-dashboard/postrequirement' id="requirement-form" method='POST'
             input#internid(type="hidden" name="intern-id")
             input(type="hidden" name="reqnumber")
             input.create-post-button(id="submit-requirement-button" type="submit" value="SUBMIT") 
+
 .footer 
   .text 
-    | DESIGN BY BRANCH @2
+    | DESIGN BY BRANCH @
 
 
 

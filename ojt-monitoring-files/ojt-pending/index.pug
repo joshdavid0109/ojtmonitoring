@@ -10,7 +10,7 @@ header
       p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
     form(action='/ojt-dashboard/uploadpp' method='POST' target='_blank')
       .nav-item
-          img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+          img#profile-image(src='../ojt-images/user-profile.png' alt='Profile')
           input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
 main.container
   aside.left-nav
@@ -20,7 +20,7 @@ main.container
       li
         a(href="/ojt-pending") PENDING
       li
-        a(href="#") ABOUT US
+        a(href="/ojt-about-us") ABOUT US
         form(action='/logout' method="GET")
           input(id="logoutbutton" type="submit" value="LOG OUT")
   section
@@ -86,7 +86,11 @@ main.container
               button.cancel-btn Cancel
               button.save-btn Save
       .note NOTE: CLICK ON THE NAME OF THE SELECTED INTERN TO VIEW INTERN REQUIREMENTS
-footer
+.footer 
+  .text 
+    | DESIGN BY BRANCH @
+
+
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")
 script(src="./script.js")
 

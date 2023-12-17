@@ -1,0 +1,104 @@
+meta(charset='UTF-8')
+meta(name='viewport' content='width=device-width, initial-scale=1.0')
+title About Us
+link(rel='stylesheet' type='text/css' href='/ojt-about-us/styles.css')
+header
+  nav.navbar
+    .nav-logo SAINT LOUIS UNIVERSITY
+    .nav-name  
+      p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
+    form(action='/ojt-dashboard/uploadprofilepicture' method='POST' enctype="multipart/form-data")
+      .nav-item
+        img#profile-image(src='../ojt-images/user-profile.png' alt='Profile')
+        input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
+main.container
+  aside.left-nav
+    ol
+      li
+        a(href='/ojt-dashboard') DASHBOARD
+      li
+        a(href='/ojt-pending') PENDING
+      li
+        a(href='/ojt-about-us') ABOUT US
+      li
+        a(href="#") 
+        form(action='/logout' method="GET" id="logout-form")
+          input(id="logoutbutton" type="submit" value="LOG OUT")
+
+  section
+    .about-the-project
+        h3 About the Project
+        p.project-description
+        | Our cutting-edge OJT monitoring web application is
+        | meticulously crafted to optimize and elevate the
+        | monitoring process for both students and administrators.
+        | Featuring a user-friendly interface coupled with robust
+        | functionality, the application enables seamless updates
+        | for direct supervisors and teams. It efficiently monitors
+        | diverse requirements, including MOA, Medical Certificate,
+        | Curriculum Vitae, and more. To enhance user experience,
+        | the system incorporates a checklist feature for effortless
+        | tracking, filtering, and emailing of necessary documents.
+        h3 Vision
+        p.project-vision
+        | In line with our vision, the application aims to automate
+        | the submission of weekly reports and streamline the evaluation
+        | process. By doing so, we aspire to provide a smooth, hassle-free
+        | experience for all users, fostering efficiency and effectiveness
+        | in the monitoring and reporting procedures.
+    .outer-container
+        p.text-blk.section-head-text
+            | Meet Our Team
+        .container-block
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/jc.png')
+                p.text-blk.name
+                | Jahn Crystan Abella
+                h3 UI/UX Designer
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/j.png')
+                p.text-blk.name
+                | Joshua Daniel David
+                h3 Web Developer
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/jm.png')
+                p.text-blk.name
+                | Jonison Molintas
+                h3 QA Tester
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/h.png')
+                p.text-blk.name
+                | Haydee Shane Saguid
+                h3 Project Manager
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/aj.png')
+                p.text-blk.name
+                | Albert Jannsen Ramos
+                h3 Web Developer
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/a.png')
+                p.text-blk.name
+                | Ariel Tarlit
+                h3 SEO Content Creator
+            .cell-block.team-card-container
+            .team-card
+                .img-wrapper
+                img.team-img(src='images/m.png')
+                p.text-blk.name
+                | Maervin Villalobos
+                h3 Web Designer
+.footer 
+  .text 
+    | DESIGN BY BRANCH @
