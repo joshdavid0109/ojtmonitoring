@@ -1189,6 +1189,8 @@ td {
     box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset, rgba(44, 187, 99, .15) 0 1px 2px, rgba(44, 187, 99, .15) 0 2px 4px, rgba(44, 187, 99, .15) 0 4px 8px, rgba(44, 187, 99, .15) 0 8px 16px, rgba(44, 187, 99, .15) 0 16px 32px;
     color: rgb(255, 255, 255);
     cursor: pointer;
+    margin-top: 20px;
+
     padding: 7px 20px 10px;
     text-align: center;
     text-decoration: none;
@@ -1198,6 +1200,7 @@ td {
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
+    display: none;
     display: none;
 }
 
