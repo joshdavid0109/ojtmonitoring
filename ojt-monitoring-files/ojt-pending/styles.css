@@ -378,12 +378,14 @@ section .pending-students-box .students-table {
 .button-box .button-holder {
     display: flex;
     justify-content: space-between;
-    margin-right: 7%;
-    width: 40%
+    margin-right: 27%;
+    width: 40%;
+    padding-bottom: 50px;
 }
 
 .button-box .button-holder .cancel-btn,
-.button-box .button-holder .save-btn {
+.button-box .button-holder .save-btn,
+.button-box .button-holder .add-btn {
     padding: 2.5% 15% 2.5%;
     font-size: 1vw;
     text-transform: uppercase;
@@ -396,12 +398,23 @@ section .pending-students-box .students-table {
 
 .button-box .button-holder .cancel-btn {
     background-color: #D6D6D6;
-    color: black
+    color: black;
+    margin: 20px 20px 30px 20px;
 }
 
 .button-box .button-holder .save-btn {
     background-color: #024708;
     color: white;
+    margin: 20px 20px 30px 20px;
+
+}
+
+.button-box .button-holder .add-btn {
+    background-color: #df3a3a;
+    width: 1000px;
+    color: white;
+    margin: 20px 20px 0 20px;
+
 }
 
 /* NOTE */

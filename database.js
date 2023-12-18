@@ -136,7 +136,7 @@ async function fetchRequirementsByStudentId(studentId) {
             JOIN
                 requirements ON internrequirements.reqid = requirements.reqid
             WHERE
-                interns.status = 'PENDING' AND students.studentID = ?
+                interns.status = 'ACCEPTED' AND students.studentID = ?
         `, [studentId]);
         return rows;
     } catch (error) {
@@ -303,7 +303,7 @@ async function fetchSupervisor(supervisorId) {
 
 async function fetchInterns(adviserID) {
     try {
-        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ?) AS subquery", [adviserID]);
+        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ? AND interns.status = 'ACCEPTED') AS subquery", [adviserID]);
         console.log('Fetch Interns Query Result:', rows);
         return rows;
     } catch (error) {

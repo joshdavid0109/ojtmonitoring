@@ -9,9 +9,9 @@ header
     .nav-logo SAINT LOUIS UNIVERSITY
     .nav-name  
       p #{adviser.adviserName.split(' ').reverse().join(' ').replace(',', '') }
-    form(action='/ojt-dashboard/uploadprofilepicture' method='POST' enctype="multipart/form-data" target='_blank')
+    form(action='/ojt-dashboard/uploadprofilepicture' method='POST' enctype="multipart/form-data")
       .nav-item
-        img#profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+        img#profile-image(src='../ojt-images/user-profile.png' alt='Profile')
         input#fileInput(type='file', style='display: none;', accept='image/*', name="prof_image")
 main.container
   aside.left-nav
@@ -24,10 +24,8 @@ main.container
         a(href='#') ABOUT US
       li
         a(href="#") 
-          span.material-symbols-outlined(onclick="document.getElementById('logout-form').submit();")
-            | logout
-      form(action='/logout' method="GET" id="logout-form")
-          input(id="logoutbutton" type="hidden")
+        form(action='/logout' method="GET" id="logout-form")
+          input(id="logoutbutton" type="submit" value="LOG OUT")
 
             
   section
@@ -48,10 +46,10 @@ main.container
                 img(src='../ojt-images/slu-logo.png' alt='slu logo')
               .dashboard-time
                 .time-text TIME
-                #current-time 10:22:31 GMT+7
+                #current-time 
               .dashboard-date
                 .date-text DATE
-                #current-date MONDAY, 20 NOVEMBER 2023
+                #current-date 
           .intern-count-box
             .pending-students
               .count 
@@ -82,14 +80,15 @@ main.container
         .title INTERNS
        
         .filter
-          label.view-by(for='view-by')  FILTER 
+          label.view-by(for='view-by') VIEW BY 
           select#internFilter
-            option(value='0') Name
-            option(value='1') Class Code
-            option(value='2') Company
-            option(value='3') Address
-            option(value='4') Total Hours 
-            option(value='5') Status
+            option(value="0") Default
+            option(value='1') Name
+            option(value='2') Class Code
+            option(value='3') Company
+            option(value='4') Address
+            option(value='5') Total Hours 
+            option(value='6') Status
       .intern-table
         table.intern-table-holder#internsTable
           tbody
@@ -116,12 +115,22 @@ main.container
                 td= intern.status
 
         .intern-page
-          .buttons 
-             .back#back
-                | back
-             .next#next
-                | next
+          .buttons#buttons
+            span.material-symbols-outlined#back-page(style="vertical-align= middle")
+              | arrow_back_ios
+            .pagenums  
+              .pageNumber#pageNumber 
+                | 
+              .pageNumber#of
+                
+                | of
+              .pageNumber#totalPages
+                | 
+            span.material-symbols-outlined#nextPage(style="vertical-align= middle")
+              | arrow_forward_ios
 
+    .note 
+      | NOTE: CLICK ON THE ROW OF THE SELECTED INTERN TO VIEW MORE INFORMATION
 
   .popup-container#popupContainer
         span.close-btn(onclick="closePopup()") ×
@@ -190,8 +199,6 @@ main.container
                         input(type="hidden" name="announcementid" value=announcement.announcementid)
                         a.cancel-post-button(href="#" id="cancel-button")
                           | CANCEL
-                      
-
                           
         button.create-post-button(type='button')
           a(href='#announcement-pop-up') CREATE POST
@@ -241,7 +248,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
             .intern-row-checkbox
               .flex-container
                 .img-holder
-                  img.profile-image(src='../ojt-images/jannsen.png' alt='Profile')
+                  img.profile-image(src='../ojt-images/user-profile.png' alt='Profile')
                 .intern-details
                   .intern-name 
                     text #{intern.studentname}
@@ -251,10 +258,107 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
                     text #{intern.companyaddress} 
               input(type='checkbox' name="recipient" value=intern.studentname)    
 
-
-              
 script(src="https://code.jquery.com/jquery-3.6.0.min.js")   
 script.
+
+     document.addEventListener("DOMContentLoaded", function () {
+        const internFilter = document.getElementById("internFilter");
+        const internTable = document.getElementById("internsTable").getElementsByTagName('tbody')[0];
+        const internRows = Array.from(document.querySelectorAll(".intern-row"));
+        const tableHeader = document.querySelector(".table-header");
+
+        internFilter.addEventListener("change", sortInterns);
+
+        function sortInterns() {
+          const filterIndex = parseInt(internFilter.value);
+
+          internRows.sort(function (rowA, rowB) {
+            const rowDataA = rowA.children[filterIndex].innerText.toLowerCase();
+            const rowDataB = rowB.children[filterIndex].innerText.toLowerCase();
+            return rowDataA.localeCompare(rowDataB);
+          });
+
+          internTable.innerHTML = ''; // Clear existing rows
+
+          internRows.forEach(function (row) {
+            internTable.appendChild(row);
+          });
+
+          // Re-append the table header after sorting
+          internTable.insertBefore(tableHeader, internTable.firstChild);
+        }
+    });
+
+
+
+      // FOR INTERNS TABLE
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+      const windowWidth = window.innerWidth;
+      let rowsPerPage = 4;
+
+      console.log(windowWidth)
+
+      // Adjust your table content based on the window width
+      if (windowWidth < 1300) {
+         rowsPerPage = 2; // Set the number of rows per page
+      }
+    
+      let currentPage = 1;
+
+      function showRows() {
+        const rows = document.querySelectorAll('.intern-row');
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+
+        updatePageNumber();
+
+        rows.forEach((row, index) => {
+          if (index >= startIndex && index < endIndex) {
+            row.style.display = 'table-row';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      }
+
+
+      function updatePageNumber() {
+        const rows = document.querySelectorAll('.intern-row');
+        const maxPage = Math.ceil(rows.length / rowsPerPage);
+        document.getElementById('pageNumber').textContent = currentPage;
+        document.getElementById('totalPages').textContent = maxPage;
+    }
+
+    // Initial setup
+    showRows();
+
+
+    // Next button click event
+    document.getElementById('nextPage').addEventListener('click', function() {
+      console.log ("next button clicked")
+      const rows = document.querySelectorAll('.intern-row');
+      const maxPage = Math.ceil(rows.length / rowsPerPage);
+
+      if (currentPage < maxPage) {
+        currentPage++;
+        showRows();
+
+      }
+    });
+
+    // Back button click event
+    document.getElementById('back-page').addEventListener('click', function() {
+      console.log("back page button clicked")
+      if (currentPage > 1) {
+        currentPage--;
+        showRows();
+
+      }
+    });
+  });    
+
   // Displays the current time with respect to UTC+8 time zone
   function updateCurrentTime() {
       var now = new Date();
@@ -287,17 +391,33 @@ script.
   document.getElementById('fileInput').addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profile-image').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('prof_image', file);
+
+      fetch('/ojt-dashboard/uploadprofilepicture', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        // Handle success or error messages
+      })
+      .catch(error => {
+        console.error(error);
+        // Handle error
+      });
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('profile-image').src = e.target.result;
+      }
+      reader.readAsDataURL(file);
     }
   })
 
   
   document.getElementById("back-button").addEventListener('click', () => {
-    console.log("back button")
     const form = document.getElementById('recipients');
 
       const checkedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
@@ -457,7 +577,6 @@ script.
 
    document.addEventListener('DOMContentLoaded', function () {
       var searchInput = document.getElementById('searchbar');
-      console.log(searchInput);
 
       searchInput.addEventListener('input', function () {
         console.log(this.value)
@@ -474,6 +593,19 @@ script.
         });
       });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Add a click event listener to each delete button
+    document.querySelectorAll('.announcement-x').forEach(function(deleteButton) {
+      deleteButton.addEventListener('click', function() {
+        // Get the announcementid associated with the clicked announcement
+        var announcementId = this.closest('.announcement-box').querySelector('input[name="announcementid"]').value;
+        
+        // Set the value of the hidden input in the confirmation form
+        document.getElementById('confirmation-form').querySelector('input[name="announcementid"]').value = announcementId;
+      });
+    });
+  });
 
       // JavaScript code for search functionality --- FOR ANNOUNCEMENT SPECIFIC INTERNS
   const searchInput = document.getElementById('search-bar');
@@ -539,83 +671,19 @@ script.
     });
   });
 
-  // FOR FILTERING
 
-    const filterSelect = document.getElementById('internFilter');
-    const searchBar = document.getElementById('searchbar');
-    const rows = document.querySelectorAll('.intern-row');
+                   
 
-    function filterTable() {
-      console.log("change")
-      const filterOption = filterSelect.value.toLowerCase();
-      const searchTerm = searchBar.value.toLowerCase();
-
-      rows.forEach(row => {
-        const rowData = row.querySelector(`td:nth-child(${parseInt(filterOption) + 1})`).textContent.toLowerCase();
-
-        if (rowData.includes(searchTerm)) {
-          row.style.display = 'table-row';
-        } else {
-          row.style.display = 'none';
-        }
-      });
-    }
-
-    // Event listeners for filtering
-    filterSelect.addEventListener('change', filterTable);
-    searchBar.addEventListener('input', filterTable);
-
-  
-
-  // FOR INTERNS TABLE
-
-    document.addEventListener('DOMContentLoaded', function() {
-    const rowsPerPage = 2; // Set the number of rows per page
-    let currentPage = 1;
-
-    function showRows() {
-      const rows = document.querySelectorAll('.intern-row');
-      const startIndex = (currentPage - 1) * rowsPerPage;
-      const endIndex = startIndex + rowsPerPage;
-
-      rows.forEach((row, index) => {
-        if (index >= startIndex && index < endIndex) {
-          row.style.display = 'table-row';
-        } else {
-          row.style.display = 'none';
-        }
-      });
-    }
-
-
-    function updatePageNumber() {
-      document.getElementById('pageNumber').textContent = currentPage;
-    }
-
-    // Initial setup
-    showRows();
-
-
-    // Next button click event
-    document.getElementById('next').addEventListener('on click', function() {
-      console.log ("next button clicked")
-      const rows = document.querySelectorAll('.intern-row');
-      const maxPage = Math.ceil(rows.length / rowsPerPage);
-
-      if (currentPage < maxPage) {
-        currentPage++;
-        showRows();
-
-      }
+  document.addEventListener('DOMContentLoaded', function() {
+    // Back button click event
+    document.getElementById('back-page').addEventListener('click', function() {
+      console.log("Back button clicked");
+      // Your logic for handling the Back button click goes here
     });
 
-    // Back button click event
-    document.getElementById('back').addEventListener('click', function() {
-      if (currentPage > 1) {
-        currentPage--;
-        showRows();
-
-      }
+    // Next Page button click event
+    document.getElementById('nextPage').addEventListener('click', function() {
+      console.log("Next Page button clicked");
+      // Your logic for handling the Next Page button click goes here
     });
   });
-
