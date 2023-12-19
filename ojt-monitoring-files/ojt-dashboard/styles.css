@@ -456,6 +456,11 @@ li:not(:last-child) {
     transform: translateY(-50%) scale(0.98);
 }
 
+
+.dailyreports tr td:nth-child(5) {
+    width: 50px;
+}
+
 .intern-list-container {
     width: 80%;
     position: relative;
@@ -1156,6 +1161,7 @@ td {
 .button-holder {
     display: flex;
     flex-direction: row;
+    margin-bottom: 20px;
 }
 
 #addRequirementButton {
@@ -1266,11 +1272,50 @@ td {
     /* Adjust padding as needed */
 }
 
+.intern-profile-container  {
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+}
+
 /* Student name styling */
 #studentName {
     color: #0D0464;
-    margin-right: auto;
     /* This will push the report links to the end */
+}
+
+td .desc {
+    width: 10px;
+}
+
+.desc {
+}
+
+td {
+    max-width: 200px; /* Set a maximum width for the column */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease; /* Add a transition for smooth effect */
+  }
+  
+td:hover {
+    white-space: pre-line;
+    word-wrap: break-word;; /* Set to 'normal' to allow multiline text */
+    overflow: visible; /* Show the entire content */
+    text-overflow: clip; /* Clip the text without ellipsis on hover */
+  }
+
+.intern-profile-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.view-profile{
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    color:#0D0464;
 }
 
 /* Links container styling */

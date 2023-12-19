@@ -4,9 +4,10 @@ each report in reports
         td #{report.timeIn}
         td #{report.timeOut}
         td #{report.supervisorName} 
-        td #{report.workdescription}
+        td #{report.supervisoremail}
+        td.workdesc-column 
+            text.desc #{report.workdescription}
         td #{report.hours}
-        td Supporting Documents Placeholder
         td #{report.remark}
         td
             .status-box

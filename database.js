@@ -408,12 +408,9 @@ async function fetchSupervisor(supervisorId) {
 
 
 
-
-
-
 async function fetchInterns(adviserID) {
     try {
-        const [rows] = await pool.query("SELECT *, CASE WHEN totalhours < 240 THEN 'ON GOING' WHEN totalhours = 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM (SELECT interns.internid, studentname, classcode, companyname, companyaddress, totalhours  FROM students NATURAL JOIN interns INNER JOIN company ON interns.companyid = company.companyid INNER JOIN advisers ON advisers.adviserID = interns.adviserID where advisers.adviserID = ? AND interns.status = 'ACCEPTED') AS subquery", [adviserID]);
+        const [rows] = await pool.query("SELECT students.studentid, studentname, classcode, companyname, companyaddress, COALESCE(subquery.totalhours, 0) AS totalhours, CASE WHEN COALESCE(subquery.totalhours, 0) < 240 THEN 'ON GOING' WHEN COALESCE(subquery.totalhours, 0) > 240 THEN 'FINISHED' ELSE 'ON GOING' END AS 'status' FROM students LEFT JOIN interns ON students.studentid = interns.studentid LEFT JOIN (SELECT interns.internid, SUM(hours) AS totalhours FROM interns LEFT JOIN dailyreports ON interns.internid = dailyreports.internid WHERE interns.status = 'ACCEPTED' GROUP BY interns.internid) AS subquery ON interns.internid = subquery.internid LEFT JOIN company ON interns.companyid = company.companyid LEFT JOIN advisers ON advisers.adviserID = interns.adviserID WHERE advisers.adviserID = ? AND interns.status = 'ACCEPTED'", [adviserID]);
         console.log('Fetch Interns Query Result:', rows);
         return rows;
     } catch (error) {
@@ -488,13 +485,17 @@ async function fetchInternId(name) {
 async function fetchInternDailyReports(internID) {
     try {
         const [rows] = await pool.query(`
-            SELECT 
-            supervisorid, date, timeIn, timeOut, hours, workdescription, 
-                verificationstatus, remark 
-            FROM 
-                dailyreports 
-            WHERE 
-                internid = ?
+        SELECT 
+        supervisors.supervisorid, supervisors.supervisoremail, date, timeIn, timeOut, hours, workdescription, 
+            verificationstatus, remark 
+        FROM 
+            dailyreports 
+        JOIN
+            supervisors
+        ON 
+            supervisors.supervisorid = dailyreports.supervisorid
+        WHERE 
+            internid = ?
         `, [internID]);
 
         return rows;

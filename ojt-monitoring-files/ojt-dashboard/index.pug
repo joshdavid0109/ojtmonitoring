@@ -137,7 +137,10 @@ main.container
         span.close-btn(onclick="closePopup()") ×
         .requirements-box
           .header-container
-            h2#studentName #{studentName} 
+            .intern-profile-container
+              h2#studentName 
+              a.view-profile(href="#" )
+                |  View Profile
             .report-links
               ol 
                 li 
@@ -160,12 +163,15 @@ main.container
                       th Remarks 
                       th Status
                   tbody
+
+          #intern-profile
+           
+            
         .button-holder
           button#addRequirementButton 
             a#addreqbtn(href='#requirement-pop-up') Add Requirement
           .button-box
-              //- button.add-btn Add Requirement
-             button.save-btn#save-btn Save
+            button.save-btn#save-btn Save
 
   section.third-column
     .announcement-column
@@ -263,6 +269,7 @@ form(action='/ojt-dashboard/postannouncement' id="recipient-form" method='POST')
                     text #{intern.companyname}
                   .companyaddress 
                     text #{intern.companyaddress} 
+              input(type='checkbox' name="recipient" value=intern.studentname checked)    
               input(type='checkbox' name="recipient" value=intern.studentname)  
 
 
@@ -365,7 +372,7 @@ script.
       console.log(windowWidth)
 
       // Adjust your table content based on the window width
-      if (windowWidth < 1700) {
+      if (windowWidth < 1600) {
          rowsPerPage = 2; // Set the number of rows per page
       }
     
@@ -587,8 +594,9 @@ script.
     fetch(url)
         .then(response => response.text())
         .then(html => {
-            document.getElementById('studentName').innerHTML = internName;  
-            document.getElementById('student-name').innerText = internName;
+          console.log(html);
+            document.getElementById('studentName').innerHTML = internName; 
+            //- document.getElementById('student-name').innerText = internName;
 
             updateTableHeaders(reportType); // Update table headers
             document.querySelector('.popup-container').style.display = 'block';
@@ -622,8 +630,11 @@ script.
         }
     });
   });
+  
+  document.getElementById("intern-profl")
+
   const reportTableStructures = {
-    daily: ["Date", "Time in", "Time out", "Supervisor", "Description", "Hours", "Supporting Documents", "Remarks", "Status"],
+    daily: ["Date", "Time in", "Time out", "Supervisor","Supervisor Email", "Description", "Hours", , "Remarks", "Status"],
     weekly: ["Day", "Date", "Description", "Hours"],
     requirements: ["Requirements", "Date Submitted", "Remarks", "Status"]
   };
