@@ -1,6 +1,16 @@
-# ojt-monitoring
+# OJT (On-the-Job Training) Monitoring System
 
+The Web-Based OJT (On-the-Job Training) Monitoring System is a comprehensive platform designed to streamline the management and monitoring of on-the-job training activities within an organization. Tailored to meet the specific needs of both students undergoing training and supervisors overseeing their progress, this system provides a centralized hub for tracking tasks, progress reports, and feedback.
 
+Key Features:
+
+- User Authentication and Management: Secure authentication system for students, supervisors, and administrators. User management functionalities to create, update, and delete user accounts.
+- Task Assignment and Tracking: Supervisors can assign tasks to students, specifying details such as task description, deadline, and priority. Students can view assigned tasks, mark them as complete, and provide status updates.
+- Progress Monitoring and Reporting: Supervisors can monitor the progress of students' tasks in real-time, track completed tasks, and review progress reports. Students can submit progress reports detailing their activities, accomplishments, challenges, and future plans.
+- Feedback and Evaluation: Supervisors can provide feedback and constructive criticism to students on their performance and progress. Students can respond to feedback, seek clarification, and request guidance as needed.
+- Document Management: Centralized repository for storing training-related documents, resources, guidelines, and templates.
+Secure access control mechanisms to ensure confidentiality and data integrity.
+Notifications and Reminders:Automated notifications and reminders to students and supervisors for upcoming deadlines, overdue tasks, and important updates. Customizable notification settings for individual users.
 
 ## Getting started
 
