@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -10,11 +12,23 @@ let loggedInAdviser;
 app.use(bodyParser.urlencoded({ extended: true }));
 // for session handling
 app.use(session({
-    secret: 'sesh_cookie', // A secret key for signing the session ID cookie
+    secret: process.env.SESSION_SECRET, // A secret key for signing the session ID cookie
     resave: false,              // Forces the session to be saved back to the session store
-    saveUninitialized: true,    // Forces a session that is "uninitialized" to be saved to the store
-    cookie: { secure: false }   // Set true if using HTTPS, false otherwise
+    saveUninitialized: false,    // set to false so it doesn't save empty sessions for users who never login
+    cookie: { 
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+    }   // Set true if using HTTPS, false otherwise
 }));
+
+// to block requests that are not logged in
+function requireAuth(req, res, next) {
+    if (req.session.isLoggedIn) {
+        return next();
+    }
+    return res.redirect('/ojt-login-page');
+}
 
 app.use('/ojt-images', express.static(path.join(__dirname, 'ojt-images')));
 app.use('/ojt-about-us', express.static(path.join(__dirname, 'ojt-monitoring-files', 'ojt-about-us')))
@@ -25,19 +39,12 @@ app.use('/ojt-dashboard', express.static(path.join(__dirname, 'ojt-monitoring-fi
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 
-
 // Import functions from database.js
-const { fetchStudent, authenticateAdviser, hashAdviserPasswords } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, fetchInternDailyReports, fetchDailyReports } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements } = require('./database.js');
-const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByAddress, fetchPendingStudentsByCompany, updateStatus} = require('./database.js');
-
-const { fetchStudents, fetchPendingStudents, updateStatus} = require('./database.js');
-const { fetchStudent, authenticateAdviser, hashAdviserPasswords, fetchInternId, updateInternRemarks } = require('./database.js');
-const { fetchAdviser, fetchInterns, insertAnnouncement, fetchAnnouncements, deleteAnnouncement } = require('./database.js');
-const { fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress,
-    fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, fetchAllRequirements, insertInternRequirement,
-    fetchInternDailyReports, fetchUnassignedRequirements, insertNewRequirement, fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, fetchSupervisor, fetchWeeklyReports, uploadPicture } = require('./database.js');
+const { fetchStudent, fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress,
+    fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, insertInternRequirement,
+    fetchInternDailyReports, fetchUnassignedRequirements, insertNewRequirement, fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, 
+    fetchSupervisor, fetchWeeklyReports, uploadPicture, authenticateAdviser, hashAdviserPasswords, fetchInterns, fetchAnnouncements,
+    deleteAnnouncement, fetchAdviser, insertAnnouncement, fetchInternId, updateInternRemarks } = require('./database.js');
 
 //GET 
 // // run node app.js then access http://localhost:8080/ojt-login-page/
@@ -72,7 +79,7 @@ app.get("/ojt-login-page", async (req, res) => {
     }
 });
 
-app.get("/ojt-dashboard", async (req, res) => {
+app.get("/ojt-dashboard", requireAuth, async (req, res) => {
     try {
         const adviser = await fetchAdviser(req.session.adviserID);
         const interns = await fetchInterns(req.session.adviserID);
@@ -122,7 +129,7 @@ app.get("/ojt-dashboard", async (req, res) => {
 });
 
 
-app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
+app.get("/ojt-dashboard/daily-reports/:internName", requireAuth, async (req, res) => {
     try {
         const internName = req.params.internName;
         console.log('Fetching reports for intern:', internName);
@@ -164,7 +171,7 @@ app.get("/ojt-dashboard/daily-reports/:internName", async (req, res) => {
     }
 });
 
-app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
+app.get("/ojt-dashboard/weekly-reports/:internName", requireAuth, async (req, res) => {
     try {
         const internName = req.params.internName;
         console.log('Fetching reports for intern:', internName);
@@ -205,7 +212,7 @@ app.get("/ojt-dashboard/weekly-reports/:internName", async (req, res) => {
     }
 });
 
-app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
+app.get("/ojt-dashboard/requirements-reports/:internName", requireAuth, async (req, res) => {
     try {
         const internName = req.params.internName;
         console.log('Fetching reports for intern:', internName);
@@ -243,7 +250,7 @@ app.get("/ojt-dashboard/requirements-reports/:internName", async (req, res) => {
     }
 });
 
-app.get("/fetch-unassigned-requirements/:internId", async (req, res) => {
+app.get("/fetch-unassigned-requirements/:internId", requireAuth, async (req, res) => {
     try {
         const internId = req.params.internId;
         console.log('Fetching unassigned requirements for intern ID: ' + internId);
@@ -265,7 +272,7 @@ app.get("/fetch-unassigned-requirements/:internId", async (req, res) => {
 
 
 
-app.post('/ojt-dashboard/postrequirement', async (req, res) => {
+app.post('/ojt-dashboard/postrequirement', requireAuth, async (req, res) => {
     const existingRequirementId = req.body['existing-requirement-dropdown'];
     const newRequirementName = req.body['new-requirement-name'];
     const internId = req.body['intern-id'];
@@ -298,7 +305,7 @@ app.post('/ojt-dashboard/postrequirement', async (req, res) => {
 
 
 
-app.get('/ojt-pending/requirements', async (req, res) => {
+app.get('/ojt-pending/requirements', requireAuth, async (req, res) => {
     const studentId = req.query.studentId;
 
     try {
@@ -313,7 +320,7 @@ app.get('/ojt-pending/requirements', async (req, res) => {
 
 
 // run node app.js then access http://localhost:8080/ojt-pending/
-app.get("/ojt-pending", async (req, res) => {
+app.get("/ojt-pending", requireAuth, async (req, res) => {
     try {
         const adviser = await fetchAdviser(req.session.adviserID);
         if (adviser) {
@@ -329,7 +336,7 @@ app.get("/ojt-pending", async (req, res) => {
     }
 });
 
-app.get('/ojt-pending/sort', async (req, res) => {
+app.get('/ojt-pending/sort', requireAuth, async (req, res) => {
     const sortBy = req.query.sortBy;
 
     try {
@@ -366,7 +373,7 @@ app.get('/ojt-pending/sort', async (req, res) => {
 //POST REQUESTS
 
 // updates the remarks
-app.post('/update-remarks', async (req, res) => {
+app.post('/update-remarks', requireAuth, async (req, res) => {
     const { studentId, remarks } = req.body;
     console.log('Received Update Remarks Request - Student ID:', studentId, 'Remarks:', remarks);
 
@@ -382,7 +389,7 @@ app.post('/update-remarks', async (req, res) => {
     }
 });
 
-app.post('/update-intern-remarks', async (req, res) => {
+app.post('/update-intern-remarks', requireAuth, async (req, res) => {
     const { internId, remarks } = req.body;
     console.log(req.body)
     console.log('Received Update Intern Remarks Request - Intern ID:', internId, 'Remarks:', remarks);
@@ -397,7 +404,7 @@ app.post('/update-intern-remarks', async (req, res) => {
 });
 
 // update the '/update-status' route in ojt-pending-page
-app.post('/update-status', async (req, res) => {
+app.post('/update-status', requireAuth, async (req, res) => {
     const { studentId, newStatus } = req.body;
     
     console.log('Received Update Request - Student ID:', studentId, 'New Status:', newStatus);
@@ -415,10 +422,6 @@ app.post('/update-status', async (req, res) => {
     }
     });
 
-
-
-    
-
 // handling of the post requst (authenticating advisor in login)
 app.post("/ojt-login-page", async (req, res) => {
     const { adviserEmail, password } = req.body;
@@ -426,12 +429,10 @@ app.post("/ojt-login-page", async (req, res) => {
     try {
         const adviser = await authenticateAdviser(adviserEmail, password);
         if (adviser) {
-            console.log('SERVER: LOGGING IN email = ' + adviserEmail + ' password = ' + password);
             req.session.adviserID = adviser.adviserID;
             req.session.isLoggedIn = true;
             res.redirect('/ojt-dashboard');
         } else {
-            console.log('SERVER: NOT AN ADVISER = email = ' + adviserEmail + ' password = ' + password);
             res.status(401).send('false'); // Send back a simple 'false' string
         }
     } catch (error) {
@@ -440,19 +441,8 @@ app.post("/ojt-login-page", async (req, res) => {
     }
 });
 
-// In another route, check if the user is logged in
-app.get("/some-protected-route", (req, res) => {
-    if (req.session.isLoggedIn) {
-        // User is logged in
-        // Proceed with route logic
-    } else {
-        // User is not logged in
-        res.redirect('/ojt-login-page');
-    }
-});
-
 // run node app.js then access http://localhost:8080/ojt-pending/
-app.get("/ojt-about-us", async (req, res) => {
+app.get("/ojt-about-us", requireAuth, async (req, res) => {
     try {
         const adviser = await fetchAdviser(req.session.adviserID);
         if (adviser) {
@@ -469,7 +459,7 @@ app.get("/ojt-about-us", async (req, res) => {
 
 
 
-app.get('/logout', (req, res) => {
+app.get('/logout', requireAuth, (req, res) => {
     req.session.destroy(err => {
         if (err) {
             console.log("A problem occured while logging out: " + err.message)
@@ -481,49 +471,51 @@ app.get('/logout', (req, res) => {
 });
 
 
-app.post('/ojt-dashboard/postannouncement', async (req, res) => {
+app.post('/ojt-dashboard/postannouncement', requireAuth, async (req, res) => {
     const sender = req.body['sender'];
     const recipient = req.body.recipient;
     const subject = req.body['subject-text'];
     const description = req.body['description-text'];
     console.log("Inserting announcement");
 
-    // Handle your data here (e.g., save to database, process, etc.)
-    insertAnnouncement(sender, recipient, subject, description);
-    res.redirect('/ojt-dashboard');
-
+    try {
+        await insertAnnouncement(sender, recipient, subject, description);
+        res.redirect('/ojt-dashboard');
+    } catch (error) {
+        console.error('Error inserting announcement: ', error.message);
+        res.status(500).send('Could not post announcement');
+    }
 });
 
 
-
-
-app.post('/ojt-dashboard/deleteannouncement', async (req, res) => {
+app.post('/ojt-dashboard/deleteannouncement', requireAuth, async (req, res) => {
     const announcementid = req.body['announcementid'];
 
     try {
-        deleteAnnouncement(announcementid);
-        res.redirect('/ojt-dashboard')
-
-        res.status(200).json({ success: true, message: 'Announcement deleted successfully' });
-    } catch (err) {
-        console.log(err.message);
+        await deleteAnnouncement(announcementid);
+        res.redirect('/ojt-dashboard');
+    } catch (error) {
+        console.error('Error deleting announcement: ', error.message);
+        res.status(500).send('Could not delete announcement');
     }
 })
 
 
-app.post('/ojt-dashboard/uploadprofilepicture', async (req, res) => {
+app.post('/ojt-dashboard/uploadprofilepicture', requireAuth, async (req, res) => {
     console.log("upload")
-
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
     }
 
-
     let uploadedFile = req.files.prof_image;
-    let filename = req.files.filename;
 
-    uploadPicture(uploadedFile)
-
+    try{
+        await uploadPicture(uploadedFile);
+        res.redirect('/ojt-dashboard');
+    }catch (error){
+        console.error('Error uploading profile picture: ', error.message);
+        res.status(500).send('Could not upload profile picture');
+    }
 });
 
 
