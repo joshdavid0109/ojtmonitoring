@@ -6,8 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 8080;
-let loggedInAdviser;
+const port = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 // for session handling
@@ -43,7 +42,7 @@ app.set('views', path.join(__dirname, 'ojt-monitoring-files'));
 const { fetchStudent, fetchStudents, fetchPendingStudents, fetchPendingStudentsByName, fetchPendingStudentsByClassCode, fetchPendingStudentsByAddress,
     fetchPendingStudentsByCompany, fetchPendingStudentsByWorkType, updateStatus, insertInternRequirement,
     fetchInternDailyReports, fetchUnassignedRequirements, insertNewRequirement, fetchRequirementsByStudentId, fetchRequirementsByInternId, updateRemarks, 
-    fetchSupervisor, fetchWeeklyReports, uploadPicture, authenticateAdviser, hashAdviserPasswords, fetchInterns, fetchAnnouncements,
+    fetchSupervisor, fetchWeeklyReports, uploadPicture, authenticateAdviser, fetchInterns, fetchAnnouncements,
     deleteAnnouncement, fetchAdviser, insertAnnouncement, fetchInternId, updateInternRemarks } = require('./database.js');
 
 //GET 
@@ -103,7 +102,7 @@ app.get("/ojt-dashboard", requireAuth, async (req, res) => {
         }
 
         let unassignedRequirementsMap = {};
-        reports = {}; // Temporary still doing
+        const reports = {}; // Temporary still doing
 
         if (adviser) {
             const announcements = await fetchAnnouncements(adviser.adviserID)
@@ -326,7 +325,7 @@ app.get("/ojt-pending", requireAuth, async (req, res) => {
         if (adviser) {
             const students = await fetchStudents();
             const pendingStudents = await fetchPendingStudents(req.session.adviserID);
-            res.render('ojt-pending/index', { students, pendingStudents })
+            res.render('ojt-pending/index', { adviser, students, pendingStudents })
         } else {
             res.redirect('/ojt-login-page');
         }
@@ -357,6 +356,7 @@ app.get('/ojt-pending/sort', requireAuth, async (req, res) => {
                 break;
             case 'worktype':
                 pendingStudents = await fetchPendingStudentsByWorkType(req.session.adviserID);
+                break;
             default:
                 pendingStudents = await fetchPendingStudents(req.session.adviserID);
         }
@@ -417,8 +417,6 @@ app.post('/update-status', requireAuth, async (req, res) => {
     } catch (error) {
       console.error('Error updating status:', error.message);
       res.status(500).send('Warning: Internal Server Error');
-      console.error('Error updating status:', error.message);
-      res.status(500).send('Warning: Internal Server Error');
     }
     });
 
@@ -465,7 +463,6 @@ app.get('/logout', requireAuth, (req, res) => {
             console.log("A problem occured while logging out: " + err.message)
         }
         console.log("pakilog out")
-        adviser = {};
         res.redirect('/ojt-login-page');
     });
 });
@@ -518,9 +515,6 @@ app.post('/ojt-dashboard/uploadprofilepicture', requireAuth, async (req, res) =>
     }
 });
 
-
-hashAdviserPasswords().then(() => {
-    app.listen(8080, () => {
-        console.log(`Server is running at port ${port}`);
-    });
+app.listen(port, () => {
+    console.log(`Server is running at port ${port}`);
 });
